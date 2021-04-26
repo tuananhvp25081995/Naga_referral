@@ -11,7 +11,7 @@ var dbconnect = function () {
 
     console.log("server start!");
     mongoose
-        .connect("mongodb://localhost/isavebot", mongoOption)
+        .connect("mongodb://localhost:27017/bot_telegram_dogedu", mongoOption)
         .then((a) => {
             console.log("DB has connect!");
 

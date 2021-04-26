@@ -427,43 +427,6 @@ let handleUserWebhook = async ({ id, event }) => {
     }
 };
 
-let botRemindReset = async ({ event }) => {
-    try {
-        if (event === "beforeHourReset") {
-            await UserModel
-                .updateMany(
-                    {},
-                    {
-                        $set: {
-                            "remind.isBeforeHour": false,
-                        },
-                    }
-                )
-                .exec();
-        }
-        if (event === "beforeDayReset") {
-            await UserModel
-                .updateMany(
-                    {},
-                    {
-                        $set: {
-                            "remind.isBeforeDay": false,
-                        },
-                    }
-                )
-                .exec();
-        }
-        return {
-            result: true,
-        };
-    } catch (e) {
-        console.error(e);
-        return {
-            result: false,
-        };
-    }
-};
-
 module.exports = {
     isHaveMailAndVerified,
     isJoinedGroup,
@@ -476,5 +439,4 @@ module.exports = {
     removeEmailandUpdate,
     getStatstics,
     handleUserWebhook,
-    botRemindReset,
 };

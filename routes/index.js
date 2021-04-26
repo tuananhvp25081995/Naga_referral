@@ -18,7 +18,7 @@ function curentTime(offset = 7) {
 }
 
 
-let bot_username = "isavewallet_bot"
+let bot_username = "dogedu_bot"
 
 sparkles.on("config_change", async () => {
     try {

@@ -5,7 +5,6 @@ let schemaUsers = new Schema(
     {
         telegramID: { type: String, required: true },
         fullName: { type: String, default: "" },
-        zoomID: { type: String, default: "" },
 
         mail: {
             email: { type: String, default: "" },

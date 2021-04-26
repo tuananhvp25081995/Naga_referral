@@ -4,7 +4,6 @@ let mongoose = require("mongoose")
 let DashboardModel = mongoose.model("DashboardModel")
 let UserModel = mongoose.model("UserModel")
 var sparkles = require("sparkles")();
-let { handleOauthRedirectUri } = require("../controllers/zoomControllers");
 let {
     handleUserWebhook,
     botRemindReset,
