@@ -54,7 +54,7 @@ router.get("/getalluser", async function (req, res, next) {
                 inviteLogsCount: item.inviteLogs.length,
                 refTelegramID: item.refTelegramID,
                 joinDate: moment(item.joinDate).format("YYYY/MM/DD h:mm:ss a"),
-                erc20: item.wallet.erc20,
+                bep20: item.wallet.bep20,
                 totalTime:
                     (Math.round(item.webminarLog.totalTime / 1000) / 60).toFixed(1) + " min",
                 isEnough30min: item.webminarLog.isEnough30min,
@@ -67,41 +67,6 @@ router.get("/getalluser", async function (req, res, next) {
         res.send({ result: [], requestResult: false });
     }
 });
-
-// router.post("/fake", async (req, res) => {
-//     let a = [];
-//     let c = 0;
-//     for (let i = 0; i <= 50000; i++) {
-//         let one = {
-//             telegramID: i.toString(),
-//             fullName: faker.name.findName(),
-//             mail: {
-//                 email: faker.internet.email(),
-//                 isVerify: faker.random.boolean(),
-//             },
-//             inviteLogsCount: faker.random.number(2000),
-//             refTelegramID: faker.random.number(20234500),
-//             registerFollow: {
-//                 passAll: faker.random.boolean()
-//             },
-//             joinDate: moment(Date.now()).format("YYYY/MM/DD h:mm:ss a"),
-//             totalTime: (Math.round(234891275 / 1000) / 60).toFixed(1) + " min",
-//             webminarLog: {
-//                 isEnough30min: faker.random.boolean(),
-//             }
-//         };
-//         a.push(one);
-//         if (c > 10000 || i === 100000) {
-//             c = 0;
-//             await UserModel.insertMany(a);
-//             a = []
-//         }
-//         c++;
-//         console.log("save", i);
-//     }
-
-//     res.send("ok");
-// })
 
 router.get("/config", async function (req, res, next) {
     try {
@@ -206,6 +171,7 @@ router.post("/botconfig", async (req, res) => {
     try {
         // console.log(req.body);
         config = await DashboardModel.findOne({ config: 1 });
+        console.log(config,10000)
         if (req.body.bot_username) config.bot_username = req.body.bot_username;
         if (req.body.BOT_WELCOM_AFTER_START)
             config.bot_text.BOT_WELCOM_AFTER_START =

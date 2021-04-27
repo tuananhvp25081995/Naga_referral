@@ -65,17 +65,17 @@ router.get("/", authChecker, function (req, res, next) {
 });
 
 router.get("/join", async function (req, res) {
-    if (!req.query.id) return res.redirect("https://isavewallet.org")
+    if (!req.query.id) return res.redirect("https://dogedu.org")
     console.log(req.query);
     let { id } = req.query
     id = id.toString().toLowerCase().replace(/[^a-zA-Z0-9]/g, "")
-    if (!id) return res.redirect("https://isavewallet.org")
+    if (!id) return res.redirect("https://dogedu.org")
 
     try {
         let user = await UserModel.findOne({ "webminar.shortLink": id })
         if (!user) {
             console.log("didn't found webinar link for this id", id);
-            res.redirect("https://isavewallet.org")
+            res.redirect("https://dogedu.org")
         } else {
             res.redirect(user.webminar.join_url)
         }
@@ -104,7 +104,7 @@ router.get("/email_verify", async (req, res) => {
                     "mail.verifyCode": "",
                     "mail.isVerify": true,
                     "mail.verifiedAt": Date.now(),
-                    "registerFollow.passAll": true,
+                    "registerFollow.passAll": false,
                     "registerFollow.log": "step4",
                     "registerFollow.step3.isPass": true,
                     "registerFollow.step3.isWaitingEnterEmail": false,
@@ -234,7 +234,7 @@ router.get("/statistics", authChecker, async function (req, res, next) {
         fullName: 1,
         refTelegramID: 1,
         "mail.email": 1,
-        "wallet.erc20": 1
+        "wallet.bep20": 1
     }).sort({ "webminarLog.totalTime": -1 }).limit(limit).skip(skip);
 
     let toSendUsers = [];
@@ -243,7 +243,7 @@ router.get("/statistics", authChecker, async function (req, res, next) {
     for (let i = 0; i < users.length; i++) {
         let { telegramID, fullName, refTelegramID } = users[i];
         let email = users[i].mail.email;
-        let erc20 = users[i].wallet.erc20;
+        let bep20 = users[i].wallet.bep20;
         console.time("one")
         let getStatstics_back = await getStatstics({
             telegramID
@@ -264,7 +264,7 @@ router.get("/statistics", authChecker, async function (req, res, next) {
             FTTTotal,
             totalTime,
             refTelegramID,
-            erc20
+            bep20
         }
 
         console.log(toReturn);

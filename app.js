@@ -236,7 +236,7 @@ async function handleStatisticsGetAll({ payload }) {
                     fullName: 1,
                     refTelegramID: 1,
                     "mail.email": 1,
-                    "wallet.erc20": 1
+                    "wallet.bep20": 1
                 }
             )
             .sort({
@@ -266,7 +266,7 @@ async function handleStatisticsGetAll({ payload }) {
     for (let i = 0; i < usersLength; i++) {
         let { telegramID, fullName, refTelegramID } = listUsers[i];
         let email = listUsers[i].mail.email;
-        let erc20 = listUsers[i].wallet.erc20;
+        let bep20 = listUsers[i].wallet.bep20;
         let getStatstics_back = await getStatstics({
             telegramID,
         });
@@ -285,7 +285,7 @@ async function handleStatisticsGetAll({ payload }) {
                     FTTTotal,
                     totalTime,
                     refTelegramID,
-                    erc20
+                    bep20
                 },
             },
         };

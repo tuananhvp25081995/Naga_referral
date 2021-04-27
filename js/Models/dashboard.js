@@ -33,16 +33,14 @@ const schemaDashboard = new Schema(
         //-1001420387772 for main group
         group_id: { type: String, default: "-1001207747128" },
 
-        // https://t.me/istest1 for test group
-        // https://t.me/isavewalletgroup for main group
         group_invite_link: { type: String, default: "https://t.me/dogedugroup", },
 
-        redirect_uri: { type: String, default: "https%3A%2F%2Fairdrop.isavewallet.org%2Foauth" },
-        bot_username: { type: String, default: "dogedugroup" },
-        domain: { type: String, default: "https://airdrop.isavewallet.org" },
+        redirect_uri: { type: String, default: "https%3A%2F%2Fairdrop.dogedu.live%2Foauth" },
+        bot_username: { type: String, default: "dogedu_bot" },
+        domain: { type: String, default: "https://airdrop.dogedu.live" },
         domain_verify_endpoint: {
             type: String,
-            default: "https://airdrop.isavewallet.org/email_verify",
+            default: "https://localhost:3500/email_verify",
         },
 
         bot_text: {
@@ -55,20 +53,20 @@ Conditions of participation
 ✅Step 1: Join our Telegram Group
 ✅Step 2: Access to your email and confirm registration
 ✅Step 3: Follow our Twitter Channel
-- $15 IST token reward for completing the 4 steps above
+- 10,000,000 DOGU Tokens reward for completing the 3 steps above
 Rewards:
-- $3 IST token reward for each successful referral (the member you referred to must also complete 4 steps of the campaign)
+- 5,000,000 DOGU Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
 `
             },
             BOT_DESCRIPTION: {
                 type: String,
-                default: `🎉🎉🎉 Welcome you to Airdrop Campaign for  Isave Wallet Launching Event  – The new and absolutely secure crypto wallet\n
+                default: `🎉🎉🎉 Welcome to the best Airdrop on Dogedu - Social Network for Dog Lovers\n
                         —————————————————————-\n
-                        🎁 The entire campaign reward is $30000 IST\n
+                        🎁 The total reward is up to 1,000,000,000,000 DOGU Tokens (1000 Billions)\n
                         —————————————————————-\n
-                        💎 Currently 1 FFT = $0.1. Isave Token will be traded on cryptocurrency exchanges by the end of December 2020\n
-                        💎 We will distribute IST immediately after the e nd of the campaign\n
-                        ▶️ Please click on “Start” to have a look through the campaign`,
+                        💎 Officially listed on Pancakeswap\n
+                        💎 We will distribute DOGU immediately after the end of the campaign\n
+                        ▶️ Please click on “Start” to join the Campaign`,
             },
         },
     },

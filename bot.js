@@ -58,19 +58,19 @@ let group_id,
     BOT_WELCOM_AFTER_START = "",
     BOT_STATUS_SWITCH = true;
 
-let BOT_STEP_1 = "🎄 Step 1: Join the Isave Wallet Group by clicking this:\n";
+let BOT_STEP_1 = "🎄 Step 1: Join the Dogedu Group by clicking this:\n";
 let BOT_STEP_2 = "🎄 Step 2: Enter your email to confirm registration:";
 let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email again.";
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_3 = `Step 3:
-🧨 Follow our [Twitter](https://twitter.com/Dogegu)`
-
+🧨 Follow our [Twitter](https://twitter.com/EduDogu)
+🧨 And input your twitter profile link`
 // The reward is 1, 000, 000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
-let BOT_STEP_5 = "Step 5: The Opening event starts at 13:00 UTC – December 5, 2020. Please stay tuned and participate at least 45 minutes to claim rewards";
-let BOT_CHANGE_WALLET = "✨ Enter your ERC-20 wallet address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80)"
+let BOT_STEP_5 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
+let BOT_CHANGE_WALLET = "✨ Enter your DOGU Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
 
-let BOT_Statstics_Temple = `🎁Estimated Balance: $ETKREF IST
-Total Balance: $TOKEN IST 
+let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens DOGU
+Total Balance: $TOKEN DOGU 
 Tokens for airdop event will be updated after verifying manually by bounty manager at the end of airdrop.\n 
 📎Referral link: REFLINK
 👬Referrals: REFCOUNT
@@ -78,32 +78,33 @@ Tokens for airdop event will be updated after verifying manually by bounty manag
 Email: EMAIL 
 Telegram ID: TELEGRAM  
 Twitter: TWITTER  
-ERC-20 wallet address: WALLET \n`
+Tokens DOGU wallet address: \n`
 
 
 let inviteTemple = `
-🔊🔊Isave Wallet Opening Airdrop
-🎉 Time: 01/12/2020  -->  05/12/2020
-💲 Total Airdrop Reward: $30.000 IST
+🔊🔊Dogedu Opening Airdrop
+🎉 Time: 28/04/2021  -->  01/05/2021
+💲 Total Airdrop Reward: 1000 Billions DOGU Tokens
 🔖 Start now: URL\n
 🎁Reward: 
-$ 15 IST when completed all steps
-$ 3 IST for each user from your 👬 Referral.
-Dogedu Wallet: https://dogedu.org
+- 10,000,000 DOGU Tokens reward for completing the 3 steps above
+- 5,000,000 DOGU Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
+Dogedu: https://dogedu.org
 `
 
 
 let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the finfine ecosystem launch event has reached the limit, you cannot participate in this airdrop. We thank you for contacting us.\nPlease keep in touch, we will inform you of the latest airdrop.`
 let emailDomainAllow = ["aol.com", "gmail.com", "hotmail.com", "hotmail.co.uk", "live.com", "yahoo.com", "yahoo.co.uk", "yandex.com", "hotmail.it"];
 
-//18:45 5/12/2020 GMT+7
-let timeEnd = 1629198714000
+//07:00 09/15/2021 GMT+7
+let timeEnd = 1631638800000
 
 sparkles.on("config_change", async () => {
     try {
         let config = await DashboardModel.findOne({ config: 1 });
         group_id = config.group_id;
         group_invite_link = config.group_invite_link;
+        bot_username = config.bot_username;
         domain_verify_endpoint = config.domain_verify_endpoint;
         BOT_WELCOM_AFTER_START = config.bot_text.BOT_WELCOM_AFTER_START;
         BOT_STATUS_PRIVATE_CHAT = config.status.privateChat;
@@ -117,6 +118,10 @@ sparkles.on("config_change", async () => {
     }
 });
 
+let reply_markup_keyboard = {
+    keyboard: [[{ text: "Share" }, { text: "Change Wallet" }]],
+    resize_keyboard: true,
+};
 
 let reply_markup_keyboard_end = {
     keyboard: [[{ text: "START" }]],
@@ -128,12 +133,6 @@ let reply_markup_keyboard_verify_email = {
     keyboard: [[{ text: "Change email" }, { text: "Resend email" }]],
     resize_keyboard: true,
 };
-
-let reply_markup_keyboard_twitter = {
-    keyboard: [[{ text: "Done ✔" }], [{ text: "Not yet" }]],
-    resize_keyboard: true,
-};
-
 
 const schemaEmail = Joi.object({
     email: Joi.string().email({
@@ -218,10 +217,9 @@ bot.on("message", async (...parameters) => {
 
     //this is text message
     if (type === "text") {
-
+        console.log(msg.chat.type)
         if (msg.chat.type === "private") {
             let user = await UserModel.findOne({ telegramID }, { registerFollow: 1, social: 1, wallet: 1 }).exec();
-
             if (Date.now() > timeEnd) {
                 if (!user || !user.registerFollow.step4.isTwitterOK) {
                     console.log(curentTime(7), fullName, telegramID, "End event. With text:", text);
@@ -229,7 +227,6 @@ bot.on("message", async (...parameters) => {
                     return;
                 }
             }
-
             //user didn't have in database
             if (!user && text.startsWith("/start")) {
                 bot.sendMessage(telegramID,
@@ -285,34 +282,36 @@ bot.on("message", async (...parameters) => {
                         { reply_markup: reply_markup_keyboard_verify_email }
                     ).catch(e => console.log("have error in send email noti!", e))
                 }
+                if (user && !user.registerFollow.step4.isTwitterOK) {
+                    console.log("in step4 ok with text link", telegramID, fullName, text);
+                    let checkTwitter = null
+                    try {
+                        console.log(text)
+                        checkTwitter = await parse(text, true);
+                    } catch (e) {
+                        console.log("have err in checkTwitter", e);
+                    }
+                    console.log(checkTwitter,1000)
+                    if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
+                        await UserModel.updateOne({ telegramID }, { "registerFollow.step4.isTwitterOK": true,"registerFollow.passAll": true, "social.twitter": text, "wallet.changeWallet": true }).exec();
+                        return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+                    } else {
+                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again: ")
+                        setTimeout(() => {sendStep3_Twitter({telegramID})},1000)
+                    }
+                }
                 else {
                     return console.log(curentTime(7), fullName, fullName, telegramID, "have not dont registerFollow with text", text);
                 }
             };
 
 
-            if (user && !user.registerFollow.step4.isTwitterOK) {
-                console.log("in step4 ok with text link", telegramID, fullName, text);
-                let checkTwitter = null
-                try {
-                    checkTwitter = await parse(text, true);
-                } catch (e) {
-                    console.log("have err in checkTwitter", e);
-                }
-
-                if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
-                    await UserModel.updateOne({ telegramID }, { "registerFollow.step4.isTwitterOK": true, "social.twitter": text, "wallet.changeWallet": true }).exec();
-                    return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
-                } else {
-                    return bot.sendMessage(telegramID, "You have entered an invalid link, please submit again: ")
-                }
-            }
 
             if (user && user.wallet.changeWallet) {
                 var valid = WAValidator.validate(text, 'ETH');
                 console.log(curentTime(), fullName, telegramID, "in changeWallet text:", text);
                 if (valid) {
-                    await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.erc20": text.toUpperCase() });
+                    await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.bep20": text.toUpperCase() });
 
                     if (!user.registerFollow.sendAllStep) {
                         await UserModel.findOneAndUpdate({ telegramID }, { "registerFollow.sendAllStep": true });
@@ -322,10 +321,10 @@ bot.on("message", async (...parameters) => {
                     return bot.sendMessage(telegramID, "Your wallet was updated.");
                 } else {
                     if (!user.registerFollow.sendAllStep) {
-                        return bot.sendMessage(telegramID, "Oops\nYou have entered an invalid wallet address. Press submit wallet address again");
+                        return bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press submit wallet address again");
                     }
                     await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false });
-                    return bot.sendMessage(telegramID, "Oops\nYou have entered an invalid wallet address. Press *Change Wallet* to change again", { parse_mode: "markdown", });
+                    return bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press *Change Wallet* to change again", { parse_mode: "markdown", });
                 }
             }
 
@@ -336,11 +335,6 @@ bot.on("message", async (...parameters) => {
                     case "/share":
                         handleInvite(bot, msg);
                         break;
-                    case "statistics":
-                    case "/statistics":
-                        handleStatstics(bot, msg);
-                        break;
-
                     case "news":
                         bot.sendMessage(telegramID,
                             "Currently do not have any news yet, we will notify for you in futher news.\nHope you have a nice day",
@@ -357,7 +351,7 @@ bot.on("message", async (...parameters) => {
                             reply_markup: reply_markup_keyboard
                         })
                     default:
-                        break;
+                        bot.sendMessage(telegramID, "You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize");
                 }
             }
 
@@ -410,21 +404,21 @@ let handleLeftChatMember = async (bot, msg) => {
     console.log(curentTime(7), id, fullName, "left group chat, starting delete them in database");
     try {
 
-        // await UserModel.findOneAndUpdate(
-        //     { telegramID: id },
-        //     { $set: { "isLeftGroup": true } },
-        //     { useFindAndModify: false }
-        // ).exec();
+        await UserModel.findOneAndUpdate(
+            { telegramID: id },
+            { $set: { "isLeftGroup": true } },
+            { useFindAndModify: false }
+        ).exec();
 
-        // let totalUsers = await UserModel.find({ "registerFollow.step4.isTwitterOK": true }).countDocuments().exec();
-        // sparkles.emit("totalUsers", { totalUsers });
-        // console.log(msg.chat.id, msg.message_id)
+        let totalUsers = await UserModel.find({ "registerFollow.step4.isTwitterOK": true }).countDocuments().exec();
+        sparkles.emit("totalUsers", { totalUsers });
+        console.log(msg.chat.id, msg.message_id)
         // await bot.deleteMessage(msg.chat.id, msg.message_id);
-        // await bot.sendMessage(id, "Warning: you left group, your ref will be delete.", {
-        //     reply_markup: {
-        //         remove_keyboard: true
-        //     }
-        // });
+        await bot.sendMessage(id, "Warning: you left group, your ref will be delete.", {
+            reply_markup: {
+                remove_keyboard: true
+            }
+        });
     } catch (e) {
         console.error(e);
     }
@@ -493,7 +487,7 @@ async function handleStatstics(bot, msg) {
     if (back.result && user) {
         let toSend = BOT_Statstics_Temple.toString()
             .replace("EMAIL", user.mail.email.toString())
-            .replace("WALLET", user.wallet.erc20.toString())
+            .replace("WALLET", user.wallet.bep20.toString())
             .replace("TELEGRAM", telegramID)
             .replace("ETKREF", back.ETKREF.toString())
             .replace("TOKEN", back.FTTTotal.toString())
@@ -514,7 +508,7 @@ async function handleReSendEmailAgain(bot, msg) {
         let user = await UserModel.findOne({ telegramID, "mail.isVerify": false }, { mail: 1 }).exec();
         if (!user) {
             console.log("have error when handle resend email:", msg.from);
-            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@isavewallet.org!")
+            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@dogedu.org!")
         }
         let email = user.mail.email;
         let verifyCode = user.mail.verifyCode;
@@ -658,7 +652,7 @@ async function handleStart(bot, msg, ref) {
 
 function handleInvite(bot, msg, first = false) {
 
-    let toSend = "🎉🎢 Share your referral link to get $3 IST each user completed all step above:\n";
+    let toSend = "🎉🎢 Share your referral link to get 5.000.000 DOGU each user completed all step above:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
     toSend += url;
     let full = inviteTemple.replace("URL", url)
