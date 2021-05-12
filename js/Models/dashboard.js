@@ -50,23 +50,23 @@ const schemaDashboard = new Schema(
 Please follow up to get started in the campaign
 ————————————————————————
 Conditions of participation
-✅Step 1: Join our Telegram Group
+✅Step 1: Subscribers our Telegram Channel
 ✅Step 2: Access to your email and confirm registration
 ✅Step 3: Follow our Twitter Channel
-- 10,000,000 DOGU Tokens reward for completing the 3 steps above
+- 50,000,000 MAGO Tokens reward for completing the 3 steps above
 Rewards:
-- 5,000,000 DOGU Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
+- 10,000,000 MAGO Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
 `
             },
             BOT_DESCRIPTION: {
                 type: String,
-                default: `🎉🎉🎉 Welcome to the best Airdrop on Dogedu - Social Network for Dog Lovers\n
+                default: `🎉🎉🎉 Welcome to Airdrop on MaxGoat - The most powerful NFT on the market\n
                         —————————————————————-\n
-                        🎁 The total reward is up to 1,000,000,000,000 DOGU Tokens (1000 Billions)\n
+                        🎁 The total reward is up to 10,000,000,000,000 MAGO Tokens (10000 Billions)\n
                         —————————————————————-\n
                         💎 Officially listed on Pancakeswap\n
-                        💎 We will distribute DOGU immediately after the end of the campaign\n
-                        ▶️ Please click on “Start” to join the Campaign`,
+                        💎 We will distribute MAGO Tokens immediately after the end of the campaign\n
+                        ▶️ Please click on “Start” to join the Campaign.`,
             },
         },
     },

@@ -70,7 +70,7 @@ let BOT_STEP_5 = "✨ You have successfully completed 3 steps to gain the reward
 let BOT_CHANGE_WALLET = "✨ Enter your DOGU Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
 
 let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens DOGU
-Total Balance: $TOKEN DOGU 
+Total Balance: $TOKEN MAGO
 Tokens for airdop event will be updated after verifying manually by bounty manager at the end of airdrop.\n 
 📎Referral link: REFLINK
 👬Referrals: REFCOUNT
@@ -78,18 +78,18 @@ Tokens for airdop event will be updated after verifying manually by bounty manag
 Email: EMAIL 
 Telegram ID: TELEGRAM  
 Twitter: TWITTER  
-Tokens DOGU wallet address: \n`
+MAGO Tokens wallet address: \n`
 
 
 let inviteTemple = `
-🔊🔊Dogedu Opening Airdrop
-🎉 Time: 28/04/2021  -->  01/05/2021
-💲 Total Airdrop Reward: 1000 Billions DOGU Tokens
+🔊🔊MaxGoat Opening Airdrop
+🎉 Time: May 13, 2021  -->  August 8, 2021
+💲 Total Airdrop Reward: 10000 Billions MAGO Tokens
 🔖 Start now: URL\n
 🎁Reward: 
-- 10,000,000 DOGU Tokens reward for completing the 3 steps above
-- 5,000,000 DOGU Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
-Dogedu: https://dogedu.org
+- 50,000,000 MAGO Tokens reward for completing the 3 steps above
+- 10,000,000 MAGO Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
+MaxGoat: https://maxgoat.io
 `
 
 
