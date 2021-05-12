@@ -18,7 +18,7 @@ function curentTime(offset = 7) {
 }
 
 
-let bot_username = "dogedu_bot"
+let bot_username = "MaxGoat_bot"
 
 sparkles.on("config_change", async () => {
     try {
@@ -65,17 +65,17 @@ router.get("/", authChecker, function (req, res, next) {
 });
 
 router.get("/join", async function (req, res) {
-    if (!req.query.id) return res.redirect("https://dogedu.org")
+    if (!req.query.id) return res.redirect("https://maxgoat.io")
     console.log(req.query);
     let { id } = req.query
     id = id.toString().toLowerCase().replace(/[^a-zA-Z0-9]/g, "")
-    if (!id) return res.redirect("https://dogedu.org")
+    if (!id) return res.redirect("https://maxgoat.io")
 
     try {
         let user = await UserModel.findOne({ "webminar.shortLink": id })
         if (!user) {
             console.log("didn't found webinar link for this id", id);
-            res.redirect("https://dogedu.org")
+            res.redirect("https://maxgoat.io")
         } else {
             res.redirect(user.webminar.join_url)
         }
@@ -124,7 +124,7 @@ router.get("/email_verify", async (req, res) => {
         }
     } else {
         console.log("bad request email verify!!!!", req.query);
-        res.redirect("https://conin.ai");
+        res.redirect("https://t.me/MaxGoat_bot?start=1628930989");
     }
 });
 

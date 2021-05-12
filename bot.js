@@ -39,7 +39,7 @@ if (process.env.MAIL_SERVER === "smtp2go") {
     MAIL_SERVER_PASS = process.env.MAIL_SERVER_PASS_2
 }
 
-let sendFrom = "Dogedu Airdrop <no_reply@dogedu.org>"
+let sendFrom = "MaxGoat Airdrop <no_reply@maxgoat.io>"
 let transporter = nodemailer.createTransport({
     host: MAIL_SERVER_HOST,
     port: 587,
@@ -58,18 +58,18 @@ let group_id,
     BOT_WELCOM_AFTER_START = "",
     BOT_STATUS_SWITCH = true;
 
-let BOT_STEP_1 = "🎄 Step 1: Join the Dogedu Group by clicking this:\n";
+let BOT_STEP_1 = "🎄 Step 1: Join the MaxGoat Channel by clicking this:\n";
 let BOT_STEP_2 = "🎄 Step 2: Enter your email to confirm registration:";
 let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email again.";
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_3 = `Step 3:
-🧨 Follow our [Twitter](https://twitter.com/EduDogu)
+🧨 Follow our [Twitter](https://twitter.com/MaxGoat6)
 🧨 And input your twitter profile link`
 // The reward is 1, 000, 000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
 let BOT_STEP_5 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
-let BOT_CHANGE_WALLET = "✨ Enter your DOGU Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
+let BOT_CHANGE_WALLET = "✨ Enter your MAGO Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and ERC-1155 assets"
 
-let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens DOGU
+let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens MAGO
 Total Balance: $TOKEN MAGO
 Tokens for airdop event will be updated after verifying manually by bounty manager at the end of airdrop.\n 
 📎Referral link: REFLINK
@@ -97,7 +97,7 @@ let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the fi
 let emailDomainAllow = ["aol.com", "gmail.com", "hotmail.com", "hotmail.co.uk", "live.com", "yahoo.com", "yahoo.co.uk", "yandex.com", "hotmail.it"];
 
 //07:00 09/15/2021 GMT+7
-let timeEnd = 1631638800000
+let timeEnd = 1627689600000
 
 sparkles.on("config_change", async () => {
     try {
@@ -117,6 +117,11 @@ sparkles.on("config_change", async () => {
         console.error("update config have error", e);
     }
 });
+
+let reply_markup_keyboard_check = {
+    keyboard: [[{ text: "Check Join Channel"}]],
+    resize_keyboard: true,
+};
 
 let reply_markup_keyboard = {
     keyboard: [[{ text: "Share" }, { text: "Change Wallet" }]],
@@ -183,7 +188,6 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 });
 
 let limit = {}
-
 
 bot.on("message", async (...parameters) => {
     let msg = parameters[0];
@@ -261,7 +265,10 @@ bot.on("message", async (...parameters) => {
             if (user && !user.registerFollow.passAll) {
 
                 if (!user.registerFollow.step2.isJoined) {
-                    return bot.sendMessage(telegramID, "Please join telegram group in Step 1 Click ").catch(e => { console.log("error in check first step!", e) });
+                    if (text === "check join channel") {
+                        return handleStart(bot, msg, null);
+                    }
+                    // return bot.sendMessage(telegramID, `🎄 Step 1: Join the MaxGoat Channel by clicking this: https://t.me/MaxGoatch`).catch(e => { console.log("error in check first step!", e) });
                 }
 
                 if (text === "change email" && !user.registerFollow.passAll) {
@@ -286,21 +293,18 @@ bot.on("message", async (...parameters) => {
                     console.log("in step4 ok with text link", telegramID, fullName, text);
                     let checkTwitter = null
                     try {
-                        console.log(text)
                         checkTwitter = await parse(text, true);
                     } catch (e) {
                         console.log("have err in checkTwitter", e);
                     }
-                    console.log(checkTwitter,1000)
                     if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
                         await UserModel.updateOne({ telegramID }, { "registerFollow.step4.isTwitterOK": true,"registerFollow.passAll": true, "social.twitter": text, "wallet.changeWallet": true }).exec();
                         return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
                     } else {
-                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again: ")
+                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
                         setTimeout(() => {sendStep3_Twitter({telegramID})},1000)
                     }
-                }
-                else {
+                } else {
                     return console.log(curentTime(7), fullName, fullName, telegramID, "have not dont registerFollow with text", text);
                 }
             };
@@ -355,13 +359,9 @@ bot.on("message", async (...parameters) => {
                 }
             }
 
+        }else if (text === "left_chat_member") {
+            handleLeftChatMember(bot, msg);
         }
-
-
-    } else if (type === "left_chat_member") {
-        handleLeftChatMember(bot, msg);
-    } else if (type === "new_chat_members") {
-        handleNewChatMember(bot, msg);
     }
 });
 
@@ -508,7 +508,7 @@ async function handleReSendEmailAgain(bot, msg) {
         let user = await UserModel.findOne({ telegramID, "mail.isVerify": false }, { mail: 1 }).exec();
         if (!user) {
             console.log("have error when handle resend email:", msg.from);
-            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@dogedu.org!")
+            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@maxgoat.io!")
         }
         let email = user.mail.email;
         let verifyCode = user.mail.verifyCode;
@@ -599,12 +599,26 @@ async function handleReEnterEmailAgain(bot, msg) {
 
 async function sendStep1({ telegramID }, bot) {
     bot.sendMessage(telegramID, BOT_STEP_1 + group_invite_link);
+    setTimeout(() => {
+        return bot.sendMessage(telegramID, `Please click "Check Join Channel" to continue`, {
+            reply_markup: reply_markup_keyboard_check
+        })
+    },5000)
     return;
 }
 async function sendStep3_1({ telegramID }, bot) {
     bot.sendMessage(telegramID, BOT_STEP_2);
     await setWaitingEnterEmail({ telegramID }, true);
     return;
+}
+
+async function checkJoinChannel(bot, msg) {
+    let telegramID = msg.from.id;
+    let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
+    console.log(getChatMember,1000)
+    if (getChatMember.status === "member") {
+        handleNewChatMember(bot, msg);
+    }
 }
 
 async function handleStart(bot, msg, ref) {
@@ -635,7 +649,6 @@ async function handleStart(bot, msg, ref) {
 
     console.log(curentTime(), "handleStart done", telegramID, fullName);
 
-
     let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
     if (getChatMember.status === "member") {
         console.log("user already in group but in db still false, so update it");
@@ -652,7 +665,7 @@ async function handleStart(bot, msg, ref) {
 
 function handleInvite(bot, msg, first = false) {
 
-    let toSend = "🎉🎢 Share your referral link to get 5.000.000 DOGU each user completed all step above:\n";
+    let toSend = "🎉🎢 Share your referral link to get 50,000,000 MAGO each user completed all step above:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
     toSend += url;
     let full = inviteTemple.replace("URL", url)

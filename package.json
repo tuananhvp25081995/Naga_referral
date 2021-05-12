@@ -39,6 +39,7 @@
         "morgan": "~1.9.1",
         "node-telegram-bot-api": "^0.50.0",
         "nodemailer": "^6.4.14",
+        "nodemon": "^2.0.7",
         "npmlog": "^4.1.2",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",

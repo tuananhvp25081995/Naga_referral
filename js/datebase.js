@@ -1,4 +1,5 @@
 let mongoose = require("mongoose");
+require("dotenv").config();
 let sparkles = require("sparkles")()
 var dbconnect = function () {
     let mongoOption = {
@@ -11,7 +12,7 @@ var dbconnect = function () {
 
     console.log("server start!");
     mongoose
-        .connect("mongodb://localhost:27017/bot_telegram_dogegu", mongoOption)
+        .connect(process.env.MONGO_URL, mongoOption)
         .then((a) => {
             console.log("DB has connect!");
 

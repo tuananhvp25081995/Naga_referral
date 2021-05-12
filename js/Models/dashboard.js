@@ -31,16 +31,16 @@ const schemaDashboard = new Schema(
 
         //-1001417029522  for test group
         //-1001420387772 for main group
-        group_id: { type: String, default: "-1001207747128" },
+        group_id: { type: String, default: "-1001455100944" },
 
-        group_invite_link: { type: String, default: "https://t.me/dogedugroup", },
+        group_invite_link: { type: String, default: "https://t.me/MaxGoatch", },
 
-        redirect_uri: { type: String, default: "https%3A%2F%2Fairdrop.dogedu.live%2Foauth" },
-        bot_username: { type: String, default: "dogedu_bot" },
-        domain: { type: String, default: "https://airdrop.dogedu.live" },
+        redirect_uri: { type: String, default: "https%3A%2F%2Fairdrop.maxgoatbot.live%2Foauth" },
+        bot_username: { type: String, default: "MaxGoat_bot" },
+        domain: { type: String, default: "https://airdrop.maxgoatbot.live" },
         domain_verify_endpoint: {
             type: String,
-            default: "https://localhost:3500/email_verify",
+            default: "https://maxgoatbot.live/email_verify",
         },
 
         bot_text: {
