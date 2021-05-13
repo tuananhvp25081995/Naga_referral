@@ -89,8 +89,8 @@ router.get("/oauth", function (req, res) {
 });
 
 router.get("/email_verify", async (req, res) => {
+    console.log(req.query);
     if (req.query.code && req.query.telegramID) {
-        console.log(req.query);
         let { code, telegramID } = req.query;
         code = code.toString().replace(/[^a-zA-Z0-9]/g, "")
         telegramID = telegramID.toString().replace(/\D/g, "");

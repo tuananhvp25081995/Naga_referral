@@ -1,3 +1,4 @@
+require("dotenv").config();
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -162,7 +163,7 @@ var server = require("http").createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
 var io = require("socket.io")(server);
-let port = 3500
+let port = 3000
 server.listen(port);
 
 io.on("connection", (socket) => {

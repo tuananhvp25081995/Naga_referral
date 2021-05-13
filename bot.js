@@ -49,7 +49,6 @@ let transporter = nodemailer.createTransport({
         pass: MAIL_SERVER_PASS,
     },
 });
-
 let group_id,
     isPause = false,
     group_invite_link = null,
@@ -265,10 +264,7 @@ bot.on("message", async (...parameters) => {
             if (user && !user.registerFollow.passAll) {
 
                 if (!user.registerFollow.step2.isJoined) {
-                    if (text === "check join channel") {
-                        return handleStart(bot, msg, null);
-                    }
-                    // return bot.sendMessage(telegramID, `🎄 Step 1: Join the MaxGoat Channel by clicking this: https://t.me/MaxGoatch`).catch(e => { console.log("error in check first step!", e) });
+                    return handleStart(bot, msg, null);
                 }
 
                 if (text === "change email" && !user.registerFollow.passAll) {
@@ -630,7 +626,7 @@ async function handleStart(bot, msg, ref) {
     //with ref id
     if (ref) {
         console.log(curentTime(7), "handleStart with ref id", telegramID, fullName, ref);
-        bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n Each person joins and finishes all steps required, you will get $3 IST bonus.\Keep going sir🎉")
+        bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n Each person joins and finishes all steps required, you will get 10.000.000 MAGO Tokens bonus.\Keep going sir🎉")
             .then((a) => console.log(curentTime(), "send to parent ref ok")).catch(e => { console.log(curentTime(), "send to parent ref fail!", e); })
         result = await handleNewUserWithRef({ telegramID, fullName, ref });
     }
@@ -665,7 +661,7 @@ async function handleStart(bot, msg, ref) {
 
 function handleInvite(bot, msg, first = false) {
 
-    let toSend = "🎉🎢 Share your referral link to get 50,000,000 MAGO each user completed all step above:\n";
+    let toSend = "🎉🎢 Share your referral link to get 10,000,000 MAGO each user completed all step above:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
     toSend += url;
     let full = inviteTemple.replace("URL", url)
