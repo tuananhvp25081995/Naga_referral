@@ -33,14 +33,14 @@ const schemaDashboard = new Schema(
         //-1001420387772 for main group
         group_id: { type: String, default: "-1001455100944" },
 
-        group_invite_link: { type: String, default: "https://t.me/MaxGoatch", },
+        group_invite_link: { type: String, default: "https://t.me/pixiuswapchannel", },
 
-        redirect_uri: { type: String, default: "https%3A%2F%2Fairdrop.maxgoatbot.live%2Foauth" },
-        bot_username: { type: String, default: "MaxGoat_bot" },
-        domain: { type: String, default: "https://airdrop.maxgoatbot.live" },
+        redirect_uri: { type: String, default: "https%3A%2F%2Fpixiuswap.org%2Foauth" },
+        bot_username: { type: String, default: "PixiuSwap_bot" },
+        domain: { type: String, default: "https://pixiuswap.org" },
         domain_verify_endpoint: {
             type: String,
-            default: "https://maxgoatbot.live/email_verify",
+            default: "https://bot.pixiuswap.org/email_verify",
         },
 
         bot_text: {
@@ -53,19 +53,20 @@ Conditions of participation
 ✅Step 1: Subscribers our Telegram Channel
 ✅Step 2: Access to your email and confirm registration
 ✅Step 3: Follow our Twitter Channel
-- 50,000,000 MAGO Tokens reward for completing the 3 steps above
+
 Rewards:
-- 10,000,000 MAGO Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
+- 50 PIXIU Tokens rewarded users who finish all 3 steps above.
+- 10 PIXIU Tokens rewarded for each successful referral (the member you referred to must also complete 3 steps of the campaign)
 `
             },
             BOT_DESCRIPTION: {
                 type: String,
-                default: `🎉🎉🎉 Welcome to Airdrop on MaxGoat - The most powerful NFT on the market\n
+                default: `🎉🎉🎉  Welcome to the first Bounty Campaign on PIXIUSWAP - The pioneering automatic liquidity yield farming and AMM on Binance Smart Chain\n
                         —————————————————————-\n
-                        🎁 The total reward is up to 10,000,000,000,000 MAGO Tokens (10000 Billions)\n
+                        🎁 Users have chance to gain many rewards with the total prize is up to 500,000 PIXIU Tokens\n
                         —————————————————————-\n
-                        💎 Officially listed on Pancakeswap\n
-                        💎 We will distribute MAGO Tokens immediately after the end of the campaign\n
+                        💎 PIXIUSWAP has officially got listed on PancakeSwap => Easy to trade now\n
+                        💎 PIXIU tokens will be transferred instantly to your personal wallet when the Campaign ends\n
                         ▶️ Please click on “Start” to join the Campaign.`,
             },
         },

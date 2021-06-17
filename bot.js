@@ -39,7 +39,7 @@ if (process.env.MAIL_SERVER === "smtp2go") {
     MAIL_SERVER_PASS = process.env.MAIL_SERVER_PASS_2
 }
 
-let sendFrom = "MaxGoat Airdrop <no_reply@maxgoat.io>"
+let sendFrom = "PixiuSwap Airdrop <no_reply@pixiuswap.org>"
 let transporter = nodemailer.createTransport({
     host: MAIL_SERVER_HOST,
     port: 587,
@@ -57,12 +57,12 @@ let group_id,
     BOT_WELCOM_AFTER_START = "",
     BOT_STATUS_SWITCH = true;
 
-let BOT_STEP_1 = "🎄 Step 1: Join the MaxGoat Channel by clicking this:\n";
+let BOT_STEP_1 = "🎄 Step 1: Join the PixiuSwap Channel by clicking this:\n";
 let BOT_STEP_2 = "🎄 Step 2: Enter your email to confirm registration:";
 let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email again.";
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_3 = `Step 3:
-🧨 Follow our [Twitter](https://twitter.com/MaxGoat6)
+🧨 Follow our [Twitter](https://twitter.com/SwapPixiu)
 🧨 And input your twitter profile link`
 // The reward is 1, 000, 000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
 let BOT_STEP_5 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
@@ -77,26 +77,27 @@ Tokens for airdop event will be updated after verifying manually by bounty manag
 Email: EMAIL 
 Telegram ID: TELEGRAM  
 Twitter: TWITTER  
-MAGO Tokens wallet address: \n`
+PIXIU Tokens wallet address: \n`
 
 
 let inviteTemple = `
-🔊🔊MaxGoat Opening Airdrop
-🎉 Time: May 13, 2021  -->  August 8, 2021
-💲 Total Airdrop Reward: 10000 Billions MAGO Tokens
+🔊🔊PixiuSwap Opening Airdrop
+🎉 Time: 20/06/2021 - 01/08/2021 
+💲 Total Airdrop Reward: 500,000 PIXIU Tokens
 🔖 Start now: URL\n
 🎁Reward: 
-- 50,000,000 MAGO Tokens reward for completing the 3 steps above
-- 10,000,000 MAGO Tokens reward for each successful referral (the member you referred to must also complete 3 steps of the campaign)
-MaxGoat: https://maxgoat.io
+- 50 PIXIU Tokens rewarded users who finish all 3 steps above.
+- 10 PIXIU Tokens rewarded for each successful referral (the member you referred to must also complete 3 steps of the campaign)
+
+PixiuSwap: https://pixiuswap.org
 `
 
 
 let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the finfine ecosystem launch event has reached the limit, you cannot participate in this airdrop. We thank you for contacting us.\nPlease keep in touch, we will inform you of the latest airdrop.`
 let emailDomainAllow = ["aol.com", "gmail.com", "hotmail.com", "hotmail.co.uk", "live.com", "yahoo.com", "yahoo.co.uk", "yandex.com", "hotmail.it"];
 
-//07:00 09/15/2021 GMT+7
-let timeEnd = 1627689600000
+//07:00 01/08/2021 GMT+7
+let timeEnd = 1610064000000
 
 sparkles.on("config_change", async () => {
     try {
@@ -504,7 +505,7 @@ async function handleReSendEmailAgain(bot, msg) {
         let user = await UserModel.findOne({ telegramID, "mail.isVerify": false }, { mail: 1 }).exec();
         if (!user) {
             console.log("have error when handle resend email:", msg.from);
-            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@maxgoat.io!")
+            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@pixiuswap.org!")
         }
         let email = user.mail.email;
         let verifyCode = user.mail.verifyCode;
