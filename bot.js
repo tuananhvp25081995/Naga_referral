@@ -66,7 +66,7 @@ let BOT_STEP_3 = `Step 3:
 🧨 And input your twitter profile link`
 // The reward is 1, 000, 000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
 let BOT_STEP_5 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
-let BOT_CHANGE_WALLET = "✨ Enter your MAGO Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and ERC-1155 assets"
+let BOT_CHANGE_WALLET = "✨ Enter your MAGO Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
 
 let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens MAGO
 Total Balance: $TOKEN MAGO
@@ -97,7 +97,7 @@ let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the fi
 let emailDomainAllow = ["aol.com", "gmail.com", "hotmail.com", "hotmail.co.uk", "live.com", "yahoo.com", "yahoo.co.uk", "yandex.com", "hotmail.it"];
 
 //07:00 01/08/2021 GMT+7
-let timeEnd = 1610064000000
+let timeEnd = 1627801200000
 
 sparkles.on("config_change", async () => {
     try {
@@ -129,7 +129,7 @@ let reply_markup_keyboard = {
 };
 
 let reply_markup_keyboard_end = {
-    keyboard: [[{ text: "START" }]],
+    keyboard: [[{ text: "/start" }]],
     resize_keyboard: true,
 };
 
@@ -234,9 +234,8 @@ bot.on("message", async (...parameters) => {
             //user didn't have in database
             if (!user && text.startsWith("/start")) {
                 bot.sendMessage(telegramID,
-                    BOT_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
+                    BOT_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`), {reply_markup: reply_markup_keyboard_end},
                     { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
-
                 //handle for new user without ref invite
                 if (msg.text === "/start") {
                     return handleStart(bot, msg, null);
@@ -662,7 +661,7 @@ async function handleStart(bot, msg, ref) {
 
 function handleInvite(bot, msg, first = false) {
 
-    let toSend = "🎉🎢 Share your referral link to get 10,000,000 MAGO each user completed all step above:\n";
+    let toSend = "🎉🎢 Share your referral link to get 50 PIXIU Tokens each user completed all step above:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
     toSend += url;
     let full = inviteTemple.replace("URL", url)

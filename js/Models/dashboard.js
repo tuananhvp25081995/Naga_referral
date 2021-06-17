@@ -31,7 +31,7 @@ const schemaDashboard = new Schema(
 
         //-1001417029522  for test group
         //-1001420387772 for main group
-        group_id: { type: String, default: "-1001455100944" },
+        group_id: { type: String, default: "-1001389086813" },
 
         group_invite_link: { type: String, default: "https://t.me/pixiuswapchannel", },
 
