@@ -4,7 +4,6 @@ let mongoose = require("mongoose")
 let DashboardModel = mongoose.model("DashboardModel")
 let UserModel = mongoose.model("UserModel")
 let passport = require("passport");
-var apiRouter = require("../routes/api");
 let { getStatstics } = require("../controllers/userControllers");
 var sparkles = require("sparkles")();
 const chalk = require("chalk");
@@ -18,7 +17,7 @@ function curentTime(offset = 7) {
 }
 
 
-let bot_username = "PixiuSwap_bot"
+let bot_username = "PiggySwap_bot"
 
 sparkles.on("config_change", async () => {
     try {
@@ -58,36 +57,6 @@ passport.deserializeUser(function (id, cb) {
     });
 });
 
-router.use("/api", authChecker, apiRouter);
-
-router.get("/", authChecker, function (req, res, next) {
-    res.render("settings");
-});
-
-router.get("/join", async function (req, res) {
-    if (!req.query.id) return res.redirect("https://pixiuswap.org")
-    console.log(req.query);
-    let { id } = req.query
-    id = id.toString().toLowerCase().replace(/[^a-zA-Z0-9]/g, "")
-    if (!id) return res.redirect("https://pixiuswap.org")
-
-    try {
-        let user = await UserModel.findOne({ "webminar.shortLink": id })
-        if (!user) {
-            console.log("didn't found webinar link for this id", id);
-            res.redirect("https://pixiuswap.org")
-        } else {
-            res.redirect(user.webminar.join_url)
-        }
-    } catch (e) {
-        console.log(e);
-    }
-});
-
-router.get("/oauth", function (req, res) {
-    res.send(JSON.stringify(req.query) + JSON.stringify(req.body))
-});
-
 router.get("/email_verify", async (req, res) => {
     console.log(req.query);
     if (req.query.code && req.query.telegramID) {
@@ -124,74 +93,10 @@ router.get("/email_verify", async (req, res) => {
         }
     } else {
         console.log("bad request email verify!!!!", req.query);
-        res.redirect("https://t.me/PixiuSwap_bot?start=1628930989");
+        res.redirect("https://t.me/PiggySwap_bot?start=1628930989");
     }
 });
 
-router.get("/login", function (req, res, next) {
-    res.render("login");
-});
-
-router.post(
-    "/login",
-    passport.authenticate("local", { failureRedirect: "/login" }),
-    function (req, res, next) {
-        res.redirect("/settings");
-    }
-);
-
-router.get("/logout", (req, res, next) => {
-    req.logout();
-    res.redirect("/login");
-});
-
-router.get("/settings", authChecker, (req, res) => {
-    res.render("settings");
-});
-
-router.get("/users", authChecker, async function (req, res, next) {
-    const page = parseInt(req.query.page || 1);
-    const limit = 100;
-    const skip = (page - 1) * limit;
-    const totalDocuments = await UserModel.countDocuments();
-    const totalPages = Math.ceil(totalDocuments / limit);
-    const range = [];
-    const rangerForDot = [];
-    const detal = 1;
-
-    const left = page - detal;
-    const right = page + detal;
-
-    for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= left && i <= right)) {
-            range.push(i);
-        }
-    }
-
-    let temp;
-    range.map((i) => {
-        if (temp) {
-            if (i - temp === 2) {
-                rangerForDot.push(i - 1);
-            } else if (i - temp !== 1) {
-                rangerForDot.push("...");
-            }
-        }
-        temp = i;
-        rangerForDot.push(i);
-    });
-
-    const users = await UserModel.find().sort({ "webminarLog.totalTime": -1 }).limit(limit).skip(skip);
-
-    res.render("users", {
-        users,
-        range: rangerForDot,
-        page,
-        totalPages,
-    });
-
-    return;
-});
 router.get("/statistics", authChecker, async function (req, res, next) {
 
     const page = parseInt(req.query.page || 1);

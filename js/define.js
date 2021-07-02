@@ -22,7 +22,7 @@ let mail_temple = `
           font-size: 25px;
           font-weight: bolder;
         ">
-            PixiuSwap
+            PiggySwap
         </a>
     </div>
     <div style="
@@ -61,7 +61,7 @@ let mail_temple = `
             <p style="margin: 0px">You have problem with registration ?</p>
             <p style="margin: 0px">
                 No problem - let us know
-                <a href="mailto:support@pixiuswap.org">support@pixiuswap.org</a>
+                <a href="mailto:support@piggyswap.finance">support@piggyswap.finance</a>
             </p>
         </div>
     </div>

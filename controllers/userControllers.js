@@ -437,6 +437,5 @@ module.exports = {
     handleNewUserJoinGroup,
     setEmailAndUpdate,
     removeEmailandUpdate,
-    getStatstics,
     handleUserWebhook,
 };

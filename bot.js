@@ -39,7 +39,7 @@ if (process.env.MAIL_SERVER === "smtp2go") {
     MAIL_SERVER_PASS = process.env.MAIL_SERVER_PASS_2
 }
 
-let sendFrom = "PixiuSwap Airdrop <no_reply@pixiuswap.org>"
+let sendFrom = "PiggySwap Airdrop <no_reply@piggyswap.finance>"
 let transporter = nodemailer.createTransport({
     host: MAIL_SERVER_HOST,
     port: 587,
@@ -57,47 +57,45 @@ let group_id,
     BOT_WELCOM_AFTER_START = "",
     BOT_STATUS_SWITCH = true;
 
-let BOT_STEP_1 = "🎄 Step 1: Join the PixiuSwap Channel by clicking this:\n";
-let BOT_STEP_2 = "🎄 Step 2: Enter your email to confirm registration:";
+let BOT_STEP_1 = "🍓 Step 1: Join the PiggySwap Channel by clicking this:\n";
+let BOT_STEP_2 = "🍓 Step 2: Enter your email to confirm registration:";
 let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email again.";
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_3 = `Step 3:
-🧨 Follow our [Twitter](https://twitter.com/SwapPixiu)
-🧨 And input your twitter profile link`
-// The reward is 1, 000, 000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
+🌹 Follow our [Twitter](https://twitter.com/SwapPiggy)
+🌹 And input your twitter profile link`
+// The reward is 2,000,000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
 let BOT_STEP_5 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
 let BOT_CHANGE_WALLET = "✨ Enter your MAGO Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
 
-let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens MAGO
-Total Balance: $TOKEN MAGO
+let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens PIGGY
+Total Balance: $TOKENS PIGGY
 Tokens for airdop event will be updated after verifying manually by bounty manager at the end of airdrop.\n 
 📎Referral link: REFLINK
 👬Referrals: REFCOUNT
 -------------------\nYour details: 
 Email: EMAIL 
 Telegram ID: TELEGRAM  
-Twitter: TWITTER  
-PIXIU Tokens wallet address: \n`
+PIGGY Tokens wallet address: \n`
 
 
 let inviteTemple = `
-🔊🔊PixiuSwap Opening Airdrop
-🎉 Time: 20/06/2021 - 01/08/2021 
-💲 Total Airdrop Reward: 500,000 PIXIU Tokens
+🔊🔊PiggySwap Opening Airdrop
+⏰ Time: 25/06/2021 - 08/09/2021
+💲 Total Airdrop Reward:  2,000,000 PIGGY Tokens
 🔖 Start now: URL\n
 🎁Reward: 
-- 50 PIXIU Tokens rewarded users who finish all 3 steps above.
-- 10 PIXIU Tokens rewarded for each successful referral (the member you referred to must also complete 3 steps of the campaign)
+- You can get to 200 PIGGY tokens by completing all steps and 50 PIGGY tokens for each successful referral.
 
-PixiuSwap: https://pixiuswap.org
+PiggySwap: https://piggyswap.finance
 `
 
 
 let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the finfine ecosystem launch event has reached the limit, you cannot participate in this airdrop. We thank you for contacting us.\nPlease keep in touch, we will inform you of the latest airdrop.`
 let emailDomainAllow = ["aol.com", "gmail.com", "hotmail.com", "hotmail.co.uk", "live.com", "yahoo.com", "yahoo.co.uk", "yandex.com", "hotmail.it"];
 
-//07:00 01/08/2021 GMT+7
-let timeEnd = 1627801200000
+//07:00 08/09/2021 GMT+7
+let timeEnd = 1631084400000
 
 sparkles.on("config_change", async () => {
     try {
@@ -117,6 +115,11 @@ sparkles.on("config_change", async () => {
         console.error("update config have error", e);
     }
 });
+
+let welcome_keyboard = {
+    keyboard: [[{ text: "Option1"}, { text: "Option2"}, { text: "Option3"}]],
+    resize_keyboard: true,
+};
 
 let reply_markup_keyboard_check = {
     keyboard: [[{ text: "Check Join Channel"}]],
@@ -231,6 +234,7 @@ bot.on("message", async (...parameters) => {
                     return;
                 }
             }
+
             //user didn't have in database
             if (!user && text.startsWith("/start")) {
                 bot.sendMessage(telegramID,
@@ -238,9 +242,13 @@ bot.on("message", async (...parameters) => {
                     { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
                 //handle for new user without ref invite
                 if (msg.text === "/start") {
-                    return handleStart(bot, msg, null);
+                    return bot.sendMessage(telegramID, "Please select the options to continue", {reply_markup: welcome_keyboard},)
+                        .catch(e => { console.log("error in first start!", e) })
+                    // return handleStart(bot, msg, null);
                 }
+            }
 
+            if (msg.text === "Option1") {
                 //handle with ref invite
                 let id = text.slice(7).replace(/\D/g, "");
                 if (!id) {
@@ -248,7 +256,6 @@ bot.on("message", async (...parameters) => {
                     return handleStart(bot, msg, null);
                 } else return handleStart(bot, msg, id.toString());
             }
-
 
             if (!user) {
                 console.log(curentTime(7), fullName, telegramID, "No user in db. With text:", text);
@@ -504,7 +511,7 @@ async function handleReSendEmailAgain(bot, msg) {
         let user = await UserModel.findOne({ telegramID, "mail.isVerify": false }, { mail: 1 }).exec();
         if (!user) {
             console.log("have error when handle resend email:", msg.from);
-            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@pixiuswap.org!")
+            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@piggyswap.finance!")
         }
         let email = user.mail.email;
         let verifyCode = user.mail.verifyCode;
@@ -608,15 +615,6 @@ async function sendStep3_1({ telegramID }, bot) {
     return;
 }
 
-async function checkJoinChannel(bot, msg) {
-    let telegramID = msg.from.id;
-    let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
-    console.log(getChatMember,1000)
-    if (getChatMember.status === "member") {
-        handleNewChatMember(bot, msg);
-    }
-}
-
 async function handleStart(bot, msg, ref) {
     let telegramID = msg.from.id;
     let { first_name, last_name } = msg.from;
@@ -626,7 +624,7 @@ async function handleStart(bot, msg, ref) {
     //with ref id
     if (ref) {
         console.log(curentTime(7), "handleStart with ref id", telegramID, fullName, ref);
-        bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n Each person joins and finishes all steps required, you will get 10.000.000 MAGO Tokens bonus.\Keep going sir🎉")
+        bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n Each person joins and finishes all steps required, you will get 50 PIGGY tokens bonus.\Keep going sir🎉")
             .then((a) => console.log(curentTime(), "send to parent ref ok")).catch(e => { console.log(curentTime(), "send to parent ref fail!", e); })
         result = await handleNewUserWithRef({ telegramID, fullName, ref });
     }
@@ -644,7 +642,6 @@ async function handleStart(bot, msg, ref) {
     }
 
     console.log(curentTime(), "handleStart done", telegramID, fullName);
-
     let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
     if (getChatMember.status === "member") {
         console.log("user already in group but in db still false, so update it");

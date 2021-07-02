@@ -72,45 +72,6 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
-
-passport.use(
-    new LocalStrategy({ session: true }, function (username, password, done) {
-        console.log(username, password);
-
-        if (!username || !password) {
-            console.log("no have user and pass");
-            return done(null, false);
-        }
-        let regex = /^[0-9a-zA-Z@]+$/;
-        if (!username.match(regex)) {
-            console.log("user and pass invalid");
-            console.log(username, "\n", password);
-            return done(null, false);
-        }
-
-        DashboardModel.findOne({ config: 1 }, function (err, config) {
-            if (err) {
-                return done(err);
-            }
-            if (!config) {
-                return done(null, false);
-            }
-            if (config.username === username && config.password === password)
-                return done(null, config);
-            else {
-                console.log("user and pass wrong");
-                return done(null, false);
-            }
-        });
-    })
-);
-
-app.use(cookieSession({ secret: "dc@#@#$%,34554%#$__434#et1234!@#", signed: true, }));
-app.use(passport.initialize());
-app.use(passport.session());
-
-
 
 
 app.use("/", indexRouter);
