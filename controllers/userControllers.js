@@ -348,22 +348,29 @@ let handleNewUserJoinGroup = async ({ telegramID, fullName }) => {
         let user = await UserModel.findOne({ telegramID }).exec();
         if (!user) {
             console.log(curentTime(7), fullName, telegramID, "not found in db");
-            // user = new UserModel({
-            //     telegramID,
-            //     fullName,
-            //     joinDate: Date.now(),
-            //     updateAt: Date.now(),
-            // });
-            // user.registerFollow.joinFrom = "group";
-            // user.registerFollow.log = "step3";
-            // user.registerFollow.step2.isJoined = true;
-            // user.registerFollow.step3.isWaitingEnterEmail = true;
             return null;
         } else {
-            user.registerFollow.step2.isJoined = true;
+            user.registerFollow.step2.isJoinGrouped = true;
+        }
+        await user.save();
+        return user;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+};
+
+let handleNewUserJoinChannel = async ({ telegramID, fullName }) => {
+    try {
+        let user = await UserModel.findOne({ telegramID }).exec();
+        if (!user) {
+            console.log(curentTime(7), fullName, telegramID, "not found in db");
+            return null;
+        } else {
+            user.registerFollow.step3.isJoinChanneled = true;
             if (user.registerFollow.log === "step2") {
                 user.registerFollow.log = "step3";
-                user.registerFollow.step3.isWaitingEnterEmail = true;
+                user.registerFollow.step4.isWaitingEnterEmail = true;
             }
         }
         await user.save();
@@ -435,6 +442,7 @@ module.exports = {
     setEmailWaitingVerify,
     setWaitingEnterEmail,
     handleNewUserJoinGroup,
+    handleNewUserJoinChannel,
     setEmailAndUpdate,
     removeEmailandUpdate,
     handleUserWebhook,

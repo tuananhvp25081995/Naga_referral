@@ -75,10 +75,11 @@ router.get("/email_verify", async (req, res) => {
                     "mail.verifiedAt": Date.now(),
                     "registerFollow.passAll": false,
                     "registerFollow.log": "step4",
-                    "registerFollow.step3.isPass": true,
-                    "registerFollow.step3.isWaitingEnterEmail": false,
-                    "registerFollow.step3.isWaitingVerify": false,
-                    "registerFollow.step4.isTwitterOK": false,
+                    "registerFollow.step4.isPass": true,
+                    "registerFollow.step4.isWaitingEnterEmail": false,
+                    "registerFollow.step4.isWaitingVerify": false,
+                    "registerFollow.step5.isTwitterOK": false,
+                    "registerFollow.step6.isFacebookOK": false,
                 }
             })
             if (user) {

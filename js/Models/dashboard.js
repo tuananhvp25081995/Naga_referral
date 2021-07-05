@@ -46,16 +46,47 @@ const schemaDashboard = new Schema(
         },
 
         bot_text: {
-            BOT_WELCOM_AFTER_START: {
+            BOT1_WELCOM_AFTER_START: {
                 type: String,
                 default: `Welcome USERNAME
 Please follow up to get started in the campaign
 ————————————————————————
 Conditions of participation
-✅Step 1: Subscribers our Telegram Channel
-✅Step 2: Subscribers our Telegram Group
+✅Step 1: Subscribers our Telegram Group
+✅Step 2: Subscribers our Telegram Channel
 ✅Step 3: Access to your email and confirm registration
-✅Step 4: Follow our Twitter Channel and Retweet
+✅Step 4: Follow our Twitter Channel and Retweet Twitter
+✅Step 5: Like Fanpage Facebook and Share
+Rewards:
+- You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.
+`
+            },
+            BOT2_WELCOM_AFTER_START: {
+                type: String,
+                default: `Welcome USERNAME
+Please follow the instructions to get started in the campaign:
+————————————————————————
+Conditions of participation
+✅Step 1: Create a YouTube video with:
+         						
+✅Step 2: Subscribers our Telegram Channel
+✅Step 3: Access to your email and confirm registration
+✅Step 4: Follow our Twitter Channel and Retweet Twitter
+✅Step 5: Like Fanpage Facebook and Share
+Rewards:
+- You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.
+`
+            },
+            BOT3_WELCOM_AFTER_START: {
+                type: String,
+                default: `Welcome USERNAME
+Please follow up to get started in the campaign
+————————————————————————
+Conditions of participation
+✅Step 1: Subscribers our Telegram Group
+✅Step 2: Subscribers our Telegram Channel
+✅Step 3: Access to your email and confirm registration
+✅Step 4: Follow our Twitter Channel and Retweet Twitter
 ✅Step 5: Like Fanpage Facebook and Share
 Rewards:
 - You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.

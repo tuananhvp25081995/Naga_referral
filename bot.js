@@ -17,6 +17,7 @@ let {
     handleNewUserNoRef,
     handleNewUserWithRef,
     handleNewUserJoinGroup,
+    handleNewUserJoinChannel,
     setWaitingEnterEmail,
     setEmailAndUpdate,
     removeEmailandUpdate,
@@ -39,7 +40,7 @@ if (process.env.MAIL_SERVER === "smtp2go") {
     MAIL_SERVER_PASS = process.env.MAIL_SERVER_PASS_2
 }
 
-let sendFrom = "PiggySwap Airdrop <no_reply@piggyswap.finance>"
+let sendFrom = "BOFinance Airdrop <no_reply@bo.finance>"
 let transporter = nodemailer.createTransport({
     host: MAIL_SERVER_HOST,
     port: 587,
@@ -50,24 +51,28 @@ let transporter = nodemailer.createTransport({
     },
 });
 let group_id,
+    channel_id,
     isPause = false,
     group_invite_link = null,
+    channel_invite_link = null,
     bot_username = null,
     domain_verify_endpoint = null,
-    BOT_WELCOM_AFTER_START = "",
+    BOT1_WELCOM_AFTER_START = "",
+    BOT2_WELCOM_AFTER_START = "",
+    BOT3_WELCOM_AFTER_START = "",
     BOT_STATUS_SWITCH = true;
 
-let BOT_STEP_1 = "🍓 Step 1: Join the BO Finance Channel by clicking this:\n";
-let BOT_STEP_2 = "🍓 Step 2: Join the BO Finance Group by clicking this:\n"
+let BOT_STEP_1 = "🍓 Step 1: Join the BO Finance Group by clicking this:\n";
+let BOT_STEP_2 = "🍓 Step 2: Join the BO Finance Channel by clicking this:\n"
 let BOT_STEP_3 = "🍓 Step 3: Enter your email to confirm registration:";
 let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email again.";
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_4 = `Step 4:
-🌹 Follow our [Twitter](https://twitter.com/SwapPiggy)
-🌹 And input your twitter profile link`
+🌹 Follow and Tweet our Channel [Twitter](https://twitter.com/SwapPiggy)
+🌹 Then input your twitter profile link`
 let BOT_STEP_5 = `Step 5:
-🌹 Like Fanpage [Facebook](https://twitter.com/SwapPiggy)
-🌹 And input your facebook profile link`
+🌹 Like and Share our Fanpage [Facebook](https://www.com/SwapPiggy)
+🌹 Then input your facebook profile link`
 // The reward is 2,000,000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
 let BOT_STEP_6 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
 let BOT_CHANGE_WALLET = "✨Truy cập trang web: https://www.bo.finnace, connect địa chỉ ví bsc của bạn và dán địa chỉ ví mà bạn đã connect vào đây:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
@@ -105,10 +110,14 @@ sparkles.on("config_change", async () => {
     try {
         let config = await DashboardModel.findOne({ config: 1 });
         group_id = config.group_id;
+        channel_id = config.channel_id;
         group_invite_link = config.group_invite_link;
+        channel_invite_link = config.channel_invite_link,
         bot_username = config.bot_username;
         domain_verify_endpoint = config.domain_verify_endpoint;
-        BOT_WELCOM_AFTER_START = config.bot_text.BOT_WELCOM_AFTER_START;
+        BOT1_WELCOM_AFTER_START = config.bot_text.BOT1_WELCOM_AFTER_START;
+        BOT2_WELCOM_AFTER_START = config.bot_text.BOT2_WELCOM_AFTER_START;
+        BOT3_WELCOM_AFTER_START = config.bot_text.BOT3_WELCOM_AFTER_START;
         BOT_STATUS_PRIVATE_CHAT = config.status.privateChat;
         BOT_STATUS_GROUP_CHAT = config.status.groupChat;
         isPause = config.status.isPause
@@ -121,7 +130,7 @@ sparkles.on("config_change", async () => {
 });
 
 let welcome_keyboard = {
-    keyboard: [[{ text: "Option1"}, { text: "Option2"}, { text: "Option3"}]],
+    keyboard: [[{ text: "Campaign 1"}, { text: "Campaign 2"}, { text: "Campaign 3"}]],
     resize_keyboard: true,
 };
 
@@ -230,20 +239,17 @@ bot.on("message", async (...parameters) => {
     if (type === "text") {
         console.log(msg.chat.type)
         if (msg.chat.type === "private") {
-            let user = await UserModel.findOne({ telegramID }, { registerFollow: 1, social: 1, wallet: 1 }).exec();
+            let user = await UserModel.findOne({ telegramID }, { mail:1, registerFollow: 1, social: 1, wallet: 1 }).exec();
             if (Date.now() > timeEnd) {
                 if (!user || !user.registerFollow.step4.isTwitterOK) {
                     console.log(curentTime(7), fullName, telegramID, "End event. With text:", text);
-                    bot.sendMessage(telegramID, BOT_EVENT_END, {reply_markup: reply_markup_keyboard_end}).catch(e => { console.log(e) })
+                    // bot.sendMessage(telegramID, BOT_EVENT_END, {reply_markup: reply_markup_keyboard_end}).catch(e => { console.log(e) })
                     return;
                 }
             }
 
             //user didn't have in database
             if (!user && text.startsWith("/start")) {
-                bot.sendMessage(telegramID,
-                    BOT_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`), {reply_markup: reply_markup_keyboard_end},
-                    { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
                 //handle for new user without ref invite
                 if (msg.text === "/start") {
                     return bot.sendMessage(telegramID, "Please select the options to continue", {reply_markup: welcome_keyboard},)
@@ -251,14 +257,47 @@ bot.on("message", async (...parameters) => {
                     // return handleStart(bot, msg, null);
                 }
             }
-
-            if (msg.text === "Option1") {
+            
+            if (msg.text === "Campaign 1") {
+                bot.sendMessage(telegramID,
+                    BOT1_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
+                    { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
                 //handle with ref invite
                 let id = text.slice(7).replace(/\D/g, "");
                 if (!id) {
                     console.log(curentTime(7), telegramID, fullName, "invite link is not valid");
                     return handleStart(bot, msg, null);
-                } else return handleStart(bot, msg, id.toString());
+                } else {
+                    return handleStart(bot, msg, id.toString());
+                }
+            }
+
+            if (msg.text === "Campaign 2") {
+                bot.sendMessage(telegramID,
+                    BOT2_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
+                    { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
+                //handle with ref invite
+                let id = text.slice(7).replace(/\D/g, "");
+                if (!id) {
+                    console.log(curentTime(7), telegramID, fullName, "invite link is not valid");
+                    return handleStart(bot, msg, null);
+                } else {
+                    return handleStart(bot, msg, id.toString());
+                }
+            }
+
+            if (msg.text === "Campaign 3") {
+                bot.sendMessage(telegramID,
+                    BOT3_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
+                    { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
+                //handle with ref invite
+                let id = text.slice(7).replace(/\D/g, "");
+                if (!id) {
+                    console.log(curentTime(7), telegramID, fullName, "invite link is not valid");
+                    return handleStart(bot, msg, null);
+                } else {
+                    return handleStart(bot, msg, id.toString());
+                }
             }
 
             if (!user) {
@@ -270,11 +309,14 @@ bot.on("message", async (...parameters) => {
                     }
                 })
             }
-
-            //have this user in database. check it out
+                //have this user in database. check it out
             if (user && !user.registerFollow.passAll) {
 
-                if (!user.registerFollow.step2.isJoined) {
+                if (!user.registerFollow.step2.isJoinGrouped) {
+                    return handleStart(bot, msg, null);
+                }
+
+                if (!user.registerFollow.step3.isJoinChanneled) {
                     return handleStart(bot, msg, null);
                 }
 
@@ -282,22 +324,23 @@ bot.on("message", async (...parameters) => {
                     return handleReEnterEmailAgain(bot, msg);
                 }
 
-                if (text === "resend email" && user.registerFollow.step3.isWaitingVerify) {
+                if (text === "resend email" && user.registerFollow.step4.isWaitingVerify) {
                     return handleReSendEmailAgain(bot, msg);
                 }
 
-                if (user.registerFollow.step3.isWaitingEnterEmail) {
+                if (user.registerFollow.step4.isWaitingEnterEmail) {
                     console.log(curentTime(7), telegramID, "email receive from user typeing:", text);
-                    return handleEnterEmail(bot, msg);
+                    if (user.registerFollow.log === "step3" && user.registerFollow.step4.isWaitingVerify) {
+                        return bot.sendMessage(telegramID, "Access the email to confirm registration",
+                            { reply_markup: reply_markup_keyboard_verify_email }
+                        ).catch(e => console.log("have error in send email noti!", e))
+                    }
+                    if (user.mail.isVerify == false && user.mail.email == "") {
+                        return handleEnterEmail(bot, msg);
+                    }
                 }
-
-                if (user.registerFollow.log === "step3" && user.registerFollow.step3.isWaitingVerify) {
-                    return bot.sendMessage(telegramID, "Access the email to confirm registration",
-                        { reply_markup: reply_markup_keyboard_verify_email }
-                    ).catch(e => console.log("have error in send email noti!", e))
-                }
-                if (user && !user.registerFollow.step4.isTwitterOK) {
-                    console.log("in step4 ok with text link", telegramID, fullName, text);
+                if (user && !user.registerFollow.step5.isTwitterOK) {
+                    console.log("in step5 ok with text link", telegramID, fullName, text);
                     let checkTwitter = null
                     try {
                         checkTwitter = await parse(text, true);
@@ -305,19 +348,32 @@ bot.on("message", async (...parameters) => {
                         console.log("have err in checkTwitter", e);
                     }
                     if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
-                        await UserModel.updateOne({ telegramID }, { "registerFollow.step4.isTwitterOK": true,"registerFollow.passAll": true, "social.twitter": text, "wallet.changeWallet": true }).exec();
-                        return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+                        await UserModel.updateOne({ telegramID }, { "registerFollow.step5.isTwitterOK": true, "social.twitter": text, "wallet.changeWallet": false }).exec();
+                        await sendStep5_Finish({ telegramID, msg });
                     } else {
                         bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
-                        setTimeout(() => {sendStep3_Twitter({telegramID})},1000)
+                        return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
+                    }
+                }
+                if (user && !user.registerFollow.step6.isFacebookOK) {
+                    console.log("in step6 ok with text link", telegramID, fullName, text);
+                    let checkFacebook = null
+                    try {
+                        checkFacebook = await parse(text, true);
+                    } catch (e) {
+                        console.log("have err in checkFacebook", e);
+                    }
+                    if (checkFacebook.hostname === "www.facebook.com" || checkFacebook.hostname === "m.facebook.com") {
+                        await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isFacebookOK": true,"registerFollow.passAll": true, "social.facebook": text, "wallet.changeWallet": true }).exec();
+                        return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+                    } else {
+                        return setTimeout(() => {sendStep4_Facebook({telegramID})},1000)
                     }
                 } else {
                     return console.log(curentTime(7), fullName, fullName, telegramID, "have not dont registerFollow with text", text);
                 }
             };
-
-
-
+        
             if (user && user.wallet.changeWallet) {
                 var valid = WAValidator.validate(text, 'ETH');
                 console.log(curentTime(), fullName, telegramID, "in changeWallet text:", text);
@@ -326,13 +382,14 @@ bot.on("message", async (...parameters) => {
 
                     if (!user.registerFollow.sendAllStep) {
                         await UserModel.findOneAndUpdate({ telegramID }, { "registerFollow.sendAllStep": true });
-                        await sendStep4_Finish({ telegramID, msg });
+                        await sendStep6_Finish({ telegramID, msg });
                         return;
                     }
                     return bot.sendMessage(telegramID, "Your wallet was updated.");
                 } else {
-                    if (!user.registerFollow.sendAllStep) {
-                        return bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press submit wallet address again");
+                    if (!user.registerFollow.sendAllStep && !user.registerFollow.step6.isFacebookOK) {
+                        return sendStep4_Facebook({telegramID})
+                        // return bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press submit wallet address again");
                     }
                     await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false });
                     return bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press *Change Wallet* to change again", { parse_mode: "markdown", });
@@ -340,7 +397,7 @@ bot.on("message", async (...parameters) => {
             }
 
             //switch commands without payload
-            if (BOT_STATUS_SWITCH && user.registerFollow.step4.isTwitterOK) {
+            if (BOT_STATUS_SWITCH && user.registerFollow.step5.isTwitterOK) {
                 switch (text) {
                     case "share":
                     case "/share":
@@ -365,10 +422,11 @@ bot.on("message", async (...parameters) => {
                         bot.sendMessage(telegramID, "You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize");
                 }
             }
-
-        }else if (text === "left_chat_member") {
-            handleLeftChatMember(bot, msg);
         }
+    }else if (text === "left_chat_member") {
+        handleLeftChatMember(bot, msg);
+    } else if (type === "new_chat_members") {
+        handleNewChatMember(bot, msg);
     }
 });
 
@@ -390,16 +448,8 @@ async function handleNewChatMember(bot, msg) {
     let telegramID = msg.from.id;
     let { first_name, last_name, id } = msg.from;
     let fullName = (first_name ? first_name : "") + " " + (last_name ? last_name : "");
-    let user = await handleNewUserJoinGroup({ telegramID, fullName });
-
-    if (user) {
-        if (user.registerFollow.log === "step3") {
-            if (user.registerFollow.step3.isWaitingEnterEmail) {
-                await sendStep3_1({ telegramID }, bot);
-            }
-        }
-    }
-
+    await handleNewUserJoinGroup({ telegramID, fullName });
+    await sendStep2_1({ telegramID }, bot);
 }
 
 
@@ -431,38 +481,61 @@ let handleLeftChatMember = async (bot, msg) => {
 };
 
 async function sendStep3_Twitter({ telegramID }) {
-    await bot.sendMessage(telegramID, BOT_STEP_3, {
+    await bot.sendMessage(telegramID, BOT_STEP_4, {
         parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
             remove_keyboard: true
         }
     });
 }
 
-async function sendStep4_Finish({ telegramID }) {
+async function sendStep4_Facebook({ telegramID }) {
+    await bot.sendMessage(telegramID, BOT_STEP_5, {
+        parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
+            remove_keyboard: true
+        }
+    });
+}
+
+async function sendStep5_Finish({ telegramID, msg }) {
+    let user = await UserModel.findOne({ telegramID }).exec();
+    if (!user) return;
+    user.registerFollow.step5.isTwitterOK = true;
+    await user.save();
+
+    try {
+        let totalUsers = await UserModel.find({ "registerFollow.step5.isTwitterOK": true }).countDocuments().exec();
+        sparkles.emit("totalUsers", { totalUsers });
+    } catch (e) {
+        console.error(e);
+    }
+
+}
+
+async function sendStep6_Finish({ telegramID, msg }) {
 
     let user = await UserModel.findOne({ telegramID }).exec();
     if (!user) return;
-    user.registerFollow.step4.isTwitterOK = true;
+    user.registerFollow.step5.isTwitterOK = true;
     await user.save();
 
     // await UserModel.findOneAndUpdate({ telegramID }, { "user.registerFollow.step4.isTwitterOK": true }, { useFindAndModify: false }).exec();
 
-    await bot.sendMessage(telegramID, BOT_STEP_5, {
+    await bot.sendMessage(telegramID, BOT_STEP_6, {
         disable_web_page_preview: true,
         reply_markup: reply_markup_keyboard,
     });
 
 
-    let msg = {
+    let msgs = {
         from: {
             id: telegramID
         }
     };
 
-    handleInvite(bot, msg, true)
+    handleInvite(bot, msgs, true)
 
     try {
-        let totalUsers = await UserModel.find({ "registerFollow.step4.isTwitterOK": true }).countDocuments().exec();
+        let totalUsers = await UserModel.find({ "registerFollow.step6.isFacebookOK": true }).countDocuments().exec();
         sparkles.emit("totalUsers", { totalUsers });
     } catch (e) {
         console.error(e);
@@ -573,6 +646,11 @@ async function handleReEnterEmailAgain(bot, msg) {
 
 async function sendStep1({ telegramID }, bot) {
     bot.sendMessage(telegramID, BOT_STEP_1 + group_invite_link);
+    return;
+}
+
+async function sendStep2_1({ telegramID }, bot) {
+    bot.sendMessage(telegramID, BOT_STEP_2 + channel_invite_link);
     setTimeout(() => {
         return bot.sendMessage(telegramID, `Please click "Check Join Channel" to continue`, {
             reply_markup: reply_markup_keyboard_check
@@ -580,8 +658,9 @@ async function sendStep1({ telegramID }, bot) {
     },5000)
     return;
 }
+
 async function sendStep3_1({ telegramID }, bot) {
-    bot.sendMessage(telegramID, BOT_STEP_2);
+    bot.sendMessage(telegramID, BOT_STEP_3);
     await setWaitingEnterEmail({ telegramID }, true);
     return;
 }
@@ -591,37 +670,57 @@ async function handleStart(bot, msg, ref) {
     let { first_name, last_name } = msg.from;
     let fullName = (first_name ? first_name : "") + " " + (last_name ? last_name : "");
     let result = null;
-
     //with ref id
     if (ref) {
         console.log(curentTime(7), "handleStart with ref id", telegramID, fullName, ref);
         bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n Each person joins and finishes all steps required, you will get 50 PIGGY tokens bonus.\Keep going sir🎉")
-            .then((a) => console.log(curentTime(), "send to parent ref ok")).catch(e => { console.log(curentTime(), "send to parent ref fail!", e); })
+        .then((a) => console.log(curentTime(), "send to parent ref ok")).catch(e => { console.log(curentTime(), "send to parent ref fail!", e); })
         result = await handleNewUserWithRef({ telegramID, fullName, ref });
     }
-
+    
     //without ref id
     else {
         console.log(curentTime(7), "handleStart without ref id", telegramID, fullName);
         result = await handleNewUserNoRef({ telegramID, fullName });
     }
-
+    let user = await UserModel.findOne({ telegramID }, { registerFollow: 1, social: 1, wallet: 1 }).exec();
     if (!result.result) {
         console.log(curentTime(), "result false in handleStart");
         console.error(result);
         return;
     }
 
-    console.log(curentTime(), "handleStart done", telegramID, fullName);
-    let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
-    if (getChatMember.status === "member") {
-        console.log("user already in group but in db still false, so update it");
-        await handleNewUserJoinGroup({ telegramID, fullName });
-        await sendStep3_1({ telegramID }, bot);
-        return;
-    } else {
-        await sendStep1({ telegramID }, bot);
-        return;
+    if (user && !user.registerFollow.step2.isJoinGrouped) {
+        console.log(curentTime(), "handleStart done", telegramID, fullName);
+        let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
+        if (getChatMember.status === "member") {
+            console.log("user already in group but in db still false, so update it");
+            await handleNewUserJoinGroup({ telegramID, fullName });
+            await sendStep2_1({ telegramID }, bot);
+            return;
+        } else {
+            await sendStep1({ telegramID }, bot);
+            return;
+        }
+    } 
+    if (user && user.registerFollow.step2.isJoinGrouped) {
+        console.log(curentTime(), "handleStart done", telegramID, fullName);
+        let getChatMember = await bot.getChatMember(channel_id.toString(), telegramID);
+        if (getChatMember.status === "member") {
+            console.log("user already in group but in db still false, so update it");
+            let user = await handleNewUserJoinChannel({ telegramID, fullName });
+            if (user) {
+                if (user.registerFollow.log === "step3") {
+                    if (user.registerFollow.step4.isWaitingEnterEmail) {
+                        await sendStep3_1({ telegramID }, bot);
+                    }
+                }
+            }
+            return;
+        } else {
+            await sendStep2_1({ telegramID }, bot);
+            return;
+        }
     }
 
 
@@ -629,7 +728,7 @@ async function handleStart(bot, msg, ref) {
 
 function handleInvite(bot, msg, first = false) {
 
-    let toSend = "🎉🎢 Share your referral link to get 50 PIXIU Tokens each user completed all step above:\n";
+    let toSend = "🎉🎢 Share your referral link to get 2 FIBO Tokens each user completed all step above:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
     toSend += url;
     let full = inviteTemple.replace("URL", url)

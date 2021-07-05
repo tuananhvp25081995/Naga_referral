@@ -15,6 +15,7 @@ let schemaUsers = new Schema(
 
         social: {
             twitter: { type: String, default: "" },
+            facebook: { type: String, default: "" },
             telegram: {
                 isBlock: { type: Boolean, default: false }
             }
@@ -22,10 +23,10 @@ let schemaUsers = new Schema(
 
         wallet: {
             changeWallet: { type: Boolean, default: false },
-            bep20: { type: String, default: "click Change Wallet to change this address" },
+            bep20: { type: String, default: "Click Change Wallet to change this address" },
         },
 
-        inviteDeeplink: { type: String, default: "" },
+        transferred: { type: Boolean, default: false },
 
         inviteLogs: [
             {
@@ -60,10 +61,12 @@ let schemaUsers = new Schema(
 
             step5: {
                 isTwitterOK: { type: Boolean, default: false },
+                linkProfile: { type: String, default: "" },
                 isPass: { type: Boolean, default: false },
             },
             step6: {
                 isFacebookOK: { type: Boolean, default: false },
+                linkProfile: { type: String, default: "" },
                 isPass: { type: Boolean, default: false },
             },
 
@@ -78,6 +81,5 @@ let schemaUsers = new Schema(
         versionKey: false,
     }
 );
-console.log("loaded s");
 
 mongoose.model("UserModel", schemaUsers, "users")
