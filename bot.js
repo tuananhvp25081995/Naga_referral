@@ -57,37 +57,41 @@ let group_id,
     BOT_WELCOM_AFTER_START = "",
     BOT_STATUS_SWITCH = true;
 
-let BOT_STEP_1 = "🍓 Step 1: Join the PiggySwap Channel by clicking this:\n";
-let BOT_STEP_2 = "🍓 Step 2: Enter your email to confirm registration:";
+let BOT_STEP_1 = "🍓 Step 1: Join the BO Finance Channel by clicking this:\n";
+let BOT_STEP_2 = "🍓 Step 2: Join the BO Finance Group by clicking this:\n"
+let BOT_STEP_3 = "🍓 Step 3: Enter your email to confirm registration:";
 let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email again.";
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
-let BOT_STEP_3 = `Step 3:
+let BOT_STEP_4 = `Step 4:
 🌹 Follow our [Twitter](https://twitter.com/SwapPiggy)
 🌹 And input your twitter profile link`
+let BOT_STEP_5 = `Step 5:
+🌹 Like Fanpage [Facebook](https://twitter.com/SwapPiggy)
+🌹 And input your facebook profile link`
 // The reward is 2,000,000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
-let BOT_STEP_5 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
-let BOT_CHANGE_WALLET = "✨ Enter your MAGO Tokens address to claim airdrop:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
+let BOT_STEP_6 = "✨ You have successfully completed 3 steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
+let BOT_CHANGE_WALLET = "✨Truy cập trang web: https://www.bo.finnace, connect địa chỉ ví bsc của bạn và dán địa chỉ ví mà bạn đã connect vào đây:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
 
-let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens PIGGY
-Total Balance: $TOKENS PIGGY
+let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens FIBO
+Total Balance: $TOKENS FIBO
 Tokens for airdop event will be updated after verifying manually by bounty manager at the end of airdrop.\n 
 📎Referral link: REFLINK
 👬Referrals: REFCOUNT
 -------------------\nYour details: 
 Email: EMAIL 
 Telegram ID: TELEGRAM  
-PIGGY Tokens wallet address: \n`
+FIBO Tokens wallet address: \n`
 
 
 let inviteTemple = `
-🔊🔊PiggySwap Opening Airdrop
+🔊🔊BO Finance Opening Airdrop
 ⏰ Time: 25/06/2021 - 08/09/2021
-💲 Total Airdrop Reward:  2,000,000 PIGGY Tokens
+💲 Total Airdrop Reward:  300.000 FIBO Tokens
 🔖 Start now: URL\n
 🎁Reward: 
-- You can get to 200 PIGGY tokens by completing all steps and 50 PIGGY tokens for each successful referral.
+- You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.
 
-PiggySwap: https://piggyswap.finance
+BO Finance: https://www.bo.finance
 `
 
 
@@ -386,7 +390,6 @@ async function handleNewChatMember(bot, msg) {
     let telegramID = msg.from.id;
     let { first_name, last_name, id } = msg.from;
     let fullName = (first_name ? first_name : "") + " " + (last_name ? last_name : "");
-    // console.log(curentTime(7), telegramID, fullName, "join group chat", msg.chat.title);
     let user = await handleNewUserJoinGroup({ telegramID, fullName });
 
     if (user) {
@@ -466,44 +469,12 @@ async function sendStep4_Finish({ telegramID }) {
     }
 }
 
-
-
-
-
 sparkles.on("email_verify_success", async ({ telegramID }) => {
     await bot.sendMessage(telegramID, BOT_EMAIL_SUCCESS);
     sendStep3_Twitter({ telegramID });
     return;
 
 });
-
-async function handleStatstics(bot, msg) {
-    let telegramID = msg.from.id;
-    let back = await getStatstics({ telegramID });
-
-    let user = await UserModel.findOne({ telegramID });
-    if (!user) return;
-    let url = "https://t.me/" + bot_username + "?start=" + telegramID;
-
-
-
-    if (back.result && user) {
-        let toSend = BOT_Statstics_Temple.toString()
-            .replace("EMAIL", user.mail.email.toString())
-            .replace("WALLET", user.wallet.bep20.toString())
-            .replace("TELEGRAM", telegramID)
-            .replace("ETKREF", back.ETKREF.toString())
-            .replace("TOKEN", back.FTTTotal.toString())
-            .replace("REFCOUNT", back.inviteTotal.toString())
-            .replace("REFCOUNT", back.inviteGetGiftSuccess.toString())
-            .replace("REFLINK", url.toString())
-            .replace("TWITTER", user.social.twitter.toString())
-
-        bot.sendMessage(telegramID, toSend, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard })
-            .catch(e => console.log(e))
-
-    }
-}
 
 async function handleReSendEmailAgain(bot, msg) {
     let telegramID = msg.from.id;

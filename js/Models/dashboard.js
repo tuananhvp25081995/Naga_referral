@@ -31,16 +31,18 @@ const schemaDashboard = new Schema(
 
         //-1001417029522  for test group
         //-1001420387772 for main group
-        group_id: { type: String, default: "-1001559567692" },
+        group_id: { type: String, default: "-1001537458901" },
+        channel_id: { type: String, default: "-1001523391085" },
 
-        group_invite_link: { type: String, default: "https://t.me/piggyswapchannel", },
+        group_invite_link: { type: String, default: "https://t.me/bo_group123", },
+        channel_invite_link: { type: String, default: "https://t.me/channel_bo123", },
 
-        redirect_uri: { type: String, default: "https%3A%2F%2Fpiggyswap.finance%2Foauth" },
-        bot_username: { type: String, default: "PiggySwap_bot" },
-        domain: { type: String, default: "https://piggyswap.finance" },
+        redirect_uri: { type: String, default: "https%3A%2F%2Fbo.finance%2Foauth" },
+        bot_username: { type: String, default: "BO_Finnace_bot" },
+        domain: { type: String, default: "https://bo.finance" },
         domain_verify_endpoint: {
             type: String,
-            default: "https://bot.piggyswap.finance/email_verify",
+            default: "https://bot.bo.finance/email_verify",
         },
 
         bot_text: {
@@ -51,19 +53,21 @@ Please follow up to get started in the campaign
 ————————————————————————
 Conditions of participation
 ✅Step 1: Subscribers our Telegram Channel
-✅Step 2: Access to your email and confirm registration
-✅Step 3: Follow our Twitter Channel
+✅Step 2: Subscribers our Telegram Group
+✅Step 3: Access to your email and confirm registration
+✅Step 4: Follow our Twitter Channel and Retweet
+✅Step 5: Like Fanpage Facebook and Share
 Rewards:
-- You can get to 200 PIGGY tokens by completing all steps and 50 PIGGY tokens for each successful referral.
+- You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.
 `
             },
             BOT_DESCRIPTION: {
                 type: String,
-                default: `🎉🎉🎉  Welcome to the biggest Bounty Campaign on PIGGYSWAP\n
+                default: `🎉🎉🎉  Welcome to the biggest Bounty Campaign on BO FINANCE\n
                         —————————————————————-\n
-                        PIGGYSWAP is an automatic liquidity yield farming and AMM that supports PIGGY tokens and fans, eliminating disparity between them with the use of advanced technologies.
+                        BO FINANCE is an automatic liquidity yield farming and AMM that supports FIBO tokens and fans, eliminating disparity between them with the use of advanced technologies.
                         —————————————————————-\n
-                        🎁 Users have chance to gain many rewards with the total prize is up to  2,000,000 PIGGY Tokens\n
+                        🎁 Users have chance to gain many rewards with the total prize is up to  300,000 FIBO Tokens\n
                         —————————————————————-\n
                         💎 BOUNTY CAMPAIGN REWARDS WILL BE DISTRIBUTED AFTER THE CAMPAIGN\n
                         ▶️ Please click on “Start” to join the Campaign.`,

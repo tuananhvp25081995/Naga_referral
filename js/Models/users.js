@@ -47,17 +47,23 @@ let schemaUsers = new Schema(
                 createDb: { type: Boolean, default: true },
             },
             step2: {
-                // queue: {type: Boolean, default: true},
-                isJoined: { type: Boolean, default: false },
+                isJoinGrouped: { type: Boolean, default: false },
             },
             step3: {
+                isJoinChanneled: { type: Boolean, default: false },
+            },
+            step4: {
                 isPass: { type: Boolean, default: false },
                 isWaitingEnterEmail: { type: Boolean, default: false },
                 isWaitingVerify: { type: Boolean, default: false },
             },
 
-            step4: {
+            step5: {
                 isTwitterOK: { type: Boolean, default: false },
+                isPass: { type: Boolean, default: false },
+            },
+            step6: {
+                isFacebookOK: { type: Boolean, default: false },
                 isPass: { type: Boolean, default: false },
             },
 
@@ -72,6 +78,6 @@ let schemaUsers = new Schema(
         versionKey: false,
     }
 );
-console.log("loaded UserModel");
+console.log("loaded s");
 
 mongoose.model("UserModel", schemaUsers, "users")
