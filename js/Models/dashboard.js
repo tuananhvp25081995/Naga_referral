@@ -31,14 +31,14 @@ const schemaDashboard = new Schema(
 
         //-1001417029522  for test group
         //-1001420387772 for main group
-        group_id: { type: String, default: "-1001537458901" },
-        channel_id: { type: String, default: "-1001523391085" },
+        group_id: { type: String, default: "-1001488116455" },
+        channel_id: { type: String, default: "-1001566607958" },
 
-        group_invite_link: { type: String, default: "https://t.me/bo_group123", },
-        channel_invite_link: { type: String, default: "https://t.me/channel_bo123", },
+        group_invite_link: { type: String, default: "https://t.me/bo_finance_group", },
+        channel_invite_link: { type: String, default: "https://t.me/bofinancechannel", },
 
         redirect_uri: { type: String, default: "https%3A%2F%2Fbo.finance%2Foauth" },
-        bot_username: { type: String, default: "BO_Finnace_bot" },
+        bot_username: { type: String, default: "bo_finance_bot" },
         domain: { type: String, default: "https://bo.finance" },
         domain_verify_endpoint: {
             type: String,
@@ -58,7 +58,10 @@ Conditions of participation
 ✅Step 4: Follow our Twitter Channel and Retweet Twitter
 ✅Step 5: Like Fanpage Facebook and Share
 Rewards:
-- You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.
+    ▪️ 6 FIBO Tokens reward for completing the 4 steps above
+    ▪️ 2 FIBO Tokens reward for each successful referral (the member you referred to must also complete 4 steps of the campaign)
+We will send the rewards immediately to your wallet after the end of the campaign.
+Thanks for joining!
 `
             },
             BOT2_WELCOM_AFTER_START: {
@@ -68,13 +71,20 @@ Please follow the instructions to get started in the campaign:
 ————————————————————————
 Conditions of participation
 ✅Step 1: Create a YouTube video with:
-         						
-✅Step 2: Subscribers our Telegram Channel
-✅Step 3: Access to your email and confirm registration
-✅Step 4: Follow our Twitter Channel and Retweet Twitter
-✅Step 5: Like Fanpage Facebook and Share
-Rewards:
-- You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.
+    ▪️ 1000 views: You’ll receive 200 FIBO Tokens
+    ▪️ 5000 views: You’ll receive 1000 FIBO Tokens
+    ▪️ 10000 views: You’ll receive 3000 FIBO Tokens
+    ▪️ Over 20000 views: You’ll receive 10000 FIBO Tokens
+✅Step 2: Access to our website: www.bo.finance & Connect your BSC wallet
+✅Step 3: Send your YouTube video here & Enter your wallet address
+Video criteria:
+    ▪️ Duration: 2 minutes (minimum)
+    ▪️ Topics related decentralized Binary Option & BO.Finance
+    ▪️ Including information of FIBO Token, campaigns of BO.Finance & its rewards
+    ▪️ Give review with images of BO.Finance
+    ▪️ Hashtag: bofinance, fibotoken, bodecentralized
+We will send the rewards immediately to your wallet after the end of the campaign
+Thanks for joining!
 `
             },
             BOT3_WELCOM_AFTER_START: {
@@ -83,24 +93,38 @@ Rewards:
 Please follow up to get started in the campaign
 ————————————————————————
 Conditions of participation
-✅Step 1: Subscribers our Telegram Group
-✅Step 2: Subscribers our Telegram Channel
-✅Step 3: Access to your email and confirm registration
-✅Step 4: Follow our Twitter Channel and Retweet Twitter
-✅Step 5: Like Fanpage Facebook and Share
-Rewards:
-- You can get to 6 FIBO tokens by completing all steps and 2 FIBO tokens for each successful referral.
+✅Step 1: Write a review about BO.Finance on Medium with: 
+    ▪️ 1000 claps: You’ll receive 1000 FIBO Tokens 
+    ▪️ 2000 claps: You’ll receive 3000 FIBO Tokens
+    ▪️ Over 5000 claps: You’ll receive 10000 FIBO Tokens
+✅Step 2: Access to our website: www.bo.finance & Connect your BSC wallet
+✅Step 3: Send your Medium post here & Enter your wallet address
+Video criteria:
+    ▪️ Length: 500 words (minimum)
+    ▪️ Topics related decentralized Binary Option & BO.Finance
+    ▪️ Including information of FIBO Token, campaigns of BO.Finance & its rewards
+    ▪️ Give review with images of BO.Finance
+    ▪️ Hashtag: bofinance, fibotoken, bodecentralized
+We will send the rewards immediately to your wallet after the end of the campaign.
+Thanks for joining!
 `
             },
             BOT_DESCRIPTION: {
                 type: String,
-                default: `🎉🎉🎉  Welcome to the biggest Bounty Campaign on BO FINANCE\n
+                default: `🎉🎉🎉  Welcome to our grand Airdrop on BO.Finance!\n
                         —————————————————————-\n
-                        BO FINANCE is an automatic liquidity yield farming and AMM that supports FIBO tokens and fans, eliminating disparity between them with the use of advanced technologies.
+                        BO.Finance - the first decentralized Binary Option platform to:
+                            ▪️ Transparently predict price volatility
+                            ▪️ Automatic features for pair makers and predictors
+                            ▪️ High profits 
+                            ▪️ Explicit distribution 
                         —————————————————————-\n
-                        🎁 Users have chance to gain many rewards with the total prize is up to  300,000 FIBO Tokens\n
+                        🎁 The total reward is up to 200.000 FIBO Token with 3 selective Airdrop Campaigns:\n
+                            1. Airdrop Campaign 1: 100000 FIBO Token - Start
+                            2. Airdrop Campaign 2: 50000 FIBO Token - Start
+                            3. Airdrop Campaign 3: 50000 FIBO Token - Start
                         —————————————————————-\n
-                        💎 BOUNTY CAMPAIGN REWARDS WILL BE DISTRIBUTED AFTER THE CAMPAIGN\n
+                        💎 The value of FIBO Token will reach $1 after being officially listed on PancakeSwap for 1 month.\n
                         ▶️ Please click on “Start” to join the Campaign.`,
             },
         },

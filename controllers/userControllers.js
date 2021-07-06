@@ -343,7 +343,7 @@ let removeEmailandUpdate = async ({ telegramID }) => {
     }
 };
 
-let handleNewUserJoinGroup = async ({ telegramID, fullName }) => {
+let handleNewUserJoinGroup = async ({ telegramID, fullName }, campaign) => {
     try {
         let user = await UserModel.findOne({ telegramID }).exec();
         if (!user) {
@@ -351,6 +351,32 @@ let handleNewUserJoinGroup = async ({ telegramID, fullName }) => {
             return null;
         } else {
             user.registerFollow.step2.isJoinGrouped = true;
+            user.campaign1 = true;
+        }
+        await user.save();
+        return user;
+    } catch (e) {
+        console.error(e);
+        return null;
+    }
+};
+
+let handleNewUserJoinampaign= async (bot, msg, campaign) => {
+    try {
+        let telegramID = msg.from.id;
+        let user = await UserModel.findOne({ telegramID }).exec();
+        if (!user) {
+            console.log(curentTime(7), fullName, telegramID, "not found in db");
+            return null;
+        } else {
+            switch (campaign) {
+                case 2:
+                    user.campaign2 = true;
+                    break
+                case 3:
+                    user.campaign3 = true;
+                    break
+            }
         }
         await user.save();
         return user;
@@ -446,4 +472,5 @@ module.exports = {
     setEmailAndUpdate,
     removeEmailandUpdate,
     handleUserWebhook,
+    handleNewUserJoinampaign,
 };

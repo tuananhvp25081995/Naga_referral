@@ -16,6 +16,8 @@ let schemaUsers = new Schema(
         social: {
             twitter: { type: String, default: "" },
             facebook: { type: String, default: "" },
+            youtube: { type: String, default: "" },
+            medium: { type: String, default: "" },
             telegram: {
                 isBlock: { type: Boolean, default: false }
             }
@@ -23,7 +25,7 @@ let schemaUsers = new Schema(
 
         wallet: {
             changeWallet: { type: Boolean, default: false },
-            bep20: { type: String, default: "Click Change Wallet to change this address" },
+            bep20: { type: String, default: "" },
         },
 
         transferred: { type: Boolean, default: false },
@@ -72,7 +74,9 @@ let schemaUsers = new Schema(
 
             sendAllStep: { type: Boolean, default: false }
         },
-
+        campaign1: { type: Boolean, default: false},
+        campaign2: { type: Boolean, default: false},
+        campaign3: { type: Boolean, default: false},
         joinDate: { type: Date, default: Date.now() },
         updateAt: { type: Date, default: Date.now() },
         isLeftGroup: { type: Boolean, default: false }

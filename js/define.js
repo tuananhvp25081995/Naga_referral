@@ -22,7 +22,7 @@ let mail_temple = `
           font-size: 25px;
           font-weight: bolder;
         ">
-            PiggySwap
+            BO Finance
         </a>
     </div>
     <div style="
@@ -61,7 +61,7 @@ let mail_temple = `
             <p style="margin: 0px">You have problem with registration ?</p>
             <p style="margin: 0px">
                 No problem - let us know
-                <a href="mailto:support@piggyswap.finance">support@piggyswap.finance</a>
+                <a href="mailto:support@bo.finance">support@bo.finance</a>
             </p>
         </div>
     </div>
@@ -130,7 +130,7 @@ let mail_temple = `
 //     "—————————————————————-\n" +
 //     "💎 hiện tại 1 FFT = $0.0143 và sẽ được niêm yết giao dịch trên https://conin.ai";
 
-// let DOMAIN_VERIFY_ENDPOINT = "https://bot.pixiuswap.org/email_verify";
+// let DOMAIN_VERIFY_ENDPOINT = "https://bot.bo.finance/email_verify";
 // // let DOMAIN_VERIFY_ENDPOINT = "http://192.168.1.55:3210/email_verify"
 
 // let EMAIL_TEMPLE = "";

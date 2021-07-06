@@ -17,7 +17,7 @@ function curentTime(offset = 7) {
 }
 
 
-let bot_username = "PiggySwap_bot"
+let bot_username = "bo_finance_bot"
 
 sparkles.on("config_change", async () => {
     try {
@@ -94,7 +94,7 @@ router.get("/email_verify", async (req, res) => {
         }
     } else {
         console.log("bad request email verify!!!!", req.query);
-        res.redirect("https://t.me/PiggySwap_bot?start=1628930989");
+        res.redirect("https://t.me/bo_finance_bot");
     }
 });
 
