@@ -79,6 +79,7 @@ router.get("/email_verify", async (req, res) => {
                     "registerFollow.step4.isWaitingEnterEmail": false,
                     "registerFollow.step4.isWaitingVerify": false,
                     "registerFollow.step5.isTwitterOK": false,
+                    "registerFollow.step5.isWaitingPass": true,
                     "registerFollow.step6.isFacebookOK": false,
                 }
             })

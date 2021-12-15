@@ -124,7 +124,7 @@ var server = require("http").createServer(app);
 server.on("error", onError);
 server.on("listening", onListening);
 var io = require("socket.io")(server);
-let port = 3500
+let port = process.env.PORT
 server.listen(port);
 
 io.on("connection", (socket) => {
@@ -272,11 +272,9 @@ function onError(error) {
         case "EACCES":
             console.error(bind + " requires elevated privileges");
             process.exit(1);
-            break;
         case "EADDRINUSE":
             console.error(bind + " is already in use");
             process.exit(1);
-            break;
         default:
             throw error;
     }

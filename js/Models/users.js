@@ -17,7 +17,7 @@ let schemaUsers = new Schema(
             twitter: { type: String, default: "" },
             facebook: { type: String, default: "" },
             youtube: { type: String, default: "" },
-            medium: { type: String, default: "" },
+            reddit: { type: String, default: "" },
             telegram: {
                 isBlock: { type: Boolean, default: false }
             }
@@ -58,25 +58,35 @@ let schemaUsers = new Schema(
             step4: {
                 isPass: { type: Boolean, default: false },
                 isWaitingEnterEmail: { type: Boolean, default: false },
-                isWaitingVerify: { type: Boolean, default: false },
+                isWaitingVerify: { type: Boolean, default: true },
             },
 
             step5: {
                 isTwitterOK: { type: Boolean, default: false },
                 linkProfile: { type: String, default: "" },
+                isWaitingPass: { type: Boolean, default: false },
                 isPass: { type: Boolean, default: false },
             },
             step6: {
                 isFacebookOK: { type: Boolean, default: false },
                 linkProfile: { type: String, default: "" },
+                isWaitingPass: { type: Boolean, default: false },
                 isPass: { type: Boolean, default: false },
             },
-
+            step7: {
+                isYoutubeOK: { type: Boolean, default: false },
+                linkProfile: { type: String, default: "" },
+                isWaitingPass: { type: Boolean, default: false },
+                isPass: { type: Boolean, default: false },
+            },
+            step8: {
+                isRedditOK: { type: Boolean, default: false },
+                linkProfile: { type: String, default: "" },
+                isWaitingPass: { type: Boolean, default: false },
+                isPass: { type: Boolean, default: false },
+            },
             sendAllStep: { type: Boolean, default: false }
         },
-        campaign1: { type: Boolean, default: false},
-        campaign2: { type: Boolean, default: false},
-        campaign3: { type: Boolean, default: false},
         joinDate: { type: Date, default: Date.now() },
         updateAt: { type: Date, default: Date.now() },
         isLeftGroup: { type: Boolean, default: false }

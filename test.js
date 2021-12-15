@@ -1,4 +1,4 @@
-var date = new Date("08/30/2021 07:00:00");
+var date = new Date("01/05/2022 07:00:00");
 var milliseconds = date.getTime();
 console.log(milliseconds);
 // let parse = require('url-parse');

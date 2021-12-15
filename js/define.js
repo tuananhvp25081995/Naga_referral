@@ -131,7 +131,7 @@ let mail_temple = `
 //     "💎 hiện tại 1 FFT = $0.0143 và sẽ được niêm yết giao dịch trên https://conin.ai";
 
 // let DOMAIN_VERIFY_ENDPOINT = "https://bot.bo.finance/email_verify";
-// // let DOMAIN_VERIFY_ENDPOINT = "http://192.168.1.55:3210/email_verify"
+// // let DOMAIN_VERIFY_ENDPOINT = "http://175.41.170.179/email_verify"
 
 // let EMAIL_TEMPLE = "";
 

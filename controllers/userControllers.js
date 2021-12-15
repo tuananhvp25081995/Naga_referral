@@ -25,7 +25,8 @@ let handleNewUserNoRef = async (data) => {
                 user: userCheck,
             };
             return toReturn;
-        } else {
+        } 
+        else {
             let newUser = new UserModel();
             newUser.telegramID = telegramID;
             newUser.fullName = fullName;
