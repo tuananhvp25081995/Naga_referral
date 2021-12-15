@@ -73,7 +73,7 @@ let BOT_STEP_5 = `Step 5:
 🌹 Follow Naga Kingdom on Facebook [Facebook](https://www.facebook.com/NagaKingdomGame)
 🌹 Then input your facebook profile link`
 let BOT_STEP_6 = `Step 6:
-🌹 Subscribe our Youtube [Youtube](https://www.facebook.com/NagaKingdomGame)
+🌹 Subscribe our Youtube [Youtube](https://www.youtube.com/)
 🌹 Then input your facebook profile link`
 let BOT_STEP_7 = `Step 7:
 🌹 Follow Naga Kingdom on Reddit [Reddit](https://www.reddit.com/user/NagaKingdom)
@@ -406,6 +406,7 @@ bot.on("message", async (...parameters) => {
                     if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
                         await UserModel.updateOne({ telegramID }, { "registerFollow.step5.isTwitterOK": true, "social.twitter": text, "wallet.changeWallet": false }).exec();
                         await sendStep5_Finish({ telegramID, msg });
+                        return sendStep4_Facebook({telegramID})
                     } else {
                         return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
                     }
@@ -425,15 +426,15 @@ bot.on("message", async (...parameters) => {
                     } catch (e) {
                         console.log("have err in checkFacebook", e);
                     }
-                    if (checkFacebook.hostname === "www.facebook.com" || checkFacebook.hostname === "m.facebook.com") {
+                    console.log(checkFacebook.hostname)
+                    if (checkFacebook.hostname === "www.facebook.com" || checkFacebook.hostname === "m.facebook.com" || checkFacebook.hostname === "facebook.com") {
                         await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isFacebookOK": true, "social.facebook": text, "wallet.changeWallet": false }).exec();
                         await sendStep6_Finish({ telegramID, msg });
+                        return sendStep5_Youtube({telegramID})
                     } 
                     if (!user.registerFollow.step6.isWaitingPass) {
-                        console.log("1234", user.social.facebook)
                         return setTimeout(() => {sendStep4_Facebook({telegramID})},1000)
                     } else {
-                        console.log("12345", user.social.facebook)
                         bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again facebook profile ")
                         return setTimeout(() => {sendStep4_Facebook({telegramID})},1000)
                     }
@@ -447,9 +448,10 @@ bot.on("message", async (...parameters) => {
                     } catch (e) {
                         console.log("have err in checkYoutube", e);
                     }
-                    if (checkYoutube.hostname === "youtube.com" || checkYoutube.hostname === "m.youtube.com") {
+                    if (checkYoutube.hostname === "www.youtube.com" || checkYoutube.hostname === "youtube.com") {
                         await UserModel.updateOne({ telegramID }, { "registerFollow.step7.isYoutubeOK": true, "social.youtube": text, "wallet.changeWallet": false }).exec();
                         await sendStep7_Finish({ telegramID, msg });
+                        return sendStep6_Reddit({telegramID})
                     }
                     if (!user.registerFollow.step7.isWaitingPass) {
                         return setTimeout(() => {sendStep5_Youtube({telegramID})},1000)
@@ -466,7 +468,7 @@ bot.on("message", async (...parameters) => {
                     } catch (e) {
                         console.log("have err in checkReddit", e);
                     }
-                    if (checkReddit.hostname === "reddit.com" || checkReddit.hostname === "m.reddit.com") {
+                    if (checkReddit.hostname === "www.reddit.com" || checkReddit.hostname === "www.m.reddit.com") {
                         await UserModel.updateOne({ telegramID }, { "registerFollow.step8.isRedditOK": true, "registerFollow.passAll": true, "social.reddit": text, "wallet.changeWallet": true }).exec();
                         return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
                     } 
