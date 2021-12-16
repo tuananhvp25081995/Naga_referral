@@ -78,7 +78,7 @@ let BOT_STEP_6 = `Step 6:
 let BOT_STEP_7 = `Step 7:
 🌹 Follow Naga Kingdom on [Reddit](https://www.reddit.com/user/NagaKingdom)
 🌹 Then enter your reddit profile link`
-let BOT_STEP_8 = "✨ You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
+let BOT_STEP_8 = "✨ You have successfully completed all steps to gain the rewards. Please wait for our latest notice via this bot to receive your prize.";
 let BOT_CHANGE_WALLET = "✨Access to our website: https://nagakingdom.com and connect your Solflare wallet and paste the wallet address here:\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:The wallet must support SPL assets."
 
 let inviteTemple = `
@@ -235,8 +235,9 @@ bot.on("message", async (...parameters) => {
             }
             //user didn't have in database
             if (text.startsWith("/start")) {
-                bot.sendMessage(telegramID,
-                    BOT_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
+                const url = 'images/banner.png';
+                await bot.sendPhoto(telegramID, url);
+                await bot.sendMessage(telegramID, BOT_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
                     { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
                 //handle for new user without ref invite
                 if (msg.text === "/start") {
