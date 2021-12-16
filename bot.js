@@ -41,7 +41,7 @@ if (process.env.MAIL_SERVER === "smtp2go") {
     MAIL_SERVER_PASS = process.env.MAIL_SERVER_PASS_2
 }
 
-let sendFrom = "BOFinance Airdrop <no_reply@bo.finance>"
+let sendFrom = "Naga Kingdom Airdrop <no_reply@nagakingdom.com>"
 let transporter = nodemailer.createTransport({
     host: MAIL_SERVER_HOST,
     port: 587,
@@ -73,25 +73,14 @@ let BOT_STEP_5 = `Step 5:
 🌹 Follow Naga Kingdom on Facebook [Facebook](https://www.facebook.com/NagaKingdomGame)
 🌹 Then input your facebook profile link`
 let BOT_STEP_6 = `Step 6:
-🌹 Subscribe our Youtube [Youtube](https://www.youtube.com/)
+🌹 Subscribe our Youtube [Youtube](https://www.youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew)
 🌹 Then input your facebook profile link`
 let BOT_STEP_7 = `Step 7:
 🌹 Follow Naga Kingdom on Reddit [Reddit](https://www.reddit.com/user/NagaKingdom)
 🌹 Then input your facebook profile link`
 // The reward is 2,000,000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
 let BOT_STEP_8 = "✨ You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
-let BOT_CHANGE_WALLET = "✨Truy cập trang web: https://nagakingdom.com, connect địa chỉ ví bsc của bạn và dán địa chỉ ví mà bạn đã connect vào đây:\n(ex: 0xa9CdF87D7f988c0ae5cc24754C612D3cff029F80).\nNote:The wallet must support Binance Smart Chain and BEP-20 assets"
-
-let BOT_Statstics_Temple = `🎁Estimated Balance: Tokens FIBO
-Total Balance: $TOKENS FIBO
-Tokens for airdop event will be updated after verifying manually by bounty manager at the end of airdrop.\n 
-📎Referral link: REFLINK
-👬Referrals: REFCOUNT
--------------------\nYour details: 
-Email: EMAIL 
-Telegram ID: TELEGRAM  
-FIBO Tokens wallet address: \n`
-
+let BOT_CHANGE_WALLET = "✨Access to our website: https://nagakingdom.com and connect your Solflare wallet and paste the wallet address here:\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:The wallet must support SPL assets."
 
 let inviteTemple = `
 🔊🔊Naga Kingdom Opening Airdrop
@@ -133,10 +122,6 @@ sparkles.on("config_change", async () => {
     }
 });
 
-let welcome_keyboard = {
-    keyboard: [[{ text: "Campaign 1"}, { text: "Campaign 2"}, { text: "Campaign 3"}]],
-    resize_keyboard: true,
-};
 
 let reply_markup_keyboard_check = {
     keyboard: [[{ text: "Check Join Channel"}]],
@@ -283,11 +268,11 @@ bot.on("message", async (...parameters) => {
                     }
                 })
             }
-            // if (user && user.wallet.bep20 == "" && user.social.youtube != "" ) {
+            // if (user && user.wallet.spl == "" && user.social.youtube != "" ) {
             //     var valid = WAValidator.validate(text, 'ETH');
             //     console.log(curentTime(), fullName, telegramID, "in changeWallet text:", text);
             //     if (valid) {
-            //         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.bep20": text.toUpperCase() });
+            //         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.spl": text.toUpperCase() });
             //         bot.sendMessage(telegramID, "You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize");
             //         return setTimeout(() => {
             //             bot.sendMessage(telegramID, "Please select the Campaign to continue", {reply_markup: welcome_keyboard},)
@@ -298,7 +283,7 @@ bot.on("message", async (...parameters) => {
             //         return
             //     }
             // }
-            // if (user &&  user.wallet.bep20 != "" && user.social.youtube != "") {
+            // if (user &&  user.wallet.spl != "" && user.social.youtube != "") {
             //     return bot.sendMessage(telegramID, "You have successfully registered !");
             // }
 
@@ -312,7 +297,7 @@ bot.on("message", async (...parameters) => {
             //     }
             //     if (checkYoutube.hostname === "www.youtube.com" || checkYoutube.hostname === "youtu.be") {
             //         await UserModel.updateOne({ telegramID }, { "social.youtube": textYoube}).exec();
-            //         if (user.wallet.bep20 == "") {
+            //         if (user.wallet.spl == "") {
             //             return bot.sendMessage(telegramID, BOT_CHANGE_WALLET)
             //         } else {
             //             bot.sendMessage(telegramID, "You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize");
@@ -326,11 +311,11 @@ bot.on("message", async (...parameters) => {
             //     }
             // }
 
-            // if (user && user.wallet.bep20 == ""  && user.social.medium != "" ) {
+            // if (user && user.wallet.spl == ""  && user.social.medium != "" ) {
             //     var valid = WAValidator.validate(text, 'ETH');
             //     console.log(curentTime(), fullName, telegramID, "in changeWallet text:", text);
             //     if (valid) {
-            //         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.bep20": text.toUpperCase() });
+            //         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.spl": text.toUpperCase() });
             //         bot.sendMessage(telegramID, "You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize");
             //         return setTimeout(() => {
             //             bot.sendMessage(telegramID, "Please select the Campaign to continue", {reply_markup: welcome_keyboard},)
@@ -341,7 +326,7 @@ bot.on("message", async (...parameters) => {
             //         return
             //     }
             // }
-            // if (user  && user.wallet.bep20 != "" && user.social.medium != "") {
+            // if (user  && user.wallet.spl != "" && user.social.medium != "") {
             //     return bot.sendMessage(telegramID, "You have successfully registered !");
             // }
             // if (user && user.social.medium == "") {
@@ -354,7 +339,7 @@ bot.on("message", async (...parameters) => {
             //     }
             //     if (checkMedium.hostname === "medium.com") {
             //         await UserModel.updateOne({ telegramID }, { "social.medium": textMedium}).exec();
-            //         if (user.wallet.bep20 == "") {
+            //         if (user.wallet.spl == "") {
             //             return bot.sendMessage(telegramID, BOT_CHANGE_WALLET)
             //         } else {
             //             bot.sendMessage(telegramID, "You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize");
@@ -407,16 +392,13 @@ bot.on("message", async (...parameters) => {
                         await UserModel.updateOne({ telegramID }, { "registerFollow.step5.isTwitterOK": true, "social.twitter": text, "wallet.changeWallet": false }).exec();
                         await sendStep5_Finish({ telegramID, msg });
                         return sendStep4_Facebook({telegramID})
+                    }        
+                    if (!user.registerFollow.step5.isWaitingPass) {
+                        return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
                     } else {
+                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
                         return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
                     }
-                    
-                    // if (!user.registerFollow.step5.isWaitingPass) {
-                    //     // bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
-                    //     return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
-                    // } else {
-                    //     bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
-                    // }
                 }
                 if (user && !user.registerFollow.step6.isFacebookOK ) {
                     console.log("in step6 ok with text link", telegramID, fullName, text);
@@ -426,7 +408,6 @@ bot.on("message", async (...parameters) => {
                     } catch (e) {
                         console.log("have err in checkFacebook", e);
                     }
-                    console.log(checkFacebook.hostname)
                     if (checkFacebook.hostname === "www.facebook.com" || checkFacebook.hostname === "m.facebook.com" || checkFacebook.hostname === "facebook.com") {
                         await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isFacebookOK": true, "social.facebook": text, "wallet.changeWallet": false }).exec();
                         await sendStep6_Finish({ telegramID, msg });
@@ -487,8 +468,8 @@ bot.on("message", async (...parameters) => {
             if (user && user.wallet.changeWallet) {
                 var valid = WAValidator.validate(text, 'ETH');
                 console.log(curentTime(), fullName, telegramID, "in changeWallet text:", text);
-                if (valid) {
-                    await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.bep20": text.toUpperCase() });
+                if (!valid && text.length == 44) {
+                    await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.spl": text.toUpperCase() });
 
                     if (!user.registerFollow.sendAllStep) {
                         await UserModel.findOneAndUpdate({ telegramID }, { "registerFollow.sendAllStep": true });
@@ -497,9 +478,10 @@ bot.on("message", async (...parameters) => {
                     }
                     return bot.sendMessage(telegramID, "Your wallet was updated.");
                 } else {
-                    if (!user.registerFollow.sendAllStep && !user.registerFollow.step6.isFacebookOK) {
-                        return sendStep4_Facebook({telegramID})
-                        // return bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press submit wallet address again");
+                    if (!user.registerFollow.sendAllStep && user.registerFollow.passAll) {
+                        // return sendStep6_Reddit({telegramID})
+                        bot.sendMessage(telegramID, "You've completed all steps.");
+                        return setTimeout(() => bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press submit wallet address again"),500) ;
                     }
                     await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false });
                 }
@@ -527,12 +509,10 @@ bot.on("message", async (...parameters) => {
                         bot.sendMessage(telegramID, "ok", {
                             reply_markup: reply_markup_keyboard
                         })
+                        break;
                     default:
-                        bot.sendMessage(telegramID, "You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize");
-                        setTimeout(() => {
-                            bot.sendMessage(telegramID, "Please select the Campaign to continue", {reply_markup: welcome_keyboard},)
-                                .catch(e => { console.log("error in first start!", e) })
-                        }, 500);
+                        handleInvite(bot, msg, true);
+                        break;
                 }
             }
         }
@@ -581,7 +561,6 @@ let handleLeftChatMember = async (bot, msg) => {
 
         let totalUsers = await UserModel.find({ "registerFollow.step4.isRedditOK": true }).countDocuments().exec();
         sparkles.emit("totalUsers", { totalUsers });
-        console.log(msg.chat.id, msg.message_id)
         // await bot.deleteMessage(msg.chat.id, msg.message_id);
         await bot.sendMessage(id, "Warning: you left group, your ref will be delete.", {
             reply_markup: {
@@ -725,7 +704,7 @@ async function handleReSendEmailAgain(bot, msg) {
         let user = await UserModel.findOne({ telegramID, "mail.isVerify": false }, { mail: 1 }).exec();
         if (!user) {
             console.log("have error when handle resend email:", msg.from);
-            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@bo.finance!")
+            return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@nagakingdom.com!")
         }
         let email = user.mail.email;
         let verifyCode = user.mail.verifyCode;
@@ -904,7 +883,7 @@ async function handleJoinChannel(bot, msg, campaign) {
 
 function handleInvite(bot, msg, first = false) {
 
-    let toSend = "🎉🎢 Share your referral link to get 2 FIBO Tokens each user completed all step above:\n";
+    let toSend = "🎉🎢 Share your referral link.You'll be regarded as a successful referral once the member referred complete all the steps of the campaign.:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
     toSend += url;
     let full = inviteTemple.replace("URL", url)
@@ -930,7 +909,7 @@ function handleInvite(bot, msg, first = false) {
                 },
             }
         );
-        bot.sendMessage(msg.from.id, "Please click on /start to join the Campaigns.")
+        // bot.sendMessage(msg.from.id, "Please click on /start to join the Campaigns.")
     } else {
         bot.sendMessage(
             msg.from.id,

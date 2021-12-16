@@ -17,7 +17,7 @@ function curentTime(offset = 7) {
 }
 
 
-let bot_username = "bo_finance_bot"
+let bot_username = "nagakingdom_bot"
 
 sparkles.on("config_change", async () => {
     try {
@@ -95,7 +95,7 @@ router.get("/email_verify", async (req, res) => {
         }
     } else {
         console.log("bad request email verify!!!!", req.query);
-        res.redirect("https://t.me/bo_finance_bot");
+        res.redirect("https://t.me/nagakingdom_bot");
     }
 });
 
@@ -141,7 +141,7 @@ router.get("/statistics", authChecker, async function (req, res, next) {
         fullName: 1,
         refTelegramID: 1,
         "mail.email": 1,
-        "wallet.bep20": 1
+        "wallet.spl": 1
     }).sort({ "webminarLog.totalTime": -1 }).limit(limit).skip(skip);
 
     let toSendUsers = [];
@@ -150,7 +150,7 @@ router.get("/statistics", authChecker, async function (req, res, next) {
     for (let i = 0; i < users.length; i++) {
         let { telegramID, fullName, refTelegramID } = users[i];
         let email = users[i].mail.email;
-        let bep20 = users[i].wallet.bep20;
+        let spl = users[i].wallet.spl;
         console.time("one")
         let getStatstics_back = await getStatstics({
             telegramID
@@ -171,7 +171,7 @@ router.get("/statistics", authChecker, async function (req, res, next) {
             FTTTotal,
             totalTime,
             refTelegramID,
-            bep20
+            spl
         }
 
         console.log(toReturn);

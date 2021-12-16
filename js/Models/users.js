@@ -25,7 +25,7 @@ let schemaUsers = new Schema(
 
         wallet: {
             changeWallet: { type: Boolean, default: false },
-            bep20: { type: String, default: "" },
+            spl: { type: String, default: "" },
         },
 
         transferred: { type: Boolean, default: false },
