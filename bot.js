@@ -68,17 +68,16 @@ let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email 
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_4 = `Step 4:
 🌹 Follow and Tweet our Channel [Twitter](https://twitter.com/NagaKingdom)
-🌹 Then input your twitter profile link`
+🌹 Then enter your twitter profile link`
 let BOT_STEP_5 = `Step 5:
-🌹 Follow Naga Kingdom on Facebook [Facebook](https://www.facebook.com/NagaKingdomGame)
-🌹 Then input your facebook profile link`
+🌹 Follow Naga Kingdom on [Facebook](https://www.facebook.com/NagaKingdomGame)
+🌹 Then enter your facebook profile link`
 let BOT_STEP_6 = `Step 6:
-🌹 Subscribe our Youtube [Youtube](https://www.youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew)
-🌹 Then input your facebook profile link`
+🌹 Subscribe our [Youtube](https://www.youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew)
+🌹 Then enter your youtube profile link`
 let BOT_STEP_7 = `Step 7:
-🌹 Follow Naga Kingdom on Reddit [Reddit](https://www.reddit.com/user/NagaKingdom)
-🌹 Then input your facebook profile link`
-// The reward is 2,000,000 Tokens for the entire campaign.Let's share the campaign to receive bonuses by press 'Share' button
+🌹 Follow Naga Kingdom on [Reddit](https://www.reddit.com/user/NagaKingdom)
+🌹 Then enter your reddit profile link`
 let BOT_STEP_8 = "✨ You have successfully completed all steps to gain the rewards . Please wait for our latest notice via this bot to receive your prize.";
 let BOT_CHANGE_WALLET = "✨Access to our website: https://nagakingdom.com and connect your Solflare wallet and paste the wallet address here:\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:The wallet must support SPL assets."
 
@@ -255,9 +254,9 @@ bot.on("message", async (...parameters) => {
                 return handleJoinChannel(bot, msg);
             }
 
-            if (msg.text === "Resend email" && user.registerFollow.step2 && user.registerFollow.step3) {
-                return sendStep3_1({ telegramID }, bot);
-            }
+            // if (msg.text === "Resend email" && user.registerFollow.step2 && user.registerFollow.step3) {
+            //     return sendStep3_1({ telegramID }, bot);
+            // }
 
             if (!user) {
                 console.log(curentTime(7), fullName, telegramID, "No user in db. With text:", text);
@@ -804,7 +803,7 @@ async function sendStep2_1({ telegramID }, bot) {
         return bot.sendMessage(telegramID, `Please click "Check Join Channel" to continue`, {
             reply_markup: reply_markup_keyboard_check
         })
-    },5000)
+    },3000)
     return;
 }
 
@@ -823,7 +822,7 @@ async function handleStart(bot, msg, ref) {
     //with ref id
     if (ref) {
         console.log(curentTime(7), "handleStart with ref id", telegramID, fullName, ref);
-        bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n Each person joins and finishes all steps required, you will get 10.000.000 MAGO Tokens bonus.\Keep going sir🎉")
+        bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n You'll be regarded as a successful referral once the member referred complete all the steps of the campaign .\Keep going sir🎉")
             .then((a) => console.log(curentTime(), "send to parent ref ok")).catch(e => { console.log(curentTime(), "send to parent ref fail!", e); })
         result = await handleNewUserWithRef({ telegramID, fullName, ref });
     }
