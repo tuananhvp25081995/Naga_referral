@@ -18,6 +18,7 @@ let schemaUsers = new Schema(
             facebook: { type: String, default: "" },
             youtube: { type: String, default: "" },
             reddit: { type: String, default: "" },
+            video_youtube: { type: String, default: "" },
             telegram: {
                 isBlock: { type: Boolean, default: false }
             }

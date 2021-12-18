@@ -78,26 +78,32 @@ let BOT_STEP_6 = `Step 6:
 let BOT_STEP_7 = `Step 7:
 🌹 Follow Naga Kingdom on [Reddit](https://www.reddit.com/user/NagaKingdom)
 🌹 Then enter your reddit profile link`
-let BOT_STEP_8 = "✨ You have successfully completed all steps to gain the rewards. Please wait for our latest notice via this bot to receive your prize.";
+let BOT_STEP_8 = `✨ You have successfully completed all steps to gain the rewards.
+The rewards will be sent directly to your wallet once the campaign ends.\n
+Thanks for joining!
+`;
+let BOT_STEP_9 = `✨Other instructions to follow (optional, up to 40,000 NAGA):
+🌹Play Naga Kingdom at [Naga Kingdom](https://nagakingdom.com/game), record and post on your social media.
+🌹Then enter the link of your video (at least 100 views) via this Bot`
 let BOT_CHANGE_WALLET = "✨Access to our website: https://nagakingdom.com and connect your Solflare wallet and paste the wallet address here:\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:The wallet must support SPL assets."
 
 let inviteTemple = `
 🔊🔊Naga Kingdom Opening Airdrop
-⏰ Time: 12/20/2021 -  01/05/2021
-💲 Total Airdrop Reward:  60,000 NAGA Tokens and 1,000 NFT Adventure Skins
+⏰ Time (UTC): 00:00, Dec 21, 2021 - 00:00, Jan 05, 2022
+💲 Total Airdrop Reward:  100,000 NAGA Tokens and 1,000 NFT Adventure Skins
 🔖 Start now: URL\n
 🎁Reward: 
 - 30,000 NAGA tokens for 1,000 winners
 - 30,000 NAGA tokens for 300 winners with +10 successful referrals
-- 1,000 NFT Adventure Skins for 1,000 winners with +30 successful referrals
-
+- 1,000 NFT Adventure Skins for 1,000 winners with over 30 successful referrals
+- 40,000 NAGA Tokens for 100 best videos
 `
 
 
 let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the finfine ecosystem launch event has reached the limit, you cannot participate in this airdrop. We thank you for contacting us.\nPlease keep in touch, we will inform you of the latest airdrop.`
 let emailDomainAllow = ["aol.com", "gmail.com", "hotmail.com", "hotmail.co.uk", "live.com", "yahoo.com", "yahoo.co.uk", "yandex.com", "hotmail.it"];
 
-//07:00 01/05/2022 GMT+7
+//00:00, Jan 05, 2022
 let timeEnd = 1641340800000
 
 sparkles.on("config_change", async () => {
@@ -192,7 +198,6 @@ bot.onText(/\/echo (.+)/, (msg, match) => {
 });
 
 let limit = {}
-let datas = []
 bot.on("message", async (...parameters) => {
     let msg = parameters[0];
     let type = parameters[1].type;
@@ -389,9 +394,14 @@ bot.on("message", async (...parameters) => {
                         console.log("have err in checkTwitter", e);
                     }
                     if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
-                        await UserModel.updateOne({ telegramID }, { "registerFollow.step5.isTwitterOK": true, "social.twitter": text, "wallet.changeWallet": false }).exec();
-                        await sendStep5_Finish({ telegramID, msg });
-                        return sendStep4_Facebook({telegramID})
+                        const linkT = text.slice(text.length - 5, text.length)
+                        if (linkT != ".com" && linkT != ".com/" && text != "https://twitter.com/nagakingdom" && text != "https://mobile.twitter.com/nagakingdom") {
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step5.isTwitterOK": true, "social.twitter": text, "wallet.changeWallet": false }).exec();
+                            await sendStep5_Finish({ telegramID, msg });
+                            return sendStep4_Facebook({telegramID})
+                        } else {
+                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
+                        }
                     }        
                     if (!user.registerFollow.step5.isWaitingPass) {
                         return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
@@ -409,9 +419,14 @@ bot.on("message", async (...parameters) => {
                         console.log("have err in checkFacebook", e);
                     }
                     if (checkFacebook.hostname === "www.facebook.com" || checkFacebook.hostname === "m.facebook.com" || checkFacebook.hostname === "facebook.com") {
-                        await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isFacebookOK": true, "social.facebook": text, "wallet.changeWallet": false }).exec();
-                        await sendStep6_Finish({ telegramID, msg });
-                        return sendStep5_Youtube({telegramID})
+                        const linkF = text.slice(text.length - 5, text.length)
+                        if (linkF != ".com" && linkF != ".com/" && text != "https://www.facebook.com/NagaKingdomGame" && text != "https://facebook.com/NagaKingdomGame" && text != "https://m.facebook.com/NagaKingdomGame") {
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isFacebookOK": true, "social.facebook": text, "wallet.changeWallet": false }).exec();
+                            await sendStep6_Finish({ telegramID, msg });
+                            return sendStep5_Youtube({telegramID})
+                        } else {
+                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again facebook profile ")
+                        }
                     } 
                     if (!user.registerFollow.step6.isWaitingPass) {
                         return setTimeout(() => {sendStep4_Facebook({telegramID})},1000)
@@ -430,9 +445,14 @@ bot.on("message", async (...parameters) => {
                         console.log("have err in checkYoutube", e);
                     }
                     if (checkYoutube.hostname === "www.youtube.com" || checkYoutube.hostname === "youtube.com") {
-                        await UserModel.updateOne({ telegramID }, { "registerFollow.step7.isYoutubeOK": true, "social.youtube": text, "wallet.changeWallet": false }).exec();
-                        await sendStep7_Finish({ telegramID, msg });
-                        return sendStep6_Reddit({telegramID})
+                        const linkY = text.slice(text.length - 5, text.length)
+                        if (linkY != ".com" && linkY != ".com/" && text != "https://www.youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew" && text != "https://youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew") {
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step7.isYoutubeOK": true, "social.youtube": text, "wallet.changeWallet": false }).exec();
+                            await sendStep7_Finish({ telegramID, msg });
+                            return sendStep6_Reddit({telegramID})
+                        } else {
+                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
+                        }
                     }
                     if (!user.registerFollow.step7.isWaitingPass) {
                         return setTimeout(() => {sendStep5_Youtube({telegramID})},1000)
@@ -450,8 +470,13 @@ bot.on("message", async (...parameters) => {
                         console.log("have err in checkReddit", e);
                     }
                     if (checkReddit.hostname === "www.reddit.com" || checkReddit.hostname === "www.m.reddit.com") {
-                        await UserModel.updateOne({ telegramID }, { "registerFollow.step8.isRedditOK": true, "registerFollow.passAll": true, "social.reddit": text, "wallet.changeWallet": true }).exec();
-                        return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+                        const linkR = text.slice(text.length - 5, text.length)
+                        if (linkR != ".com" && linkR != ".com/" && text != "https://www.reddit.com/user/NagaKingdom" && text != "https://reddit.com/user/NagaKingdom") {
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step8.isRedditOK": true, "registerFollow.passAll": true, "social.reddit": text, "wallet.changeWallet": true }).exec();
+                            return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+                        } else {
+                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again reddit profile ")
+                        }
                     } 
                     if (!user.registerFollow.step8.isWaitingPass) {
                         return setTimeout(() => {sendStep6_Reddit({telegramID})},1000)
@@ -481,7 +506,7 @@ bot.on("message", async (...parameters) => {
                     if (!user.registerFollow.sendAllStep && user.registerFollow.passAll) {
                         // return sendStep6_Reddit({telegramID})
                         bot.sendMessage(telegramID, "You've completed all steps.");
-                        return setTimeout(() => bot.sendMessage(telegramID, "Oops !!!\nYou have entered an invalid wallet address. Press submit wallet address again"),500) ;
+                        return setTimeout(() => bot.sendMessage(telegramID, "Oops!!!\nYou have entered an invalid wallet address. Press submit wallet address again."),500) ;
                     }
                     await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false });
                 }
@@ -511,7 +536,26 @@ bot.on("message", async (...parameters) => {
                         })
                         break;
                     default:
-                        handleInvite(bot, msg, true);
+                        console.log(text)
+                        let checkVideoYoutube = null
+                        try {
+                            checkVideoYoutube = await parse(text, true);
+                        } catch (e) {
+                            console.log("have err in checkYoutube", e);
+                        }
+                        if (checkVideoYoutube.hostname === "www.youtube.com" || checkVideoYoutube.hostname === "youtube.com") {
+                            const linkY = text.slice(text.length - 5, text.length)
+                            if ( linkY != ".com/" && text != ".com") {
+                                await UserModel.updateOne({ telegramID }, { "social.video_youtube": text}).exec();
+                                return bot.sendMessage(telegramID, BOT_STEP_8, {
+                                    disable_web_page_preview: true,
+                                    reply_markup: reply_markup_keyboard,
+                                });
+                            } else {
+                                return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
+                            }
+                        }
+                        handleInvite(bot, msg, true, user.social.video_youtube);
                         break;
                 }
             }
@@ -612,13 +656,6 @@ async function sendStep5_Finish({ telegramID, msg }) {
     user.registerFollow.step6.isWaitingPass = true;
     await user.save();
 
-    // try {
-    //     let totalUsers = await UserModel.find({ "registerFollow.step5.isTwitterOK": true }).countDocuments().exec();
-    //     sparkles.emit("totalUsers", { totalUsers });
-    // } catch (e) {
-    //     console.error(e);
-    // }
-
 }
 
 async function sendStep6_Finish({ telegramID, msg }) {
@@ -629,20 +666,6 @@ async function sendStep6_Finish({ telegramID, msg }) {
     user.registerFollow.log = "step6";
     user.registerFollow.step7.isWaitingPass = true;
     await user.save();
-
-    // await UserModel.findOneAndUpdate({ telegramID }, { "user.registerFollow.step4.isTwitterOK": true }, { useFindAndModify: false }).exec();
-
-    // await bot.sendMessage(telegramID, BOT_STEP_6, {
-    //     disable_web_page_preview: true,
-    //     reply_markup: reply_markup_keyboard,
-    // });
-
-    // try {
-    //     let totalUsers = await UserModel.find({ "registerFollow.step6.isFacebookOK": true }).countDocuments().exec();
-    //     sparkles.emit("totalUsers", { totalUsers });
-    // } catch (e) {
-    //     console.error(e);
-    // }
 }
 
 async function sendStep7_Finish({ telegramID, msg }) {
@@ -652,14 +675,6 @@ async function sendStep7_Finish({ telegramID, msg }) {
     user.registerFollow.log = "step8";
     user.registerFollow.step8.isWaitingPass = true;
     await user.save();
-
-    // try {
-    //     let totalUsers = await UserModel.find({ "registerFollow.step7.isYoutubeOK": true }).countDocuments().exec();
-    //     sparkles.emit("totalUsers", { totalUsers });
-    // } catch (e) {
-    //     console.error(e);
-    // }
-
 }
 
 async function sendStep8_Finish({ telegramID, msg }) {
@@ -679,7 +694,6 @@ async function sendStep8_Finish({ telegramID, msg }) {
             id: telegramID
         }
     };
-    
     handleInvite(bot, msgs, true)
 
     try {
@@ -881,9 +895,9 @@ async function handleJoinChannel(bot, msg, campaign) {
 
 }
 
-function handleInvite(bot, msg, first = false) {
+function handleInvite(bot, msg, first = false, videoFacebook) {
 
-    let toSend = "🎉🎢 Share your referral link.You'll be regarded as a successful referral once the member referred complete all the steps of the campaign.:\n";
+    let toSend = "🎉🎢 Share your referral link. You'll be regarded as a successful referral once the member referred complete all the steps of the campaign:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
     toSend += url;
     let full = inviteTemple.replace("URL", url)
@@ -909,7 +923,13 @@ function handleInvite(bot, msg, first = false) {
                 },
             }
         );
-        // bot.sendMessage(msg.from.id, "Please click on /start to join the Campaigns.")
+        if (!videoFacebook) {
+            bot.sendMessage(msg.from.id, BOT_STEP_9,{
+                parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
+                    remove_keyboard: true
+                }
+            });
+        }
     } else {
         bot.sendMessage(
             msg.from.id,

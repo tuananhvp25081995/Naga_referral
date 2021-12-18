@@ -52,16 +52,18 @@ const schemaDashboard = new Schema(
 Please follow up to get started in the campaign
 ————————————————————————
 Conditions of participation
-✅Step 1: Following Naga Kingdom on Twitter
-✅Step 2: Following Naga Kingdom on Facebook
-✅Step 3: Following Naga Kingdom on Youtube
-✅Step 4: Following Naga Kingdom on Reddit
-✅Step 5: Joining Naga Kingdom Telegram Channel
-✅Step 6: Joining Naga Kingdom Telegram Group
+✅Step 1: Joining Naga Kingdom Telegram Group
+✅Step 2: Joining Naga Kingdom Telegram Channel
+✅Step 3: Access to your email and confirm registration
+✅Step 4: Following Naga Kingdom on Twitter
+✅Step 5: Following Naga Kingdom on Facebook
+✅Step 6: Following Naga Kingdom on Youtube
+✅Step 7: Following Naga Kingdom on Reddit
 🎁Rewards:
     ▪️ 30,000 NAGA tokens for 3,000 winners
     ▪️ 30,000 NAGA tokens for 300 winners with over 10 successful referrals
     ▪️ 1,000 NFT Adventure Skins in Naga Kingdom for 1,000 winners with over 30 successful referrals
+    ▪️ 40,000 NAGA Tokens for 100 best videos
 —————————————————————-
 We will send the rewards immediately to your wallet after the end of the campaign.
 Thanks for joining!
@@ -69,14 +71,12 @@ Thanks for joining!
             },
             BOT_DESCRIPTION: {
                 type: String,
-                default: `🎉🎉🎉 The first community-based Airdrop Campaign in Naga Kingdom, leading to the upcoming release of the Testnet version in January 2022!
+                default: `🎉🎉🎉 Welcome to the first Airdrop Campaign in Naga Kingdom!
+                        —————————————————————-\n
+                        The total reward is up to 100,000 NAGA Tokens & 1000 limited editions of NFT Snake. 
                         —————————————————————-\n
                         Naga Kingdom is the legendary snake game built on the Solana Blockchain.
-                        In addition, the Gameplay is open to new features and different playing modes, including Freeplay, Arena and Play-to-Earn (P2E) Mode. 
-                        —————————————————————-\n
-                        The plot of the game originated from Naga, the mythological snake god of India.
-                        The Naga Snake God has created a vast realm, consisting of 10 divine snake families.
-                        Together these families rule the kingdom of Naga and generate sustainable incomes for players.
+                        In addition, the Gameplay is open to new features and different playing modes, including Freeplay, Arena and P2E Mode.
                         —————————————————————-\n
                         `
             },
