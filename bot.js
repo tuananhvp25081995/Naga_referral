@@ -68,6 +68,7 @@ let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email 
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_4 = `Step 4:
 🌹 Follow and Tweet our Channel [Twitter](https://twitter.com/NagaKingdom)
+🌹 And retweet Campaign [Twitter](https://twitter.com/NagaKingdom/status/1472904659815698432?s=20)
 🌹 Then enter your twitter profile link`
 let BOT_STEP_5 = `Step 5:
 🌹 Follow Naga Kingdom on [Facebook](https://www.facebook.com/NagaKingdomGame)
@@ -85,7 +86,7 @@ Thanks for joining!
 let BOT_STEP_9 = `✨Other instructions to follow (optional, up to 40,000 NAGA):
 🌹Play Naga Kingdom at [Naga Kingdom](https://nagakingdom.com/game), record and post on your social media.
 🌹Then enter the link of your video (at least 100 views) via this Bot`
-let BOT_CHANGE_WALLET = "✨Access to our website: https://nagakingdom.com and connect your Solflare wallet and paste the wallet address here:\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:The wallet must support SPL assets."
+let BOT_CHANGE_WALLET = "✨Enter your Solana Address here (create at Solflare, Trust, coin98, Exodus):\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:The wallet must support SPL assets."
 
 let inviteTemple = `
 🔊🔊Naga Kingdom Opening Airdrop
@@ -536,7 +537,6 @@ bot.on("message", async (...parameters) => {
                         })
                         break;
                     default:
-                        console.log(text)
                         let checkVideoYoutube = null
                         try {
                             checkVideoYoutube = await parse(text, true);
