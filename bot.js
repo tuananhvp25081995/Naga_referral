@@ -77,16 +77,16 @@ let BOT_STEP_6 = `Step 6:
 🌹 Subscribe our [Youtube](https://www.youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew)
 🌹 Then enter your youtube profile link`
 let BOT_STEP_7 = `Step 7:
-🌹 Follow Naga Kingdom on [Reddit](https://www.reddit.com/user/NagaKingdom)
+🌹 Join Naga Kingdom on [Reddit](https://www.reddit.com/r/nagakingdom)
 🌹 Then enter your reddit profile link`
 let BOT_STEP_8 = `✨ You have successfully completed all steps to gain the rewards.
-The rewards will be sent directly to your wallet once the campaign ends.\n
+The rewards will be sent directly to your wallet once the campaign ends.
 Thanks for joining!
 `;
 let BOT_STEP_9 = `✨Other instructions to follow (optional, up to 40,000 NAGA):
 🌹Play Naga Kingdom at [Naga Kingdom](https://nagakingdom.com/game), record and post on your social media.
 🌹Then enter the link of your video (at least 100 views) via this Bot`
-let BOT_CHANGE_WALLET = "✨Enter your Solana Address here (create at Solflare, Trust, coin98, Exodus):\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:The wallet must support SPL assets."
+let BOT_CHANGE_WALLET = "✨Enter your Solana Address here (create at Solflare, Trust, coin98, Exodus):\n(ex: 76j4T2MASV6KjrEde57zKbok5gXctDTRNiYY1UhwRTLQ).\nNote:We do NOT accept any BSC or ETH addresses, be alert! Naga Kingdom is developed on Solana Blockchain. Smart contracts are being audited and will be published soon."
 
 let inviteTemple = `
 🔊🔊Naga Kingdom Opening Airdrop
@@ -494,7 +494,7 @@ bot.on("message", async (...parameters) => {
             if (user && user.wallet.changeWallet) {
                 var valid = WAValidator.validate(text, 'ETH');
                 console.log(curentTime(), fullName, telegramID, "in changeWallet text:", text);
-                if (!valid && text.length == 44) {
+                if (!valid) {
                     await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.spl": text.toUpperCase() });
 
                     if (!user.registerFollow.sendAllStep) {

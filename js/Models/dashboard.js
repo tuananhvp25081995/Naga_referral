@@ -52,17 +52,18 @@ const schemaDashboard = new Schema(
 Please follow up to get started in the campaign
 ————————————————————————
 Conditions of participation
-✅Step 1: Joining Naga Kingdom Telegram Group
-✅Step 2: Joining Naga Kingdom Telegram Channel
+✅Step 1: Join Naga Kingdom Telegram Group
+✅Step 2: Join Naga Kingdom Telegram Channel
 ✅Step 3: Access to your email and confirm registration
-✅Step 4: Following Naga Kingdom on Twitter
-✅Step 5: Following Naga Kingdom on Facebook
-✅Step 6: Following Naga Kingdom on Youtube
-✅Step 7: Following Naga Kingdom on Reddit
+✅Step 4: Follow and retweet Naga Kingdom on Twitter
+✅Step 5: Follow Naga Kingdom on Facebook
+✅Step 6: Follow Naga Kingdom on Youtube
+✅Step 7: Join Naga Kingdom on Reddit
+✅Step 8: Enter Solana Address (create at Solflare, Trust, coin98, Exodus)
 🎁Rewards:
-    ▪️ 30,000 NAGA tokens for 3,000 winners
+    ▪️ 30,000 NAGA tokens for 1,000 winners
     ▪️ 30,000 NAGA tokens for 300 winners with over 10 successful referrals
-    ▪️ 1,000 NFT Adventure Skins in Naga Kingdom for 1,000 winners with over 30 successful referrals
+    ▪️ 1,000 NFT Adventure Skins for 1,000 winners with +30 successful referrals
     ▪️ 40,000 NAGA Tokens for 100 best videos
 —————————————————————-
 We will send the rewards immediately to your wallet after the end of the campaign.
