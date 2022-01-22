@@ -122,7 +122,6 @@ sparkles.on("config_change", async () => {
         isPause = config.status.isPause
         BOT_STATUS_SWITCH = config.status.switch;
         CONFIG_webinarId = config.webinarId;
-        console.log(curentTime(7), "config updated in bot.js");
     } catch (e) {
         console.error("update config have error", e);
     }
@@ -131,6 +130,11 @@ sparkles.on("config_change", async () => {
 
 let reply_markup_keyboard_check = {
     keyboard: [[{ text: "Check Join Channel"}]],
+    resize_keyboard: true,
+};
+
+let reply_markup_keyboard_checks = {
+    keyboard: [[{ text: "Check Join Group"}]],
     resize_keyboard: true,
 };
 
@@ -174,20 +178,15 @@ async function logMsg(msg, type = "text") {
     if (type === "text") {
         text = msg.text;
         text = text.toString().split("\n").join(" ");
-        console.log(`${curentTime(7)} ${chalk.blue(title)}(${chatId}) receive from ${chalk.blue(fullName)}(${telegramID}): ${text} `);
         return;
     }
     if (type === "sticker") {
-        console.log(`${curentTime(7)} ${chalk.blue(title)}(${chatId}) receive sticker from ${chalk.blue(fullName)}(${telegramID}): ${msg.sticker.set_name} `);
         return
     }
     if (type === "new_chat_members") {
-        console.log(`${curentTime(7)} ${chalk.blue(fullName)}(${telegramID}) joined ${chalk.blue(title)}(${chatId})`);
     }
     else if (type === "left_chat_member") {
-        console.log(`${curentTime(7)} ${chalk.blue(fullName)}(${telegramID}) left ${chalk.blue(title)}(${chatId})`);
     } else {
-        console.log(curentTime(7), "undifine type", type, msg)
     }
 }
 
@@ -208,23 +207,20 @@ bot.on("message", async (...parameters) => {
     let fullName = (first_name ? first_name : "") + " " + (last_name ? last_name : "");
     logMsg(msg, type);
     let text = "";
-    if (type === "text") text = msg.text.toLowerCase();
+    if (type === "text") text = msg.text;
 
     if (!BOT_STATUS_SWITCH) {
-        console.log(curentTime(7), "BOT_STATUS_SWITCH: off");
         return;
     }
 
     if (limit[telegramID] !== undefined) {
         if (Date.now() - limit[telegramID].last < 300) {
-            console.log("reach rate limit 3msg/sec: ", telegramID, fullName);
             limit[telegramID].last = Date.now()
             return
         } else limit[telegramID].last = Date.now()
     } limit[telegramID] = { last: Date.now() }
 
     if (isPause) {
-        console.log("stop", telegramID);
         return bot.sendMessage(telegramID, "Airdrop will temporary pause to mantain for good experience.\nAirdrop will resume soon. Sorry for inconvenient.")
     }
 
@@ -234,7 +230,6 @@ bot.on("message", async (...parameters) => {
             let user = await UserModel.findOne({ telegramID }, { mail:1, registerFollow: 1, social: 1, wallet: 1 }).exec();
             if (Date.now() > timeEnd) {
                 if (!user || !user.registerFollow.step4.isTwitterOK) {
-                    console.log(curentTime(7), fullName, telegramID, "End event. With text:", text);
                     // bot.sendMessage(telegramID, BOT_EVENT_END, {reply_markup: reply_markup_keyboard_end}).catch(e => { console.log(e) })
                     return;
                 }
@@ -253,7 +248,6 @@ bot.on("message", async (...parameters) => {
                 //handle with ref invite
                 let id = text.slice(7).replace(/\D/g, "");
                 if (!id) {
-                    console.log(curentTime(7), telegramID, fullName, "invite link is not valid");
                     return handleStart(bot, msg, null);
                 } else return handleStart(bot, msg, id.toString());
             }
@@ -266,7 +260,6 @@ bot.on("message", async (...parameters) => {
             // }
 
             if (!user) {
-                console.log(curentTime(7), fullName, telegramID, "No user in db. With text:", text);
                 return bot.sendMessage(telegramID,
                     "Have an error when handle your request.\nPlease click /start to start again.", {
                     reply_markup: {
@@ -368,15 +361,14 @@ bot.on("message", async (...parameters) => {
                     return sendStep2_1({ telegramID }, bot);
                 }
 
-                if (text === "change email" && !user.registerFollow.passAll) {
+                if (text === "Change email" && !user.registerFollow.passAll) {
                     return handleReEnterEmailAgain(bot, msg);
                 }
 
-                if (text === "resend email" && user.registerFollow.step4.isWaitingVerify) {
+                if (text === "Resend email" && user.registerFollow.step4.isWaitingVerify) {
                     return handleReSendEmailAgain(bot, msg);
                 }
                 if (user.registerFollow.step2  && user.registerFollow.step3 && user.registerFollow.step4.isWaitingEnterEmail) {
-                    console.log(curentTime(7), telegramID, "email receive from user typeing:", text);
                     if (user.registerFollow.log === "step3" && user.registerFollow.step4.isWaitingVerify && user.mail.email != "") {
                         return bot.sendMessage(telegramID, "Access the email to confirm registration",
                         { reply_markup: reply_markup_keyboard_verify_email }
@@ -387,12 +379,10 @@ bot.on("message", async (...parameters) => {
                     }
                 }
                 if (user && !user.registerFollow.step5.isTwitterOK) {
-                    console.log("in step5 ok with text link", telegramID, fullName, text);
                     let checkTwitter = null
                     try {
                         checkTwitter = await parse(text, true);
                     } catch (e) {
-                        console.log("have err in checkTwitter", e);
                     }
                     if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
                         const linkT = text.slice(text.length - 5, text.length)
@@ -412,12 +402,11 @@ bot.on("message", async (...parameters) => {
                     }
                 }
                 if (user && !user.registerFollow.step6.isFacebookOK ) {
-                    console.log("in step6 ok with text link", telegramID, fullName, text);
                     let checkFacebook = null
                     try {
                         checkFacebook = await parse(text, true);
                     } catch (e) {
-                        console.log("have err in checkFacebook", e);
+
                     }
                     if (checkFacebook.hostname === "www.facebook.com" || checkFacebook.hostname === "m.facebook.com" || checkFacebook.hostname === "facebook.com") {
                         const linkF = text.slice(text.length - 5, text.length)
@@ -438,7 +427,6 @@ bot.on("message", async (...parameters) => {
                 }
 
                 if (user && !user.registerFollow.step7.isYoutubeOK) {
-                    console.log("in step7 ok with text link", telegramID, fullName, text);
                     let checkYoutube = null
                     try {
                         checkYoutube = await parse(text, true);
@@ -463,7 +451,6 @@ bot.on("message", async (...parameters) => {
                     }
                 }
                 if (user && !user.registerFollow.step8.isRedditOK) {
-                    console.log("in step8 ok with text link", telegramID, fullName, text);
                     let checkReddit = null
                     try {
                         checkReddit = await parse(text, true);
@@ -493,9 +480,8 @@ bot.on("message", async (...parameters) => {
         
             if (user && user.wallet.changeWallet) {
                 var valid = WAValidator.validate(text, 'ETH');
-                console.log(curentTime(), fullName, telegramID, "in changeWallet text:", text);
                 if (!valid) {
-                    await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.spl": text.toUpperCase() });
+                    await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.spl": text });
 
                     if (!user.registerFollow.sendAllStep) {
                         await UserModel.findOneAndUpdate({ telegramID }, { "registerFollow.sendAllStep": true });
@@ -541,7 +527,6 @@ bot.on("message", async (...parameters) => {
                         try {
                             checkVideoYoutube = await parse(text, true);
                         } catch (e) {
-                            console.log("have err in checkYoutube", e);
                         }
                         if (checkVideoYoutube.hostname === "www.youtube.com" || checkVideoYoutube.hostname === "youtube.com") {
                             const linkY = text.slice(text.length - 5, text.length)
@@ -578,7 +563,6 @@ bot.on("polling_error", (error) => {
 async function handleNewChatMember(bot, msg, campaign) {
     try {
         await bot.deleteMessage(msg.chat.id, msg.message_id);
-        console.log(`${curentTime(7)} ${chalk.blue(fullName)}(${telegramID}) joined ${chalk.blue(msg.chat.title)}(${msg.chat.id}): joined mess was deleted`)
     } catch (e) {
         console.log("was deleted")
     }
@@ -594,7 +578,6 @@ async function handleNewChatMember(bot, msg, campaign) {
 let handleLeftChatMember = async (bot, msg) => {
     let { first_name, last_name, id } = msg.from;
     let fullName = (first_name ? first_name : "") + " " + (last_name ? last_name : "");
-    console.log(curentTime(7), id, fullName, "left group chat, starting delete them in database");
     try {
 
         await UserModel.findOneAndUpdate(
@@ -717,13 +700,11 @@ async function handleReSendEmailAgain(bot, msg) {
     try {
         let user = await UserModel.findOne({ telegramID, "mail.isVerify": false }, { mail: 1 }).exec();
         if (!user) {
-            console.log("have error when handle resend email:", msg.from);
             return bot.sendMessage(telegramID, "have error when handle your request, please contact support support@nagakingdom.com!")
         }
         let email = user.mail.email;
         let verifyCode = user.mail.verifyCode;
         let href = domain_verify_endpoint + "?code=" + verifyCode + "&telegramID=" + telegramID;
-        console.log(curentTime(7), href);
 
         let msg = {
             to: email,
@@ -733,7 +714,6 @@ async function handleReSendEmailAgain(bot, msg) {
         }
 
         transporter.sendMail(msg).catch(e => {
-            console.log("have error in send email again", e);
         })
 
         bot.sendMessage(telegramID, "Email verify was resent to you, please check it out");
@@ -770,7 +750,6 @@ async function handleEnterEmail(bot, msg) {
 
     if (back.result) {
         let href = domain_verify_endpoint + "?code=" + back.verifyCode + "&telegramID=" + telegramID;
-        console.log(curentTime(7), href);
         let msg = {
             to: value.email,
             from: sendFrom,
@@ -785,7 +764,6 @@ async function handleEnterEmail(bot, msg) {
         );
 
     } else if (back.error === "used") {
-        console.log(curentTime(), telegramID, msg.text, "this mail have been used");
         bot.sendMessage(telegramID, "Your email you type have been used, please use different email");
     }
 }
@@ -808,7 +786,9 @@ async function handleReEnterEmailAgain(bot, msg) {
 
 
 async function sendStep1({ telegramID }, bot) {
-    bot.sendMessage(telegramID, BOT_STEP_1 + group_invite_link);
+    bot.sendMessage(telegramID, BOT_STEP_1 + group_invite_link, {
+        reply_markup: reply_markup_keyboard_checks
+    });
     return;
 }
 
@@ -836,28 +816,24 @@ async function handleStart(bot, msg, ref) {
 
     //with ref id
     if (ref) {
-        console.log(curentTime(7), "handleStart with ref id", telegramID, fullName, ref);
         bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n You'll be regarded as a successful referral once the member referred complete all the steps of the campaign .\Keep going sir🎉")
             .then((a) => console.log(curentTime(), "send to parent ref ok")).catch(e => { console.log(curentTime(), "send to parent ref fail!", e); })
         result = await handleNewUserWithRef({ telegramID, fullName, ref });
     }
     //without ref id
     else {
-        console.log(curentTime(7), "handleStart without ref id", telegramID, fullName);
         result = await handleNewUserNoRef({ telegramID, fullName });
     }
 
     if (!result.result) {
-        console.log(curentTime(), "result false in handleStart");
         console.error(result);
         return;
     }
 
-    console.log(curentTime(), "handleStart done", telegramID, fullName);
 
     let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
+    console.log(curentTime(), getChatMember.status);
     if (getChatMember.status === "member") {
-        console.log("user already in group but in db still false, so update it");
         await handleNewUserJoinGroup({ telegramID, fullName });
         await sendStep2_1({ telegramID }, bot);
         return;
@@ -873,10 +849,8 @@ async function handleJoinChannel(bot, msg, campaign) {
     let fullName = (first_name ? first_name : "") + " " + (last_name ? last_name : "");
     let user = await UserModel.findOne({ telegramID }, { registerFollow: 1, social: 1, wallet: 1 }).exec();
     if (user && user.registerFollow.step2.isJoinGrouped) {
-        console.log(curentTime(), "handleStart done", telegramID, fullName);
         let getChatMember = await bot.getChatMember(channel_id.toString(), telegramID);
         if (getChatMember.status === "member") {
-            console.log("user already in group but in db still false, so update it");
             let user = await handleNewUserJoinChannel({ telegramID, fullName });
             if (user) {
                 if (user.registerFollow.log === "step3") {

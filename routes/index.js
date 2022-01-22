@@ -7,6 +7,8 @@ let passport = require("passport");
 let { getStatstics } = require("../controllers/userControllers");
 var sparkles = require("sparkles")();
 const chalk = require("chalk");
+const fs = require('fs');
+var Binary = require("mongodb").Binary;
 let moment = require("moment");
 
 
@@ -57,140 +59,129 @@ passport.deserializeUser(function (id, cb) {
     });
 });
 
-router.get("/email_verify", async (req, res) => {
-    console.log(req.query);
-    if (req.query.code && req.query.telegramID) {
-        let { code, telegramID } = req.query;
-        code = code.toString().replace(/[^a-zA-Z0-9]/g, "")
-        telegramID = telegramID.toString().replace(/\D/g, "");
-        console.log({ code, telegramID });
-        if (!code || !telegramID) return res.send("bad request, please try again")
-        try {
-            let user = await UserModel.findOneAndUpdate({
-                telegramID, "mail.verifyCode": code, "mail.isVerify": false
-            }, {
-                $set: {
-                    "mail.verifyCode": "",
-                    "mail.isVerify": true,
-                    "mail.verifiedAt": Date.now(),
-                    "registerFollow.passAll": false,
-                    "registerFollow.log": "step4",
-                    "registerFollow.step4.isPass": true,
-                    "registerFollow.step4.isWaitingEnterEmail": false,
-                    "registerFollow.step4.isWaitingVerify": false,
-                    "registerFollow.step5.isTwitterOK": false,
-                    "registerFollow.step5.isWaitingPass": true,
-                    "registerFollow.step6.isFacebookOK": false,
+// router.get("/email_verify", async (req, res) => {
+//     console.log(req.query);
+//     if (req.query.code && req.query.telegramID) {
+//         let { code, telegramID } = req.query;
+//         code = code.toString().replace(/[^a-zA-Z0-9]/g, "")
+//         telegramID = telegramID.toString().replace(/\D/g, "");
+//         console.log({ code, telegramID });
+//         if (!code || !telegramID) return res.send("bad request, please try again")
+//         try {
+//             let user = await UserModel.findOneAndUpdate({
+//                 telegramID, "mail.verifyCode": code, "mail.isVerify": false
+//             }, {
+//                 $set: {
+//                     "mail.verifyCode": "",
+//                     "mail.isVerify": true,
+//                     "mail.verifiedAt": Date.now(),
+//                     "registerFollow.passAll": false,
+//                     "registerFollow.log": "step4",
+//                     "registerFollow.step4.isPass": true,
+//                     "registerFollow.step4.isWaitingEnterEmail": false,
+//                     "registerFollow.step4.isWaitingVerify": false,
+//                     "registerFollow.step5.isTwitterOK": false,
+//                     "registerFollow.step5.isWaitingPass": true,
+//                     "registerFollow.step6.isFacebookOK": false,
+//                 }
+//             })
+//             if (user) {
+//                 console.log(telegramID, "was verified with code", code);
+//                 sparkles.emit("email_verify_success", { telegramID });
+//                 return res.redirect("https://t.me/" + bot_username);
+//             } else {
+//                 return res.send("An error when verify your email, please enter /resend to send email again  or enter /mail to change your mail");
+//             }
+//         } catch (e) {
+//             console.error(e);
+//         }
+//     } else {
+//         console.log("bad request email verify!!!!", req.query);
+//         res.redirect("https://t.me/nagakingdom_bot");
+//     }
+// });
+
+router.get("/statistics", async function (req, res, next) {
+    // let allUsers = await UserModel.aggregate([{
+    //     $match: {
+    //         "registerFollow.passAll": true,
+    //         "registerFollow.sendAllStep":true,
+    //     },
+    // },
+    // {
+    //     $group: {
+    //         "_id":"$wallet.spl",
+    //     }
+    // }, { $sample: { size: 1 } }])
+    // allUsers.forEach(async (x) => {
+    //     await UserModel.findOneAndUpdate({"wallet.spl":x._id},{
+    //         "transferred":true
+    //     })
+    // })
+    // setTimeout(() => {
+    //     fs.writeFile("data.txt", JSON.stringify(allUsers), (err) => {
+    //         if (err)
+    //           console.log(err);
+    //         else {
+    //           console.log("File written successfully\n");
+    //           console.log("The written has the following contents:");
+    //           console.log(fs.readFileSync("data.txt", "utf8"));
+    //         }
+    //       });
+    // },5000)
+    let dataUser = []
+    let allUsers = await UserModel.aggregate([{
+            $match: {
+                "registerFollow.passAll": true,
+                "registerFollow.sendAllStep":true,
+            },
+        },
+        {
+            $group: {
+                "_id":"$telegramID",
+            }
+        },{ $sample: { size: 10000 }}])
+    allUsers.forEach(async (x) => {
+        if (x._id != "") {
+            let data = await UserModel.aggregate([{
+                $match: {
+                    "refTelegramID": x._id,
+                },
+            }])
+            if (data.length > 30) {
+                if (data[0].refTelegramID != "" ){
+                    const user = await UserModel.aggregate([{
+                        $match: {
+                            "telegramID": data[0].refTelegramID
+                        }
+                    },
+                        {
+                            $group: {
+                            "_id":"$wallet.spl",
+                        }
+                    }])
+                    if (user[0]._id != "" ){
+                        dataUser.push(user[0]._id)
+                    }
                 }
-            })
-            if (user) {
-                console.log(telegramID, "was verified with code", code);
-                sparkles.emit("email_verify_success", { telegramID });
-                return res.redirect("https://t.me/" + bot_username);
-            } else {
-                return res.send("An error when verify your email, please enter /resend to send email again  or enter /mail to change your mail");
-            }
-        } catch (e) {
-            console.error(e);
-        }
-    } else {
-        console.log("bad request email verify!!!!", req.query);
-        res.redirect("https://t.me/nagakingdom_bot");
-    }
-});
-
-router.get("/statistics", authChecker, async function (req, res, next) {
-
-    const page = parseInt(req.query.page || 1);
-    const limit = 200;
-    const skip = (page - 1) * limit;
-    const totalDocuments = await UserModel.find({
-        "registerFollow.step4.isTwitterOK": true,
-        "webminarLog.isEnough30min": true
-    }).countDocuments();
-    const totalPages = Math.ceil(totalDocuments / limit);
-    const range = [];
-    const rangerForDot = [];
-    const detal = 1;
-    const left = page - detal;
-    const right = page + detal;
-
-    for (let i = 1; i <= totalPages; i++) {
-        if (i === 1 || i === totalPages || (i >= left && i <= right)) {
-            range.push(i);
-        }
-    }
-    let temp;
-    range.map((i) => {
-        if (temp) {
-            if (i - temp === 2) {
-                rangerForDot.push(i - 1);
-            } else if (i - temp !== 1) {
-                rangerForDot.push("...");
+                // const c = new Date();
+                // let minutess = c.getMinutes();
+                // console.log(minutess-minutes)
             }
         }
-        temp = i;
-        rangerForDot.push(i);
-    });
-
-    let users = await UserModel.find({
-        "registerFollow.step4.isTwitterOK": true,
-        "webminarLog.isEnough30min": true,
-    }, {
-        telegramID: 1,
-        fullName: 1,
-        refTelegramID: 1,
-        "mail.email": 1,
-        "wallet.spl": 1
-    }).sort({ "webminarLog.totalTime": -1 }).limit(limit).skip(skip);
-
-    let toSendUsers = [];
-
-
-    for (let i = 0; i < users.length; i++) {
-        let { telegramID, fullName, refTelegramID } = users[i];
-        let email = users[i].mail.email;
-        let spl = users[i].wallet.spl;
-        console.time("one")
-        let getStatstics_back = await getStatstics({
-            telegramID
+    }),
+    setTimeout(() => {
+        dataUser = dataUser.slice(0,1001)
+        console.log(dataUser.length)
+        fs.writeFile("data.txt", JSON.stringify(dataUser), (err) => {
+            if (err)
+            console.log(err);
+            else {
+                console.log("File written successfully\n");
+            }
         });
-        let FTTTotal, totalTime;
-        if (!getStatstics_back.result) {
-            FTTTotal = 0;
-            totalTime = 0;
-        } else {
-            FTTTotal = getStatstics_back.FTTTotal
-            totalTime = (Math.round(getStatstics_back.totalTime / 1000) / 60).toFixed(1);
-        }
-
-        let toReturn = {
-            telegramID,
-            fullName,
-            email,
-            FTTTotal,
-            totalTime,
-            refTelegramID,
-            spl
-        }
-
-        console.log(toReturn);
-        console.timeEnd("one")
-
-        toSendUsers.push(toReturn)
-    }
-
-
-
-
-    res.render("statistics", {
-        users: toSendUsers,
-        range: rangerForDot,
-        page,
-        totalPages,
-    });
-    return;
-
+    }, 2000000);
+    res.send({message:"OK"})
 });
 
 module.exports = router;
