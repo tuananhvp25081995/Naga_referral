@@ -38,11 +38,11 @@ const schemaDashboard = new Schema(
         channel_invite_link: { type: String, default: "https://t.me/naga_kingdom", },
 
         redirect_uri: { type: String, default: "https%3A%2F%2Fnagakingdom.com%2Foauth" },
-        bot_username: { type: String, default: "nagakingdom_bot" },
+        bot_username: { type: String, default: "nagakingdombot" },
         domain: { type: String, default: "https://nagakingdom.com" },
         domain_verify_endpoint: {
             type: String,
-            default: "https://bot.nagakingdom.com/email_verify",
+            default: "http://localhost:4001/email_verify",
         },
 
         bot_text: {
@@ -52,19 +52,22 @@ const schemaDashboard = new Schema(
 Please follow up to get started in the campaign
 ————————————————————————
 Conditions of participation
-✅Step 1: Join Naga Kingdom Telegram Group
-✅Step 2: Join Naga Kingdom Telegram Channel
-✅Step 3: Access to your email and confirm registration
-✅Step 4: Follow and retweet Naga Kingdom on Twitter
-✅Step 5: Follow Naga Kingdom on Facebook
-✅Step 6: Follow Naga Kingdom on Youtube
-✅Step 7: Join Naga Kingdom on Reddit
-✅Step 8: Enter Solana Address (create at Solflare, Trust, coin98, Exodus)
-🎁Rewards:
-    ▪️ 30,000 NAGA tokens for 1,000 winners
-    ▪️ 30,000 NAGA tokens for 300 winners with over 10 successful referrals
-    ▪️ 1,000 NFT Adventure Skins for 1,000 winners with +30 successful referrals
-    ▪️ 40,000 NAGA Tokens for 100 best videos
+✅Step 1: Vote for Naga Kingdom on Solana (proof of voting by screenshot): 3 tickets
+✅Step 2: Join Naga Kingdom Telegram Group: 1 ticket
+✅Step 3: Join Naga Kingdom Telegram Channel: 1 ticket
+✅Step 4: Enter your email to confirm registration
+✅Step 5: Join Naga Kingdom Discord Group: 3 tickets
+✅Step 6: Like & Share Naga Kingdom on Facebook Fanpage: 3 tickets
+✅Step 7: Follow & Retweet Naga Kingdom on Twitter (with proof of voting as attached image & hashtag #nagakingdom): 3 tickets
+✅Step 8: Join & Share Naga Kingdom on Reddit (with proof of voting as attached image & hashtag #nagakingdom): 2 tickets
+✅Step 9: Subscribe Naga Kingdom on Youtube: 2 tickets
+✅Step 10: Share video of you playing the free version of Naga Kingdom on social media (with hashtag #nagakingdom): 5 tickets
+✅Step 11: Enter Solana Address (create at Solflare, Trust, coin98, Exodu)
+🎁Rewards: 1000 IGO Whitelist tickets (01 ticket: 1000 NAGA Tokens)
+    ▪️ 500,000 NAGA tokens for 5,000 wallet addresses that have the most tickets by completing the campaign requirements
+    ▪️ 200,000 NAGA tokens for 10,000 random wallet addresses joining the campaign
+    ▪️ 300,000 NAGA tokens for 1000 top members with +50 successful referrals
+    ▪️ 1000 IGO Whitelist tickets for top members with +100 successful referrals
 —————————————————————-
 We will send the rewards immediately to your wallet after the end of the campaign.
 Thanks for joining!
@@ -74,7 +77,7 @@ Thanks for joining!
                 type: String,
                 default: `🎉🎉🎉 Welcome to the first Airdrop Campaign in Naga Kingdom!
                         —————————————————————-\n
-                        The total reward is up to 100,000 NAGA Tokens & 1000 limited editions of NFT Snake. 
+                        The total reward is up to 1,000,000 NAGA Tokens & 1000 IGO Whitelist tickets. 
                         —————————————————————-\n
                         Naga Kingdom is the legendary snake game built on the Solana Blockchain.
                         In addition, the Gameplay is open to new features and different playing modes, including Freeplay, Arena and P2E Mode.

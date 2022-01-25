@@ -302,7 +302,7 @@ let setEmailAndUpdate = async ({ telegramID, email }) => {
             user.mail.email = email.toString().toLowerCase();
             user.mail.isVerify = false;
             user.mail.verifyCode = v4().toString().slice(0, 8);
-            user.registerFollow.log === "step3";
+            user.registerFollow.log === "step4";
             user.registerFollow.step3.isWaitingEnterEmail = false;
             user.registerFollow.step3.isWaitingVerify = true;
             user.registerFollow.passAll = false;
@@ -332,7 +332,7 @@ let removeEmailandUpdate = async ({ telegramID }) => {
             user.mail.email = "";
             user.mail.isVerify = false;
             user.mail.verifyCode = "";
-            user.registerFollow.log === "step3";
+            user.registerFollow.log === "step4";
             user.registerFollow.step3.isWaitingEnterEmail = true;
             user.registerFollow.step3.isWaitingVerify = false;
             await user.save();
@@ -351,8 +351,7 @@ let handleNewUserJoinGroup = async ({ telegramID, fullName }, campaign) => {
             console.log(curentTime(7), fullName, telegramID, "not found in db");
             return null;
         } else {
-            user.registerFollow.step2.isJoinGrouped = true;
-            user.campaign1 = true;
+            user.registerFollow.step3.isJoinGrouped = true;
         }
         await user.save();
         return user;
@@ -394,10 +393,10 @@ let handleNewUserJoinChannel = async ({ telegramID, fullName }) => {
             console.log(curentTime(7), fullName, telegramID, "not found in db");
             return null;
         } else {
-            user.registerFollow.step3.isJoinChanneled = true;
-            if (user.registerFollow.log === "step2") {
-                user.registerFollow.log = "step3";
-                user.registerFollow.step4.isWaitingEnterEmail = true;
+            user.registerFollow.step4.isJoinChanneled = true;
+            if (user.registerFollow.log === "step3") {
+                user.registerFollow.log = "step4";
+                user.registerFollow.step5.isWaitingEnterEmail = true;
             }
         }
         await user.save();
