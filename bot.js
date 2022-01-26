@@ -311,28 +311,15 @@ bot.on("message", async (...parameters) => {
                     }
                 }
                 if (user && !user.registerFollow.step6.isDiscordOK) {
-                    let checkDiscordOK = null
-                    try {
-                        checkDiscordOK = await parse(text, true);
-                    } catch (e) {
-                    }
-                    if (checkDiscordOK.hostname === "discord.com" || checkDiscordOK.hostname === "mobile.discord.com") {
-                        const linkT = text.slice(text.length - 5, text.length)
-                        if (linkT != ".com" && linkT != ".com/" && text != "https://discord.com/invite/BW6KAYPZjG" && text != "https://mobile.discord.com/invite/BW6KAYPZjG") {
-                            await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isDiscordOK": true, "wallet.changeWallet": false }).exec();
-                            await sendStep6_Finish({ telegramID, msg });
-                            return sendStep7_Facebook({telegramID})
-                        } else {
-                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again discord profile ")
-                        }
-                    }        
-                    if (!user.registerFollow.step6.isWaitingPass) {
-                        return setTimeout(() => { sendStep6_Discord({telegramID})},1000)
+                    if (text.indexOf("#") != -1) {
+                        await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isDiscordOK": true, "wallet.changeWallet": false }).exec();
+                        await sendStep6_Finish({ telegramID, msg });
+                        return sendStep7_Facebook({telegramID})
                     } else {
-                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again discord profile ")
-                        return setTimeout(() => { sendStep6_Discord({telegramID})},1000)
+                        return bot.sendMessage(telegramID, "You have entered an invalid username, please submit again your username ")
                     }
                 }
+
                 if (user && !user.registerFollow.step7.isFacebookOK ) {
                     let checkFacebook = null
                     try {
