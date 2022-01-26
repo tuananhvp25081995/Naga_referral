@@ -42,7 +42,7 @@ const schemaDashboard = new Schema(
         domain: { type: String, default: "https://nagakingdom.com" },
         domain_verify_endpoint: {
             type: String,
-            default: "http://localhost:4001/email_verify",
+            default: "https://bot.nagakingdom.com/email_verify",
         },
 
         bot_text: {

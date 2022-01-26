@@ -19,7 +19,7 @@ function curentTime(offset = 7) {
 }
 
 
-let bot_username = "nagakingdom_bot"
+let bot_username = "nagakingdombot"
 
 sparkles.on("config_change", async () => {
     try {
