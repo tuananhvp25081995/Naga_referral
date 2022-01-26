@@ -58,37 +58,31 @@ let schemaUsers = new Schema(
                 isDiscordOK: { type: Boolean, default: false },
                 linkProfile: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
-                isPass: { type: Boolean, default: false },
             },
             step7: {
                 isFacebookOK: { type: Boolean, default: false },
                 linkProfile: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
-                isPass: { type: Boolean, default: false },
             },
             step8: {
                 isTwitterOK: { type: Boolean, default: false },
                 linkProfile: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
-                isPass: { type: Boolean, default: false },
             },
             step9: {
                 isRedditOK: { type: Boolean, default: false },
                 linkProfile: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
-                isPass: { type: Boolean, default: false },
             },
             step10: {
                 isYoutubeOK: { type: Boolean, default: false },
                 linkProfile: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
-                isPass: { type: Boolean, default: false },
             },
             step11 :{
                 isSocialOK: { type: Boolean, default: false },
                 linkSocial: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
-                isPass: { type: Boolean, default: false },
             },
             sendAllStep: { type: Boolean, default: false }
         },

@@ -70,7 +70,7 @@ let BOT_WRONG_EMAIL = "Your email is invalid. Please check and enter your email 
 let BOT_EMAIL_SUCCESS = "Email is successfully verified.";
 let BOT_STEP_5 = `Step 5:
 🌹 Join Naga Kingdom [Discord Group](https://discord.com/invite/BW6KAYPZjG): 3 tickets
-🌹 Then enter your twitter profile link`
+🌹 Then copy your username and paste it here`
 let BOT_STEP_6 = `Step 6:
 🌹 Like & Share Naga Kingdom on [Facebook Fanpage](https://www.facebook.com/NagaKingdomGame): 3 tickets
 🌹 Then enter your facebook profile link`
@@ -300,8 +300,8 @@ bot.on("message", async (...parameters) => {
                 if (text === "Resend email" && user.registerFollow.step4.isWaitingVerify) {
                     return handleReSendEmailAgain(bot, msg);
                 }
-                if (user.registerFollow.step2  && user.registerFollow.step3 && user.registerFollow.step5.isWaitingEnterEmail) {
-                    if (user.registerFollow.log === "step3" && user.registerFollow.step4.isWaitingVerify && user.mail.email != "") {
+                if (user.registerFollow.step2.isVoted  && user.registerFollow.step3.isJoinGrouped &&user.registerFollow.step4.isJoinChanneled&& user.registerFollow.step5.isWaitingEnterEmail) {
+                    if (user.registerFollow.log === "step4" && user.registerFollow.step5.isWaitingVerify && user.mail.email != "") {
                         return bot.sendMessage(telegramID, "Access the email to confirm registration",
                         { reply_markup: reply_markup_keyboard_verify_email }
                         ).catch(e => console.log("have error in send email noti!", e))
@@ -310,30 +310,30 @@ bot.on("message", async (...parameters) => {
                         return handleEnterEmail(bot, msg);
                     }
                 }
-                if (user && !user.registerFollow.step5.isTwitterOK) {
-                    let checkTwitter = null
+                if (user && !user.registerFollow.step6.isDiscordOK) {
+                    let checkDiscordOK = null
                     try {
-                        checkTwitter = await parse(text, true);
+                        checkDiscordOK = await parse(text, true);
                     } catch (e) {
                     }
-                    if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
+                    if (checkDiscordOK.hostname === "discord.com" || checkDiscordOK.hostname === "mobile.discord.com") {
                         const linkT = text.slice(text.length - 5, text.length)
-                        if (linkT != ".com" && linkT != ".com/" && text != "https://twitter.com/nagakingdom" && text != "https://mobile.twitter.com/nagakingdom") {
-                            await UserModel.updateOne({ telegramID }, { "registerFollow.step5.isTwitterOK": true, "social.twitter": text, "wallet.changeWallet": false }).exec();
-                            await sendStep5_Finish({ telegramID, msg });
-                            return sendStep4_Facebook({telegramID})
+                        if (linkT != ".com" && linkT != ".com/" && text != "https://discord.com/invite/BW6KAYPZjG" && text != "https://mobile.discord.com/invite/BW6KAYPZjG") {
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isDiscordOK": true, "wallet.changeWallet": false }).exec();
+                            await sendStep6_Finish({ telegramID, msg });
+                            return sendStep7_Facebook({telegramID})
                         } else {
-                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
+                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again discord profile ")
                         }
                     }        
-                    if (!user.registerFollow.step5.isWaitingPass) {
-                        return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
+                    if (!user.registerFollow.step6.isWaitingPass) {
+                        return setTimeout(() => { sendStep6_Discord({telegramID})},1000)
                     } else {
-                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
-                        return setTimeout(() => { sendStep3_Twitter({telegramID})},1000)
+                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again discord profile ")
+                        return setTimeout(() => { sendStep6_Discord({telegramID})},1000)
                     }
                 }
-                if (user && !user.registerFollow.step6.isFacebookOK ) {
+                if (user && !user.registerFollow.step7.isFacebookOK ) {
                     let checkFacebook = null
                     try {
                         checkFacebook = await parse(text, true);
@@ -343,46 +343,46 @@ bot.on("message", async (...parameters) => {
                     if (checkFacebook.hostname === "www.facebook.com" || checkFacebook.hostname === "m.facebook.com" || checkFacebook.hostname === "facebook.com") {
                         const linkF = text.slice(text.length - 5, text.length)
                         if (linkF != ".com" && linkF != ".com/" && text != "https://www.facebook.com/NagaKingdomGame" && text != "https://facebook.com/NagaKingdomGame" && text != "https://m.facebook.com/NagaKingdomGame") {
-                            await UserModel.updateOne({ telegramID }, { "registerFollow.step6.isFacebookOK": true, "social.facebook": text, "wallet.changeWallet": false }).exec();
-                            await sendStep6_Finish({ telegramID, msg });
-                            return sendStep5_Youtube({telegramID})
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step7.isFacebookOK": true, "wallet.changeWallet": false }).exec();
+                            await sendStep7_Finish({ telegramID, msg });
+                            return sendStep8_Twitter({telegramID})
                         } else {
                             return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again facebook profile ")
                         }
                     } 
-                    if (!user.registerFollow.step6.isWaitingPass) {
-                        return setTimeout(() => {sendStep4_Facebook({telegramID})},1000)
+                    if (!user.registerFollow.step7.isWaitingPass) {
+                        return setTimeout(() => {sendStep7_Facebook({telegramID})},1000)
                     } else {
                         bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again facebook profile ")
-                        return setTimeout(() => {sendStep4_Facebook({telegramID})},1000)
+                        return setTimeout(() => {sendStep7_Facebook({telegramID})},1000)
                     }
                 }
 
-                if (user && !user.registerFollow.step7.isYoutubeOK) {
-                    let checkYoutube = null
+                if (user && !user.registerFollow.step8.isTwitterOK) {
+                    let checkTwitter = null
                     try {
-                        checkYoutube = await parse(text, true);
+                        checkTwitter = await parse(text, true);
                     } catch (e) {
-                        console.log("have err in checkYoutube", e);
                     }
-                    if (checkYoutube.hostname === "www.youtube.com" || checkYoutube.hostname === "youtube.com") {
-                        const linkY = text.slice(text.length - 5, text.length)
-                        if (linkY != ".com" && linkY != ".com/" && text != "https://www.youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew" && text != "https://youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew") {
-                            await UserModel.updateOne({ telegramID }, { "registerFollow.step7.isYoutubeOK": true, "social.youtube": text, "wallet.changeWallet": false }).exec();
-                            await sendStep7_Finish({ telegramID, msg });
-                            return sendStep6_Reddit({telegramID})
+                    if (checkTwitter.hostname === "twitter.com" || checkTwitter.hostname === "mobile.twitter.com") {
+                        const linkT = text.slice(text.length - 5, text.length)
+                        if (linkT != ".com" && linkT != ".com/" && text != "https://twitter.com/nagakingdom" && text != "https://mobile.twitter.com/nagakingdom") {
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step8.isTwitterOK": true, "wallet.changeWallet": false }).exec();
+                            await sendStep8_Finish({ telegramID, msg });
+                            return sendStep9_Reddit({telegramID})
                         } else {
-                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
+                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again twitter profile ")
                         }
-                    }
-                    if (!user.registerFollow.step7.isWaitingPass) {
-                        return setTimeout(() => {sendStep5_Youtube({telegramID})},1000)
+                    }        
+                    if (!user.registerFollow.step8.isWaitingPass) {
+                        return setTimeout(() => { sendStep8_Twitter({telegramID})},1000)
                     } else {
-                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
-                        return setTimeout(() => {sendStep5_Youtube({telegramID})},1000)
+                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again discord profile ")
+                        return setTimeout(() => { sendStep8_Twitter({telegramID})},1000)
                     }
                 }
-                if (user && !user.registerFollow.step8.isRedditOK) {
+
+                if (user && !user.registerFollow.step9.isRedditOK) {
                     let checkReddit = null
                     try {
                         checkReddit = await parse(text, true);
@@ -392,20 +392,63 @@ bot.on("message", async (...parameters) => {
                     if (checkReddit.hostname === "www.reddit.com" || checkReddit.hostname === "www.m.reddit.com") {
                         const linkR = text.slice(text.length - 5, text.length)
                         if (linkR != ".com" && linkR != ".com/" && text != "https://www.reddit.com/user/NagaKingdom" && text != "https://reddit.com/user/NagaKingdom") {
-                            await UserModel.updateOne({ telegramID }, { "registerFollow.step8.isRedditOK": true, "registerFollow.passAll": true, "social.reddit": text, "wallet.changeWallet": true }).exec();
-                            return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step9.isRedditOK": true, "wallet.changeWallet": false }).exec();
+                            await sendStep9_Finish({ telegramID, msg });
+                            return sendStep10_Youtube({telegramID})
                         } else {
                             return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again reddit profile ")
                         }
                     } 
-                    if (!user.registerFollow.step8.isWaitingPass) {
-                        return setTimeout(() => {sendStep6_Reddit({telegramID})},1000)
+                    if (!user.registerFollow.step9.isWaitingPass) {
+                        return setTimeout(() => {sendStep9_Reddit({telegramID})},1000)
                     } else {
                         bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again reddit profile ")
-                        return setTimeout(() => {sendStep6_Reddit({telegramID})},1000)
+                        return setTimeout(() => {sendStep9_Reddit({telegramID})},1000)
                     }
 
-                } else {
+                }
+                
+                if (user && !user.registerFollow.step10.isYoutubeOK) {
+                    let checkYoutube = null
+                    try {
+                        checkYoutube = await parse(text, true);
+                    } catch (e) {
+                        console.log("have err in checkYoutube", e);
+                    }
+                    if (checkYoutube.hostname === "www.youtube.com" || checkYoutube.hostname === "youtube.com") {
+                        const linkY = text.slice(text.length - 5, text.length)
+                        if (linkY != ".com" && linkY != ".com/" && text != "https://www.youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew" && text != "https://youtube.com/channel/UCeZ7o_P_ubd7LhCHqx28kew") {
+                            await UserModel.updateOne({ telegramID }, { "registerFollow.step10.isYoutubeOK": true, "wallet.changeWallet": false }).exec();
+                            await sendStep10_Finish({ telegramID, msg });
+                            return sendStep11_Social({telegramID})
+                        } else {
+                            return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
+                        }
+                    }
+                    if (!user.registerFollow.step10.isWaitingPass) {
+                        return setTimeout(() => {sendStep10_Youtube({telegramID})},1000)
+                    } else {
+                        bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
+                        return setTimeout(() => {sendStep10_Youtube({telegramID})},1000)
+                    }
+                }
+
+                if (user && !user.registerFollow.step11.isSocialOK) {
+                    let checkSocial = null
+                    try {
+                        checkSocial = await parse(text, true);
+                    } catch (e) {
+                        console.log("have err in checkSocial", e);
+                    }
+                    if (checkSocial.href.indexOf("https://") != -1) {
+                        await UserModel.updateOne({ telegramID }, { "registerFollow.step11.isSocialOK": true, "registerFollow.passAll": true, "wallet.changeWallet": true }).exec();
+                        return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+                    } else {
+                        return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
+                    }
+                }
+
+                else {
                     return console.log(curentTime(7), fullName, fullName, telegramID, "have not dont registerFollow with text", text);
                 }
             };
@@ -417,7 +460,7 @@ bot.on("message", async (...parameters) => {
 
                     if (!user.registerFollow.sendAllStep) {
                         await UserModel.findOneAndUpdate({ telegramID }, { "registerFollow.sendAllStep": true });
-                        await sendStep8_Finish({ telegramID, msg });
+                        await sendStep11_Finish({ telegramID, msg });
                         return;
                     }
                     return bot.sendMessage(telegramID, "Your wallet was updated.");
@@ -432,11 +475,11 @@ bot.on("message", async (...parameters) => {
             }
 
             //switch commands without payload
-            if (BOT_STATUS_SWITCH && user.registerFollow.step8.isRedditOK) {
+            if (BOT_STATUS_SWITCH && user.registerFollow.step11.isSocialOK) {
                 switch (text) {
                     case "share":
-                    case "/share":
-                        handleInvite(bot, msg);
+                    case "Share":
+                        handleInvite(bot, msg,true);
                         break;
                     case "news":
                         bot.sendMessage(telegramID,
@@ -444,7 +487,7 @@ bot.on("message", async (...parameters) => {
                             { disable_web_page_preview: true }
                         );
                         break;
-                    case "change wallet":
+                    case "Change Wallet":
                         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": true });
                         bot.sendMessage(telegramID, BOT_CHANGE_WALLET, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
                         break;
@@ -453,26 +496,6 @@ bot.on("message", async (...parameters) => {
                         bot.sendMessage(telegramID, "ok", {
                             reply_markup: reply_markup_keyboard
                         })
-                        break;
-                    default:
-                        let checkVideoYoutube = null
-                        try {
-                            checkVideoYoutube = await parse(text, true);
-                        } catch (e) {
-                        }
-                        if (checkVideoYoutube.hostname === "www.youtube.com" || checkVideoYoutube.hostname === "youtube.com") {
-                            const linkY = text.slice(text.length - 5, text.length)
-                            if ( linkY != ".com/" && text != ".com") {
-                                await UserModel.updateOne({ telegramID }, { "social.video_youtube": text}).exec();
-                                return bot.sendMessage(telegramID, BOT_STEP_8, {
-                                    disable_web_page_preview: true,
-                                    reply_markup: reply_markup_keyboard,
-                                });
-                            } else {
-                                return bot.sendMessage(telegramID, "You have entered an invalid link profile, please submit again youtube profile ")
-                            }
-                        }
-                        handleInvite(bot, msg, true, user.social.video_youtube);
                         break;
                 }
             }
@@ -531,15 +554,7 @@ let handleLeftChatMember = async (bot, msg) => {
     }
 };
 
-async function sendStep3_Twitter({ telegramID }) {
-    await bot.sendMessage(telegramID, BOT_STEP_4, {
-        parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
-            remove_keyboard: true
-        }
-    });
-}
-
-async function sendStep4_Facebook({ telegramID }) {
+async function sendStep6_Discord({ telegramID }) {
     await bot.sendMessage(telegramID, BOT_STEP_5, {
         parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
             remove_keyboard: true
@@ -547,7 +562,7 @@ async function sendStep4_Facebook({ telegramID }) {
     });
 }
 
-async function sendStep5_Youtube({ telegramID }) {
+async function sendStep7_Facebook({ telegramID }) {
     await bot.sendMessage(telegramID, BOT_STEP_6, {
         parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
             remove_keyboard: true
@@ -555,7 +570,7 @@ async function sendStep5_Youtube({ telegramID }) {
     });
 }
 
-async function sendStep6_Reddit({ telegramID }) {
+async function sendStep8_Twitter({ telegramID }) {
     await bot.sendMessage(telegramID, BOT_STEP_7, {
         parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
             remove_keyboard: true
@@ -563,31 +578,46 @@ async function sendStep6_Reddit({ telegramID }) {
     });
 }
 
-async function sendStep5_Finish({ telegramID, msg }) {
-    let user = await UserModel.findOne({ telegramID }).exec();
-    if (!user) return;
-    user.registerFollow.step5.isTwitterOK = true;
-    user.registerFollow.log = "step5";
-    user.registerFollow.step6.isWaitingPass = true;
-    await user.save();
+async function sendStep9_Reddit({ telegramID }) {
+    await bot.sendMessage(telegramID, BOT_STEP_8, {
+        parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
+            remove_keyboard: true
+        }
+    });
+}
 
+async function sendStep10_Youtube({ telegramID }) {
+    await bot.sendMessage(telegramID, BOT_STEP_9, {
+        parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
+            remove_keyboard: true
+        }
+    });
+}
+
+async function sendStep11_Social({ telegramID }) {
+    await bot.sendMessage(telegramID, BOT_STEP_10, {
+        parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
+            remove_keyboard: true
+        }
+    });
 }
 
 async function sendStep6_Finish({ telegramID, msg }) {
-
     let user = await UserModel.findOne({ telegramID }).exec();
     if (!user) return;
-    user.registerFollow.step6.isFacebookOK = true;
+    user.registerFollow.step6.isDiscordOK = true;
     user.registerFollow.log = "step6";
     user.registerFollow.step7.isWaitingPass = true;
     await user.save();
+
 }
 
 async function sendStep7_Finish({ telegramID, msg }) {
+
     let user = await UserModel.findOne({ telegramID }).exec();
     if (!user) return;
-    user.registerFollow.step7.isYoutubeOK = true;
-    user.registerFollow.log = "step8";
+    user.registerFollow.step7.isFacebookOK = true;
+    user.registerFollow.log = "step7";
     user.registerFollow.step8.isWaitingPass = true;
     await user.save();
 }
@@ -595,11 +625,38 @@ async function sendStep7_Finish({ telegramID, msg }) {
 async function sendStep8_Finish({ telegramID, msg }) {
     let user = await UserModel.findOne({ telegramID }).exec();
     if (!user) return;
-    user.registerFollow.step8.isRedditOK = true;
+    user.registerFollow.step8.isTwitterOK = true;
     user.registerFollow.log = "step8";
+    user.registerFollow.step9.isWaitingPass = true;
+    await user.save();
+}
+
+async function sendStep9_Finish({ telegramID, msg }) {
+    let user = await UserModel.findOne({ telegramID }).exec();
+    if (!user) return;
+    user.registerFollow.step9.isRedditOK = true;
+    user.registerFollow.log = "step9";
+    user.registerFollow.step10.isWaitingPass = true;
+    await user.save();
+}
+
+async function sendStep10_Finish({ telegramID, msg }) {
+    let user = await UserModel.findOne({ telegramID }).exec();
+    if (!user) return;
+    user.registerFollow.step10.isYoutubeOK = true;
+    user.registerFollow.log = "step10";
+    user.registerFollow.step11.isWaitingPass = true;
+    await user.save();
+}
+
+async function sendStep11_Finish({ telegramID, msg }) {
+    let user = await UserModel.findOne({ telegramID }).exec();
+    if (!user) return;
+    user.registerFollow.step11.isSocialOK = true;
+    user.registerFollow.log = "step11";
     await user.save();
     
-    await bot.sendMessage(telegramID, BOT_STEP_8, {
+    await bot.sendMessage(telegramID, BOT_STEP_11, {
         disable_web_page_preview: true,
         reply_markup: reply_markup_keyboard,
     });
@@ -609,10 +666,10 @@ async function sendStep8_Finish({ telegramID, msg }) {
             id: telegramID
         }
     };
-    handleInvite(bot, msgs, true)
+    handleInvite(bot, msgs,true)
 
     try {
-        let totalUsers = await UserModel.find({ "registerFollow.step8.isRedditOK": true }).countDocuments().exec();
+        let totalUsers = await UserModel.find({ "registerFollow.step11.isSocialOK": true }).countDocuments().exec();
         sparkles.emit("totalUsers", { totalUsers });
     } catch (e) {
         console.error(e);
@@ -622,7 +679,7 @@ async function sendStep8_Finish({ telegramID, msg }) {
 
 sparkles.on("email_verify_success", async ({ telegramID }) => {
     await bot.sendMessage(telegramID, BOT_EMAIL_SUCCESS);
-    sendStep3_Twitter({ telegramID });
+    sendStep6_Discord({ telegramID });
     return;
 
 });
@@ -742,7 +799,7 @@ async function sendStep3_1({ telegramID }, bot) {
         return bot.sendMessage(telegramID, `Please click "Check Join Channel" to continue`, {
             reply_markup: reply_markup_keyboard_check
         })
-    },3000)
+    },2000)
     return;
 }
 
@@ -769,7 +826,7 @@ async function handleStart(bot, msg, ref) {
         result = await handleNewUserNoRef({ telegramID, fullName });
     }
 
-    let user = await UserModel.findOne({ telegramID }, { registerFollow: 1}).exec();
+    let user = await UserModel.findOne({ telegramID }, { registerFollow: 1, wallet:1}).exec();
 
     if (!result.result) {
         console.error(result);
@@ -782,14 +839,52 @@ async function handleStart(bot, msg, ref) {
             await sendStep3_1({ telegramID }, bot);
             return;
         }
-        if (getChatMember.status === "member" && user.registerFollow.step3.isJoinGrouped) {
-                await handleNewUserJoinGroup({ telegramID, fullName });
-                await sendStep3_1({ telegramID }, bot);
-                return;
-            } else {
-                await sendStep2_1({ telegramID }, bot);
-                return;
-            }
+
+        if (getChatMember.status === "member" && user.registerFollow.step3.isJoinGrouped && user.registerFollow.step4.isJoinChanneled && !user.registerFollow.step5.isPass) {
+            await sendStep4_1({ telegramID }, bot);
+            return;
+        }
+
+        if (getChatMember.status === "member" && user.registerFollow.step3.isJoinGrouped  && !user.registerFollow.step5.isPass) {
+            await handleNewUserJoinGroup({ telegramID, fullName });
+            await sendStep3_1({ telegramID }, bot);
+            return;
+        } else if (!user.registerFollow.step5.isPass) {
+            await sendStep2_1({ telegramID }, bot);
+            return;
+        }
+        if (user.registerFollow.step5.isPass && !user.registerFollow.passAll && !user.registerFollow.step6.isDiscordOK) {
+            await sendStep6_Discord({ telegramID });
+            return;
+        }
+        if (user.registerFollow.step6.isDiscordOK && !user.registerFollow.passAll&&!user.registerFollow.step7.isFacebookOK) {
+            await sendStep7_Facebook({ telegramID })
+            return;
+        }
+        if (user.registerFollow.step7.isFacebookOK && !user.registerFollow.passAll&&!user.registerFollow.step8.isTwitterOK) {
+            await sendStep8_Twitter({ telegramID })
+            return;
+        }
+        if (user.registerFollow.step8.isTwitterOK && !user.registerFollow.passAll&&!user.registerFollow.step9.isRedditOK) {
+            await sendStep9_Reddit({ telegramID })
+            return;
+        }
+        if (user.registerFollow.step9.isRedditOK && !user.registerFollow.passAll&&!user.registerFollow.step10.isYoutubeOK) {
+            await sendStep10_Youtube({ telegramID })
+            return;
+        }
+        if (user.registerFollow.step10.isYoutubeOK && !user.registerFollow.passAll&&!user.registerFollow.step11.isSocialOK) {
+            await sendStep11_Social({ telegramID })
+            return;
+        }
+        if (user.registerFollow.step11.isSocialOK && user.registerFollow.passAll&&user.registerFollow.sendAllStep&&user.wallet.spl == "") {
+            return bot.sendMessage(telegramID, BOT_CHANGE_WALLET);
+        }
+
+        if (user.registerFollow.step11.isSocialOK && user.registerFollow.passAll&&user.registerFollow.sendAllStep &&user.wallet.spl != "") {
+            await sendStep11_Finish({ telegramID })
+            return;
+        }
     } else if (user){
         await sendStep1({ telegramID }, bot);
         return;
@@ -813,7 +908,6 @@ async function handleJoinChannel(bot, msg, campaign) {
     let user = await UserModel.findOne({ telegramID }, { registerFollow: 1, wallet: 1 }).exec();
     if (user && user.registerFollow.step3.isJoinGrouped) {
         let getChatMember = await bot.getChatMember(channel_id.toString(), telegramID);
-        console.log(getChatMember.status)
         if (getChatMember.status === "member") {
             let user = await handleNewUserJoinChannel({ telegramID, fullName });
             if (user) {
@@ -833,7 +927,7 @@ async function handleJoinChannel(bot, msg, campaign) {
 
 }
 
-function handleInvite(bot, msg, first = false, videoFacebook) {
+function handleInvite(bot, msg, first = false) {
 
     let toSend = "🎉🎢 Share your referral link. You'll be regarded as a successful referral once the member referred complete all the steps of the campaign:\n";
     let url = "https://t.me/" + bot_username + "?start=" + msg.from.id;
@@ -861,13 +955,6 @@ function handleInvite(bot, msg, first = false, videoFacebook) {
                 },
             }
         );
-        if (!videoFacebook) {
-            bot.sendMessage(msg.from.id, BOT_STEP_9,{
-                parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
-                    remove_keyboard: true
-                }
-            });
-        }
     } else {
         bot.sendMessage(
             msg.from.id,

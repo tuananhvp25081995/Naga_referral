@@ -269,7 +269,7 @@ let setWaitingEnterEmail = async ({ telegramID }, isWaitingEnterEmail) => {
             })
             .exec();
         if (user) {
-            user.registerFollow.step3.isWaitingEnterEmail = isWaitingEnterEmail;
+            user.registerFollow.step5.isWaitingEnterEmail = isWaitingEnterEmail;
             await user.save();
             return true;
         } else return false;

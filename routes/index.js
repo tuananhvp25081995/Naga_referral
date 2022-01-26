@@ -59,47 +59,47 @@ passport.deserializeUser(function (id, cb) {
     });
 });
 
-// router.get("/email_verify", async (req, res) => {
-//     console.log(req.query);
-//     if (req.query.code && req.query.telegramID) {
-//         let { code, telegramID } = req.query;
-//         code = code.toString().replace(/[^a-zA-Z0-9]/g, "")
-//         telegramID = telegramID.toString().replace(/\D/g, "");
-//         console.log({ code, telegramID });
-//         if (!code || !telegramID) return res.send("bad request, please try again")
-//         try {
-//             let user = await UserModel.findOneAndUpdate({
-//                 telegramID, "mail.verifyCode": code, "mail.isVerify": false
-//             }, {
-//                 $set: {
-//                     "mail.verifyCode": "",
-//                     "mail.isVerify": true,
-//                     "mail.verifiedAt": Date.now(),
-//                     "registerFollow.passAll": false,
-//                     "registerFollow.log": "step4",
-//                     "registerFollow.step4.isPass": true,
-//                     "registerFollow.step4.isWaitingEnterEmail": false,
-//                     "registerFollow.step4.isWaitingVerify": false,
-//                     "registerFollow.step5.isTwitterOK": false,
-//                     "registerFollow.step5.isWaitingPass": true,
-//                     "registerFollow.step6.isFacebookOK": false,
-//                 }
-//             })
-//             if (user) {
-//                 console.log(telegramID, "was verified with code", code);
-//                 sparkles.emit("email_verify_success", { telegramID });
-//                 return res.redirect("https://t.me/" + bot_username);
-//             } else {
-//                 return res.send("An error when verify your email, please enter /resend to send email again  or enter /mail to change your mail");
-//             }
-//         } catch (e) {
-//             console.error(e);
-//         }
-//     } else {
-//         console.log("bad request email verify!!!!", req.query);
-//         res.redirect("https://t.me/nagakingdom_bot");
-//     }
-// });
+router.get("/email_verify", async (req, res) => {
+    console.log(req.query);
+    if (req.query.code && req.query.telegramID) {
+        let { code, telegramID } = req.query;
+        code = code.toString().replace(/[^a-zA-Z0-9]/g, "")
+        telegramID = telegramID.toString().replace(/\D/g, "");
+        console.log({ code, telegramID });
+        if (!code || !telegramID) return res.send("bad request, please try again")
+        try {
+            let user = await UserModel.findOneAndUpdate({
+                telegramID, "mail.verifyCode": code, "mail.isVerify": false
+            }, {
+                $set: {
+                    "mail.verifyCode": "",
+                    "mail.isVerify": true,
+                    "mail.verifiedAt": Date.now(),
+                    "registerFollow.passAll": false,
+                    "registerFollow.log": "step5",
+                    "registerFollow.step5.isPass": true,
+                    "registerFollow.step5.isWaitingEnterEmail": false,
+                    "registerFollow.step5.isWaitingVerify": false,
+                    "registerFollow.step6.isDiscordOK": false,
+                    "registerFollow.step6.isWaitingPass": true,
+                    "registerFollow.step7.isFacebookOK": false,
+                }
+            })
+            if (user) {
+                console.log(telegramID, "was verified with code", code);
+                sparkles.emit("email_verify_success", { telegramID });
+                return res.redirect("https://t.me/" + bot_username);
+            } else {
+                return res.send("An error when verify your email, please enter /resend to send email again  or enter /mail to change your mail");
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    } else {
+        console.log("bad request email verify!!!!", req.query);
+        res.redirect("https://t.me/nagakingdombot");
+    }
+});
 
 router.get("/statistics", async function (req, res, next) {
     // let allUsers = await UserModel.aggregate([{
