@@ -31,10 +31,9 @@ const schemaDashboard = new Schema(
 
         //-1001417029522  for test group
         //-1001420387772 for main group
-        group_id: { type: String, default: "-1001627215619" },
-        channel_id: { type: String, default: "-1001680013176" },
+        group_id: { type: String, default: "-1001664361592" },
 
-        group_invite_link: { type: String, default: "https://t.me/nagakingdom", },
+        group_invite_link: { type: String, default: "https://t.me/nagasarapet", },
         channel_invite_link: { type: String, default: "https://t.me/naga_kingdom", },
 
         redirect_uri: { type: String, default: "https%3A%2F%2Fnagakingdom.com%2Foauth" },
@@ -48,28 +47,39 @@ const schemaDashboard = new Schema(
         bot_text: {
             BOT_WELCOM_AFTER_START: {
                 type: String,
-                default: `Welcome USERNAME to the first community-based Airdrop Campaign in Naga Kingdom!
-Please follow up to get started in the campaign
+                default: `🎉🎉 Welcome to NAGA REFERRAL #AIRDROP in Naga Kingdom!
+⬇️ Please perform the tasks below to receive $50 NFT
+
+About NAGA Nine-Tailed Soul:
+    ▪️ It is among the most essential NFTs in Naga Kingdom & created only in this Airdrop.
+    ▪️ Players can use it to minimize the time spent to get USDC; or sell it on Marketplace.
 ————————————————————————
-Conditions of participation
-✅Step 1: Vote for Naga Kingdom on Solana (proof of voting by screenshot): 3 tickets
-✅Step 2: Join Naga Kingdom Telegram Group: 1 ticket
-✅Step 3: Join Naga Kingdom Telegram Channel: 1 ticket
-✅Step 4: Enter your email to confirm registration
-✅Step 5: Join Naga Kingdom Discord Group: 3 tickets
-✅Step 6: Like & Share Naga Kingdom on Facebook Fanpage: 3 tickets
-✅Step 7: Follow & Retweet Naga Kingdom on Twitter (with proof of voting as attached image & hashtag #nagakingdom): 3 tickets
-✅Step 8: Join & Share Naga Kingdom on Reddit (with proof of voting as attached image & hashtag #nagakingdom): 2 tickets
-✅Step 9: Subscribe Naga Kingdom on Youtube: 2 tickets
-✅Step 10: Share video of you playing the free version of Naga Kingdom on social media (with hashtag #nagakingdom): 5 tickets
-✅Step 11: Enter Solana Address (create at Solflare, Trust, coin98, Exodu)
-🎁Rewards: 1000 IGO Whitelist tickets (01 ticket: 1000 NAGA Tokens)
-    ▪️ 500,000 NAGA tokens for 5,000 wallet addresses that have the most tickets by completing the campaign requirements
-    ▪️ 200,000 NAGA tokens for 10,000 random wallet addresses joining the campaign
-    ▪️ 300,000 NAGA tokens for 1000 top members with +50 successful referrals
-    ▪️ 1000 IGO Whitelist tickets for top members with +100 successful referrals
+🎉 Please perform the following tasks (required):
+
+✅Step 1: Join Naga Kingdom Affiliate group on Telegram.
+✅Step 2: Tweet & Retweet Naga Kingdom on Twitter.
+✅Step 3:  Enter Naga Kingdom through here & Connect your Solana wallet.
+✅Step 4: Enter your Solana wallet address.
+✅Step 5: Share your Affiliate link to at least 01 friend & Enter your Affiliate link here.
+🎁 Referral Rewards (Nine-Tailed Soul): For each new referral, you’ll get $50
+For example:
+    - $50 for 1 successful referral
+    - $500 for 10 successful referrals
+    - $5,000 for 100 successful referrals
+    - $50,000 for 1000 successful referrals
+
+🎁 Bonus Rewards - Top Rank Referral Rewards (USDC):
+    - 500 USDC for +100 successful referrals
+    - 3,000 USDC for +500 successful referrals
+    - 8,000 USDC for +1,000 successful referrals
+    - 50,000 USDC for +5,000 successful referrals
+
+🎁Airdrop rewards will be distributed shortly after the results are published.
+
 —————————————————————-
-We will send the rewards immediately to your wallet after the end of the campaign.
+⚡️ Note:
+    - We do NOT accept any BSC or ETH addresses, be alert!
+    - Your referral must register and own at least 01 NFT in Naga Kingdom.
 Thanks for joining!
 `
             },

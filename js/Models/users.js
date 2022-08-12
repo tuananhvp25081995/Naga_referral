@@ -6,16 +6,9 @@ let schemaUsers = new Schema(
         telegramID: { type: String, required: true },
         fullName: { type: String, default: "" },
 
-        mail: {
-            email: { type: String, default: "" },
-            isVerify: { type: Boolean, default: false },
-            verifiedAt: { type: Date, default: Date.now() },
-            verifyCode: { type: String, default: "" },
-        },
-
         wallet: {
             changeWallet: { type: Boolean, default: false },
-            spl: { type: String, default: "" },
+            solana: { type: String, default: "" },
         },
 
         transferred: { type: Boolean, default: false },
@@ -40,48 +33,16 @@ let schemaUsers = new Schema(
                 createDb: { type: Boolean, default: true },
             },
             step2: {
-                isVoted: {type: Boolean, default: false}
-            },
-            step3: {
                 isJoinGrouped: { type: Boolean, default: false },
             },
-            step4: {
-                isJoinChanneled: { type: Boolean, default: false },
-            },
-            step5: {
-                isPass: { type: Boolean, default: false },
-                isWaitingEnterEmail: { type: Boolean, default: false },
-                isWaitingVerify: { type: Boolean, default: true },
-            },
-
-            step6: {
-                isDiscordOK: { type: Boolean, default: false },
-                linkProfile: { type: String, default: "" },
-                isWaitingPass: { type: Boolean, default: false },
-            },
-            step7: {
-                isFacebookOK: { type: Boolean, default: false },
-                linkProfile: { type: String, default: "" },
-                isWaitingPass: { type: Boolean, default: false },
-            },
-            step8: {
+            step3: {
                 isTwitterOK: { type: Boolean, default: false },
-                linkProfile: { type: String, default: "" },
+                userName: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
             },
-            step9: {
-                isRedditOK: { type: Boolean, default: false },
-                linkProfile: { type: String, default: "" },
-                isWaitingPass: { type: Boolean, default: false },
-            },
-            step10: {
-                isYoutubeOK: { type: Boolean, default: false },
-                linkProfile: { type: String, default: "" },
-                isWaitingPass: { type: Boolean, default: false },
-            },
-            step11 :{
-                isSocialOK: { type: Boolean, default: false },
-                linkSocial: { type: String, default: "" },
+            step4: {
+                isShareOK: { type: Boolean, default: false },
+                refCode: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
             },
             sendAllStep: { type: Boolean, default: false }

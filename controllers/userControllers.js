@@ -344,59 +344,17 @@ let removeEmailandUpdate = async ({ telegramID }) => {
     }
 };
 
-let handleNewUserJoinGroup = async ({ telegramID, fullName }, campaign) => {
+let handleNewUserJoinGroup = async ({ telegramID, fullName }) => {
     try {
         let user = await UserModel.findOne({ telegramID }).exec();
         if (!user) {
             console.log(curentTime(7), fullName, telegramID, "not found in db");
             return null;
         } else {
-            user.registerFollow.step3.isJoinGrouped = true;
-        }
-        await user.save();
-        return user;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
-};
-
-let handleNewUserJoinampaign= async (bot, msg, campaign) => {
-    try {
-        let telegramID = msg.from.id;
-        let user = await UserModel.findOne({ telegramID }).exec();
-        if (!user) {
-            console.log(curentTime(7), fullName, telegramID, "not found in db");
-            return null;
-        } else {
-            switch (campaign) {
-                case 2:
-                    user.campaign2 = true;
-                    break
-                case 3:
-                    user.campaign3 = true;
-                    break
-            }
-        }
-        await user.save();
-        return user;
-    } catch (e) {
-        console.error(e);
-        return null;
-    }
-};
-
-let handleNewUserJoinChannel = async ({ telegramID, fullName }) => {
-    try {
-        let user = await UserModel.findOne({ telegramID }).exec();
-        if (!user) {
-            console.log(curentTime(7), fullName, telegramID, "not found in db");
-            return null;
-        } else {
-            user.registerFollow.step4.isJoinChanneled = true;
-            if (user.registerFollow.log === "step3") {
-                user.registerFollow.log = "step4";
-                user.registerFollow.step5.isWaitingEnterEmail = true;
+            user.registerFollow.step2.isJoinGrouped = true;
+            if (user.registerFollow.log === "step2") {
+                user.registerFollow.log = "step3";
+                user.registerFollow.step3.isWaitingPass = true;
             }
         }
         await user.save();
@@ -468,9 +426,7 @@ module.exports = {
     setEmailWaitingVerify,
     setWaitingEnterEmail,
     handleNewUserJoinGroup,
-    handleNewUserJoinChannel,
     setEmailAndUpdate,
     removeEmailandUpdate,
     handleUserWebhook,
-    handleNewUserJoinampaign,
 };
