@@ -16,8 +16,7 @@ const OPTION = {
 
 
 module.exports =  function TeleBot() {
-  const token = process.env.TOKEN;
-  const bot = new TelegramBot(token, { polling: true, filepath: false });
+  const bot = new TelegramBot(process.env.TOKEN, { polling: true, filepath: false });
 
   bot.on("message", async (msg) => {
     let chatId = msg.chat.id;

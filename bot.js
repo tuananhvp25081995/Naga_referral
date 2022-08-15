@@ -17,15 +17,12 @@ let {
     handleNewUserNoRef,
     handleNewUserWithRef,
     handleNewUserJoinGroup,
-    setWaitingEnterEmail,
-    setEmailAndUpdate,
-    removeEmailandUpdate,
     getStatstics,
 } = require("./controllers/userControllers");
 
 const { MAIL_TEMPLE } = require("./js/define");
 
-let bot = new TelegramBot("5548688062:AAFWgd3z5UccQEVFoveqkpWeCYiGlAw76Eg", { polling: true, });
+const bot = new TelegramBot(process.env.BOT_TOKEN, { polling: true, });
 
 let group_id,
     isPause = false,
@@ -50,7 +47,7 @@ let BOT_CHANGE_WALLET = "✨Enter your Solana Address here (create at Solflare, 
 
 let inviteTemple = `
 🔊🔊Naga Referral Opening Airdrop
-⏰ Time (UTC): 15 August - 15 September, 2022
+⏰ Time (UTC): 18 August - 30 September, 2022
 💲 Total Airdrop Reward: $50 - $100,000
 🔖 Start now: URL\n
 🎁 Referral Rewards (Nine-Tailed Soul): For each new referral, you’ll get $50
@@ -70,8 +67,8 @@ For example:
 `
 
 let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the finfine ecosystem launch event has reached the limit, you cannot participate in this airdrop. We thank you for contacting us.\nPlease keep in touch, we will inform you of the latest airdrop.`
-//00:00, 15 September, 2022
-let timeEnd = 1663174800000
+//00:00, 30 September, 2022
+let timeEnd = 1664470800000
 
 sparkles.on("config_change", async () => {
     try {
