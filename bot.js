@@ -295,6 +295,9 @@ bot.on("message", async (...parameters) => {
                         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": true });
                         bot.sendMessage(telegramID, BOT_CHANGE_WALLET, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
                         break;
+                    default:
+                        bot.sendMessage(telegramID, BOT_STEP_6, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
+                        break
                 }
             }
         }

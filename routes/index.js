@@ -19,7 +19,7 @@ function curentTime(offset = 7) {
 }
 
 
-let bot_username = "nagakingdombot"
+let bot_username = "naga_referral_bot"
 
 sparkles.on("config_change", async () => {
     try {
@@ -82,7 +82,7 @@ router.get("/email_verify", async (req, res) => {
         }
     } else {
         console.log("bad request email verify!!!!", req.query);
-        res.redirect("https://t.me/nagakingdombot");
+        res.redirect("https://t.me/naga_referral_bot");
     }
 });
 
