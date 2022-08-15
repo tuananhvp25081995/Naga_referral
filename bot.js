@@ -248,7 +248,7 @@ bot.on("message", async (...parameters) => {
                         checkIsVoted = await parse(text, true);
                     } catch (e) {
                     }
-                    if (checkIsVoted.href.indexOf("https://nagakingdom.com") != -1){
+                    if (checkIsVoted.href.indexOf("https://nagakingdom.com") != -1 || checkIsVoted.href.indexOf("https://naga.gg") != -1) {
                         if (checkIsVoted.query != undefined) {
                             await UserModel.updateOne({ telegramID }, { "registerFollow.step4.refCode": checkIsVoted.query.refCode ,"registerFollow.step4.isWaitingPass": true}).exec();
                             return sendStep6_Finish({telegramID},bot)
@@ -356,6 +356,9 @@ async function sendStep1({ telegramID }, bot) {
         disable_web_page_preview: true,
         reply_markup: reply_markup_keyboard_checks
     });
+    setTimeout(() => {
+        return bot.sendMessage(telegramID, `Please click "Check Join Group" to continue`)
+    },1000)
     return;
 }
 
