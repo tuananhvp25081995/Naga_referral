@@ -31,21 +31,6 @@ sparkles.on("config_change", async () => {
     }
 });
 
-
-function authChecker(req, res, next) {
-    console.log((req.path));
-    if (req.path === "/webhook") next();
-    else if (req.path === "/oauth") next();
-    else if (req.path === "/fake") next();
-    else if (req.path === "/join") next();
-    else if (req.path === "/sendcustom") {
-        sparkles.emit("sendCustom", { body: req.body });
-        res.send("ok");
-        return;
-    }
-    else if (req.isAuthenticated()) next();
-    else res.redirect("/login");
-}
 passport.serializeUser(function (user, cb) {
     cb(null, user._id);
 });

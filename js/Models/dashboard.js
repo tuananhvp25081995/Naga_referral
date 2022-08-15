@@ -39,10 +39,6 @@ const schemaDashboard = new Schema(
         redirect_uri: { type: String, default: "https%3A%2F%2Fnagakingdom.com%2Foauth" },
         bot_username: { type: String, default: "nagakingdombot" },
         domain: { type: String, default: "https://nagakingdom.com" },
-        domain_verify_endpoint: {
-            type: String,
-            default: "https://bot.nagakingdom.com/email_verify",
-        },
 
         bot_text: {
             BOT_WELCOM_AFTER_START: {

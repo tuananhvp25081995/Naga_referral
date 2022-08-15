@@ -1,6 +1,5 @@
 require("dotenv").config();
 var express = require("express");
-var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 let moment = require("moment");
@@ -10,6 +9,7 @@ let LocalStrategy = require("passport-local").Strategy;
 var cookieSession = require("cookie-session");
 var sparkles = require("sparkles")();
 const chalk = require("chalk");
+const TeleBot = require("./src/bot/index");
 
 require("./js/Models/dashboard")
 require("./js/Models/users")
@@ -17,7 +17,6 @@ require("./js/datebase").connect();
 
 
 let indexRouter = require("./routes/index");
-
 require("./bot");
 let group_id,
     group_invite_link = null,
@@ -45,37 +44,19 @@ sparkles.on("config_change", async () => {
 
 var app = express();
 
-app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 logger.token("datee", function (req, res) {
     return chalk.green(
         new moment().utcOffset("+0700").format("YYYY/MM/DD HH:mm:ss Z")
     );
 });
-app.use(
-    logger(
-        ":datee :method :url :status :response-time ms - :res[content-length]",
-        {
-            skip: (req) => {
-                if (
-                    req.path.startsWith("/assets") ||
-                    req.path.startsWith("/js") ||
-                    req.path.startsWith("/stylesheets")
-                )
-                    return true;
-                return false;
-            },
-        }
-    )
-);
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, }));
 app.use(cookieParser());
 
-
 app.use("/", indexRouter);
-
+app.use("/static", express.static(__dirname + "/static"))
+TeleBot()
 
 sparkles.on("init", async () => {
     try {

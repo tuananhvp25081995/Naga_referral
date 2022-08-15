@@ -32,15 +32,16 @@ let group_id,
     group_invite_link = null,
     channel_invite_link = null,
     bot_username = null,
-    domain_verify_endpoint = null,
     BOT_WELCOM_AFTER_START = "",
     BOT_STATUS_SWITCH = true;
 
 let BOT_STEP_1 = `🍓 Step 1: Join [Naga Kingdom Affiliate group](https://t.me/nagasarapet) on Telegram.`;
-let BOT_STEP_2 = "🍓 Step 2: Tweet & Retweet Naga Kingdom on [Twitter](https://twitter.com/NagaKingdom).\n";
+let BOT_STEP_2 = `🍓 Step 2: Tweet & Retweet Naga Kingdom on [Twitter](https://twitter.com/NagaKingdom).\n
+🌹 Then copy your username and paste it here`;
 let BOT_STEP_3 = "🍓 Step 3: Enter Naga Kingdom through [here](https://naga.gg/?refCode=c0VeGl6a) & Connect your Solana wallet.\n";
 let BOT_STEP_4 = "🍓 Step 4: Enter your Solana wallet address.";
-let BOT_STEP_5 = `🍓 Step 5: Share your Affiliate link to at least 01 friend & Enter your Affiliate link here.`;
+let BOT_STEP_5 = `🍓 Step 5: Share your Affiliate link to at least 01 friend & Enter your Affiliate link here. \n
+⚡️ Note: You'll be regarded as a successful referral once the member referred registers and owns 01 NFT in Naga Kingdom`;
 let BOT_STEP_6 = `✨ You have successfully completed all steps to gain the rewards.
 The rewards will be sent directly to your wallet once the campaign ends.
 Thanks for joining!
@@ -50,7 +51,7 @@ let BOT_CHANGE_WALLET = "✨Enter your Solana Address here (create at Solflare, 
 let inviteTemple = `
 🔊🔊Naga Referral Opening Airdrop
 ⏰ Time (UTC): 15 August - 15 September, 2022
-💲 Total Airdrop Reward:   $100,000
+💲 Total Airdrop Reward: $50 - $100,000
 🔖 Start now: URL\n
 🎁 Referral Rewards (Nine-Tailed Soul): For each new referral, you’ll get $50
 For example:
@@ -68,7 +69,6 @@ For example:
 🎁Airdrop rewards will be distributed shortly after the results are published.
 `
 
-
 let BOT_EVENT_END = `Hello our value user.\nThe number of participants in the finfine ecosystem launch event has reached the limit, you cannot participate in this airdrop. We thank you for contacting us.\nPlease keep in touch, we will inform you of the latest airdrop.`
 //00:00, 15 September, 2022
 let timeEnd = 1663174800000
@@ -80,7 +80,6 @@ sparkles.on("config_change", async () => {
         group_invite_link = config.group_invite_link;
         channel_invite_link = config.channel_invite_link,
         bot_username = config.bot_username;
-        domain_verify_endpoint = config.domain_verify_endpoint;
         BOT_WELCOM_AFTER_START = config.bot_text.BOT_WELCOM_AFTER_START;
         BOT_STATUS_PRIVATE_CHAT = config.status.privateChat;
         BOT_STATUS_GROUP_CHAT = config.status.groupChat;
@@ -258,7 +257,7 @@ bot.on("message", async (...parameters) => {
                             return sendStep6_Finish({telegramID},bot)
                         }
                     } else {
-                        return bot.sendMessage(telegramID, "You have entered an invalid link Affiliate , please submit again link Affiliate ")
+                        return bot.sendMessage(telegramID, "You have entered an invalid link Affiliate, please submit again")
                     }
                 }
             };
@@ -329,8 +328,6 @@ async function handleNewChatMember(bot, msg, campaign) {
     await handleNewUserJoinGroup({ telegramID, fullName }, campaign);
     await sendStep2_1({ telegramID }, bot);
 }
-
-
 
 let handleLeftChatMember = async (bot, msg) => {
     let { first_name, last_name, id } = msg.from;
@@ -468,7 +465,6 @@ async function handleStart(bot, msg, ref) {
         await sendStep2_1({ telegramID }, bot);
         return;
     } else if (!user.registerFollow.step2.isJoinGrouped && !user.registerFollow.step3.isTwitterOK) {
-        console.log(user.registerFollow.step2.isJoinGrouped)
         await sendStep1({ telegramID }, bot);
         return;
     }
