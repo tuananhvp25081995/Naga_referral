@@ -243,8 +243,8 @@ bot.on("message", async (...parameters) => {
                 }
 
                 if (user.registerFollow.step3.isTwitterOK && user.wallet.solana == "") {
-                    var valid = WAValidator.validate(text, 'ETH');
-                    if (!valid && text.length > 20) {
+                    var valid = Valication(text)
+                    if (valid) {
                         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.solana": text ,"registerFollow.log": "step5"}).exec();
                         return sendStep5_1({telegramID},bot)
                     } else {
