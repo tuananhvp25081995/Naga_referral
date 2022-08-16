@@ -259,7 +259,7 @@ bot.on("message", async (...parameters) => {
                     } catch (e) {
                     }
                     if (checkIsVoted.href.indexOf("https://nagakingdom.com") != -1 || checkIsVoted.href.indexOf("https://naga.gg") != -1) {
-                        if (checkIsVoted.query.refCode != undefined) {
+                        if (checkIsVoted.query.refCode != undefined && checkIsVoted.query.refCode.length == 8) {
                             await UserModel.updateOne({ telegramID }, { "registerFollow.step4.refCode": checkIsVoted.query.refCode ,"registerFollow.step4.isWaitingPass": true}).exec();
                             return sendStep6_Finish({telegramID},bot)
                         }
