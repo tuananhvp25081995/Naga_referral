@@ -12,6 +12,7 @@ let WAValidator = require('wallet-address-validator');
 let parse = require('url-parse');
 const chalk = require("chalk");
 const queryString = require('query-string');
+const { PublicKey } = require('@solana/web3.js');
 
 let {
     handleNewUserNoRef,
@@ -132,6 +133,15 @@ async function logMsg(msg, type = "text") {
     }
 }
 
+function Valication(address) {
+    try {
+        const publicKeyInUint8 = new PublicKey(address).toBytes();
+        let  isSolana =  PublicKey.isOnCurve(publicKeyInUint8)
+        return isSolana
+    } catch (error) {
+        return false
+    }
+}
 
 bot.onText(/\/echo (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
@@ -224,7 +234,7 @@ bot.on("message", async (...parameters) => {
 
                 if (user.registerFollow.step2.isJoinGrouped && !user.registerFollow.step3.isTwitterOK) {
                     if (text.indexOf("@") != -1) {
-                        await UserModel.updateOne({ telegramID }, { "registerFollow.step3.isTwitterOK": true, "registerFollow.step3.userName": text, "registerFollow.step3.isWaitingPass": true,"registerFollow.log": "step4"}).exec();
+                        await UserModel.updateOne({ telegramID }, {"registerFollow.step3.isTwitterOK": true, "registerFollow.step3.userName": text, "registerFollow.step3.isWaitingPass": true,"registerFollow.log": "step4"}).exec();
                         await sendStep3_1({ telegramID }, bot);
                         return setTimeout(() => { sendStep4_1({telegramID},bot)},1000)
                     }else {
@@ -260,8 +270,8 @@ bot.on("message", async (...parameters) => {
             };
         
             if (user && user.wallet.changeWallet) {
-                var valid = WAValidator.validate(text, 'ETH');
-                if (!valid && text.length > 20) {
+                var valid = Valication(text)
+                if (valid) {
                     await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.solana": text });
 
                     if (!user.registerFollow.sendAllStep) {

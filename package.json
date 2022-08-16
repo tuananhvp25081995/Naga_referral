@@ -19,8 +19,10 @@
     "homepage": "https://github.com/thanhdatpd/minar80#readme",
     "dependencies": {
         "@sendgrid/mail": "^7.3.0",
+        "@solana/web3.js": "^1.53.0",
         "apisauce": "^1.1.2",
         "axios": "^0.20.0",
+        "bn.js": "^5.2.1",
         "canvas": "^2.9.3",
         "chalk": "^4.1.0",
         "cookie-parser": "~1.4.4",

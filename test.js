@@ -1,22 +1,15 @@
+const { PublicKey } = require('@solana/web3.js');
 
-const fs = require('fs')
-const allWallet = ""
 
-const arr = []
-let xx = 0
-for(let i=0; i < allWallet.length;i++) {
-    if(allWallet[i]== "\n") {
-        const aa = allWallet.slice(xx,i)
-        arr.push(aa)
-        xx = i+1
+function Valication(address) {
+    try {
+        const publicKeyInUint8 = new PublicKey(address).toBytes();
+        let  isSolana =  PublicKey.isOnCurve(publicKeyInUint8)
+        return isSolana
+    } catch (error) {
+        return false
     }
 }
 
-
-fs.writeFile("datas.txt", JSON.stringify(arr), (err) => {
-      if (err)
-          console.log(err);
-      else {
-          console.log("File written successfully\n");
-      }
-  });
+const aaa = Valication("3r1PGz75M2xejHxivpa8Z9mGgNiRon7cL1jfDDYKEGoD")
+console.log(aaa)
