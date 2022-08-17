@@ -188,7 +188,7 @@ bot.on("message", async (...parameters) => {
             }
             //user didn't have in database
             if (text.startsWith("/start")) {
-                if (user && !user.registerFollow.passAll) {
+                if (!user) {
                     await bot.sendMessage(telegramID, BOT_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
                         { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
                 }
@@ -215,16 +215,16 @@ bot.on("message", async (...parameters) => {
 
             let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
             
-            if (getChatMember.status === "member" && msg.text === "Check Join Group" && !user.registerFollow.passAll) {
-                await handleNewUserJoinGroup({telegramID, fullName});
-                await sendStep2_1({ telegramID }, bot);
-                return
-            }
+            // if (getChatMember.status === "member" && msg.text === "Check Join Group" && !user.registerFollow.passAll) {
+            //     await handleNewUserJoinGroup({telegramID, fullName});
+            //     await sendStep2_1({ telegramID }, bot);
+            //     return
+            // }
 
-            if (getChatMember.status != "member" && msg.text === "Check Join Group" && !user.registerFollow.passAll) {
-                await sendStep1({ telegramID }, bot);
-                return;
-            }
+            // if (getChatMember.status != "member" && msg.text === "Check Join Group" && !user.registerFollow.passAll) {
+            //     await sendStep1({ telegramID }, bot);
+            //     return;
+            // }
 
             //have this user in database. check it out
             if (user && !user.registerFollow.passAll) {
@@ -262,6 +262,8 @@ bot.on("message", async (...parameters) => {
                         if (checkIsVoted.query.refCode != undefined && checkIsVoted.query.refCode.length == 8) {
                             await UserModel.updateOne({ telegramID }, { "registerFollow.step4.refCode": checkIsVoted.query.refCode ,"registerFollow.step4.isWaitingPass": true}).exec();
                             return sendStep6_Finish({telegramID},bot)
+                        } else {
+                            return bot.sendMessage(telegramID, "You have entered an invalid link Affiliate, please submit again")
                         }
                     } else {
                         return bot.sendMessage(telegramID, "You have entered an invalid link Affiliate, please submit again")
@@ -494,10 +496,14 @@ async function handleStart(bot, msg, ref) {
 
     if (user.registerFollow.step4.isShareOK && user.registerFollow.passAll&&user.registerFollow.sendAllStep &&user.wallet.solana != "") {
         await sendStep6_Finish({ telegramID })
+        if (user.registerFollow.passAll && user.registerFollow.sendAllStep && user.wallet.changeWallet) {
+            await UserModel.updateOne({ telegramID }, {"wallet.changeWallet": false}).exec();
+        }
         return;
     } else if (user){
         return setTimeout(() => {sendStep1({telegramID},bot)},1000)
     }
+
     // let getChatMember = await bot.getChatMember(group_id.toString(), telegramID);
     // console.log(curentTime(), getChatMember.status);
     // if (getChatMember.status === "member") {
@@ -513,7 +519,7 @@ async function handleStart(bot, msg, ref) {
 async function handleInvite(bot, msg) {
     let user = await UserModel.findOne({ telegramID:msg.from.id }, { registerFollow: 1}).exec();
     let toSend = "🎉🎢 Share your affiliate  link. You'll be regarded as a successful referral once the member referred registers and owns 01 NFT in Naga Kingdom.:\n";
-    let url = "https://nagakingdom.com"+"?refCode=" + user.registerFollow.step4.refCode;
+    let url = "https://naga.gg"+"?refCode=" + user.registerFollow.step4.refCode;
     toSend += url;
     let full = inviteTemple.replace("URL", url)
 

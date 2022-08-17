@@ -48,13 +48,13 @@ const schemaDashboard = new Schema(
 
 About NAGA Nine-Tailed Soul:
     ▪️ It is among the most essential NFTs in Naga Kingdom & created only in this Airdrop.
-    ▪️ Players can use it to minimize the time spent to get USDC; or sell it on Marketplace.
+    ▪️ Players can use it to minimize the time spent to get USDC; or sell it on [Marketplace](https://naga.gg/marketplace).
 ————————————————————————
 🎉 Please perform the following tasks (required):
 
-✅Step 1: Join Naga Kingdom Affiliate group on Telegram.
-✅Step 2: Tweet & Retweet Naga Kingdom on Twitter.
-✅Step 3:  Enter Naga Kingdom through here & Connect your Solana wallet.
+✅Step 1: Join [Naga Kingdom Affiliate group](https://t.me/nagasarapet) on Telegram.
+✅Step 2: Tweet & Retweet Naga Kingdom on [Twitter](https://twitter.com/NagaKingdom).
+✅Step 3:  Enter Naga Kingdom through [here](https://naga.gg/?refCode=c0VeGl6a) & Connect your Solana wallet.
 ✅Step 4: Enter your Solana wallet address.
 ✅Step 5: Share your Affiliate link to at least 01 friend & Enter your Affiliate link here.
 🎁 Referral Rewards (Nine-Tailed Soul): For each new referral, you’ll get $50
