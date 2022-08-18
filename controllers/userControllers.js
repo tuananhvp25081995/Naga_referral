@@ -3,6 +3,7 @@ let { v4 } = require("uuid");
 let DashboardModel = mongoose.model("DashboardModel")
 let UserModel = mongoose.model("UserModel")
 let moment = require("moment");
+const { GetContactCampaignStatsOpened } = require("sib-api-v3-sdk");
 
 function curentTime(offset = 7) {
     return new moment().utcOffset(offset).format("YYYY/MM/DD HH:mm:ss Z");
@@ -58,15 +59,13 @@ let handleNewUserNoRef = async (data) => {
 };
 
 let handleNewUserWithRef = async (data) => {
-    let { telegramID, fullName, ref } = data;
-
+    let { telegramID, fullName, refCode } = data;
     try {
         let userCheck = await UserModel
             .findOne({
                 telegramID,
             })
             .exec();
-
         if (userCheck) {
             console.log(
                 curentTime(),
@@ -79,7 +78,6 @@ let handleNewUserWithRef = async (data) => {
             if (userCheck.refTelegramID === "") {
                 userCheck.refTelegramID = await checkAndUpdateRefId(data);
             }
-
             //update fullName
             userCheck.fullName = fullName;
             await userCheck.save();
@@ -96,6 +94,7 @@ let handleNewUserWithRef = async (data) => {
                 refTelegramID: await checkAndUpdateRefId(data),
                 joinDate: Date.now(),
                 updateAt: Date.now(),
+                refCodeParent: refCode
             });
 
             let result = await newUser.save();

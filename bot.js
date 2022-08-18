@@ -34,10 +34,10 @@ let group_id,
     BOT_STATUS_SWITCH = true;
 
 let BOT_STEP_1 = `🍓 Step 1: Join [Naga Kingdom Affiliate group](https://t.me/nagasarapet) on Telegram.`;
-let BOT_STEP_2 = `🍓 Step 2: Tweet & Retweet Naga Kingdom on [Twitter](https://twitter.com/NagaKingdom).\n
-🌹 Then copy your username and paste it here`;
-let BOT_STEP_3 = "🍓 Step 3: Enter Naga Kingdom through [here](https://naga.gg/?refCode=c0VeGl6a) & Connect your Solana wallet.\n";
-let BOT_STEP_4 = "🍓 Step 4: Enter your Solana wallet address.";
+let BOT_STEP_2 = `🍓 Step 2: UpVotes  [Naga Kingdom](https://www.producthunt.com/posts/naga-kingdom?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-naga&#0045;kingdom).\n
+🌹 Then copy your username and paste it here
+(ex: @nagakingdom)`;
+let BOT_STEP_4 = "🍓 Step 4: Enter your Solana wallet address.(You can create wallet here: https://solflare.com/)";
 let BOT_STEP_5 = `🍓 Step 5: Share your Affiliate link to at least 01 friend & Enter your Affiliate link here. \n
 ⚡️ Note: You'll be regarded as a successful referral once the member referred registers and owns 01 NFT in Naga Kingdom`;
 let BOT_STEP_6 = `✨ You have successfully completed all steps to gain the rewards.
@@ -194,14 +194,16 @@ bot.on("message", async (...parameters) => {
                 }
                 //handle for new user without ref invite
                 if (msg.text === "/start") {
-                    return handleStart(bot, msg, null);
+                    return handleStart(bot, msg, null,null);
                 }
 
                 //handle with ref invite
-                let id = text.slice(7).replace(/\D/g, "");
+
+                let id = text.slice(7).slice(0,text.slice(7).length-8)
+                const refCode = text.slice(7).substr(text.slice(7).length - 8)
                 if (!id) {
-                    return handleStart(bot, msg, null);
-                } else return handleStart(bot, msg, id.toString());
+                    return handleStart(bot, msg, null,null);
+                } else return handleStart(bot, msg, id.toString(),refCode.toString());
             }
 
             if (!user) {
@@ -229,12 +231,12 @@ bot.on("message", async (...parameters) => {
             //have this user in database. check it out
             if (user && !user.registerFollow.passAll) {
                 if (!user.registerFollow.step2.isJoinGrouped) {
-                    return handleStart(bot, msg, null);
+                    return handleStart(bot, msg, null,null);
                 }
 
-                if (user.registerFollow.step2.isJoinGrouped && !user.registerFollow.step3.isTwitterOK) {
+                if (user.registerFollow.step2.isJoinGrouped && !user.registerFollow.step3.isVoteOK) {
                     if (text.indexOf("@") != -1) {
-                        await UserModel.updateOne({ telegramID }, {"registerFollow.step3.isTwitterOK": true, "registerFollow.step3.userName": text, "registerFollow.step3.isWaitingPass": true,"registerFollow.log": "step4"}).exec();
+                        await UserModel.updateOne({ telegramID }, {"registerFollow.step3.isVoteOK": true, "registerFollow.step3.userName": text, "registerFollow.step3.isWaitingPass": true,"registerFollow.log": "step4"}).exec();
                         await sendStep3_1({ telegramID }, bot);
                         return setTimeout(() => { sendStep4_1({telegramID},bot)},1000)
                     }else {
@@ -242,7 +244,7 @@ bot.on("message", async (...parameters) => {
                     }
                 }
 
-                if (user.registerFollow.step3.isTwitterOK && user.wallet.solana == "") {
+                if (user.registerFollow.step3.isVoteOK && user.wallet.solana == "") {
                     var valid = Valication(text)
                     if (valid) {
                         await UserModel.updateOne({ telegramID }, { "wallet.changeWallet": false, "wallet.solana": text ,"registerFollow.log": "step5"}).exec();
@@ -252,7 +254,7 @@ bot.on("message", async (...parameters) => {
                     }
                 }
 
-                if (user.wallet.solana != "" && user.registerFollow.step3.isTwitterOK && !user.registerFollow.step4.isShareOK) {
+                if (user.wallet.solana != "" && user.registerFollow.step3.isVoteOK && !user.registerFollow.step4.isShareOK) {
                     let checkIsVoted = null
                     try {
                         checkIsVoted = await parse(text, true);
@@ -391,6 +393,9 @@ async function sendStep2_1({ telegramID }, bot) {
 }
 
 async function sendStep3_1({ telegramID }, bot) {
+    let user = await UserModel.findOne({ telegramID }, {refCodeParent:1}).exec();
+    let refCode = user.refCodeParent
+    let BOT_STEP_3 = `🍓 Step 3: Enter Naga Kingdom through [here](https://naga.gg/?refCode=${refCode}) & Connect your Solana wallet.\n`;
     await bot.sendMessage(telegramID, BOT_STEP_3, {
         parse_mode: "Markdown", disable_web_page_preview: true, reply_markup: {
             remove_keyboard: true
@@ -445,17 +450,16 @@ async function sendStep6_Finish({ telegramID, msg }) {
 }
 
 
-async function handleStart(bot, msg, ref) {
+async function handleStart(bot, msg, ref,refCode) {
     let telegramID = msg.from.id;
     let { first_name, last_name } = msg.from;
     let fullName = (first_name ? first_name : "") + " " + (last_name ? last_name : "");
     let result = null;
-    
     //with ref id
     if (ref) {
         bot.sendMessage(ref.toString(), "🎉You have one person joined with your referral.\n You'll be regarded as a successful referral once the member referred registers and owns 01 NFT in Naga Kingdom. \Keep going sir🎉")
         .then((a) => console.log(curentTime(), "send to parent ref ok")).catch(e => { console.log(curentTime(), "send to parent ref fail!", e); })
-        result = await handleNewUserWithRef({ telegramID, fullName, ref });
+        result = await handleNewUserWithRef({ telegramID, fullName, ref, refCode });
     }
     //without ref id
     else {
@@ -475,16 +479,16 @@ async function handleStart(bot, msg, ref) {
         return;
     }
 
-    if (getChatMember.status === "member" && user.registerFollow.step2.isJoinGrouped  && !user.registerFollow.step3.isTwitterOK) {
+    if (getChatMember.status === "member" && user.registerFollow.step2.isJoinGrouped  && !user.registerFollow.step3.isVoteOK) {
         await handleNewUserJoinGroup({ telegramID, fullName });
         await sendStep2_1({ telegramID }, bot);
         return;
-    } else if (!user.registerFollow.step2.isJoinGrouped && !user.registerFollow.step3.isTwitterOK) {
+    } else if (!user.registerFollow.step2.isJoinGrouped && !user.registerFollow.step3.isVoteOK) {
         await sendStep1({ telegramID }, bot);
         return;
     }
 
-    if (getChatMember.status === "member" && user.registerFollow.step3.isTwitterOK && user.wallet.solana == "") {
+    if (getChatMember.status === "member" && user.registerFollow.step3.isVoteOK && user.wallet.solana == "") {
         await sendStep3_1({ telegramID }, bot);
         return setTimeout(() => { sendStep4_1({telegramID},bot)},1000)
     }
@@ -519,7 +523,7 @@ async function handleStart(bot, msg, ref) {
 async function handleInvite(bot, msg) {
     let user = await UserModel.findOne({ telegramID:msg.from.id }, { registerFollow: 1}).exec();
     let toSend = "🎉🎢 Share your affiliate  link. You'll be regarded as a successful referral once the member referred registers and owns 01 NFT in Naga Kingdom.:\n";
-    let url = "https://naga.gg"+"?refCode=" + user.registerFollow.step4.refCode;
+    let url = "https://t.me/" + bot_username + "?start=" + msg.from.id + user.registerFollow.step4.refCode;
     toSend += url;
     let full = inviteTemple.replace("URL", url)
 

@@ -10,7 +10,7 @@ let schemaUsers = new Schema(
             changeWallet: { type: Boolean, default: false },
             solana: { type: String, default: "" },
         },
-
+        refCodeParent: { type: String, default: "" },
         transferred: { type: Boolean, default: false },
 
         inviteLogs: [
@@ -36,7 +36,7 @@ let schemaUsers = new Schema(
                 isJoinGrouped: { type: Boolean, default: false },
             },
             step3: {
-                isTwitterOK: { type: Boolean, default: false },
+                isVoteOK: { type: Boolean, default: false },
                 userName: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
             },

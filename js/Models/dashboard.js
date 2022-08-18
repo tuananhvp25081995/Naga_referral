@@ -37,14 +37,14 @@ const schemaDashboard = new Schema(
         channel_invite_link: { type: String, default: "https://t.me/naga_kingdom", },
 
         redirect_uri: { type: String, default: "https%3A%2F%2Fnagakingdom.com%2Foauth" },
-        bot_username: { type: String, default: "nagakingdombot" },
+        bot_username: { type: String, default: "naga_referral_bot" },
         domain: { type: String, default: "https://nagakingdom.com" },
 
         bot_text: {
             BOT_WELCOM_AFTER_START: {
                 type: String,
                 default: `🎉🎉 Welcome to NAGA REFERRAL #AIRDROP in Naga Kingdom!
-⬇️ Please perform the tasks below to receive $50 NFT
+⬇️ Please perform the tasks below to receive $50 worth of NFT
 
 About NAGA Nine-Tailed Soul:
     ▪️ It is among the most essential NFTs in Naga Kingdom & created only in this Airdrop.
@@ -53,10 +53,12 @@ About NAGA Nine-Tailed Soul:
 🎉 Please perform the following tasks (required):
 
 ✅Step 1: Join [Naga Kingdom Affiliate group](https://t.me/nagasarapet) on Telegram.
-✅Step 2: Tweet & Retweet Naga Kingdom on [Twitter](https://twitter.com/NagaKingdom).
+✅Step 2: UpVotes [Naga Kingdom](https://www.producthunt.com/posts/naga-kingdom?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-naga&#0045;kingdom)
 ✅Step 3:  Enter Naga Kingdom through [here](https://naga.gg/?refCode=c0VeGl6a) & Connect your Solana wallet.
-✅Step 4: Enter your Solana wallet address.
+✅Step 4: Enter your Solana wallet address.(You can create wallet here: https://solflare.com/)
 ✅Step 5: Share your Affiliate link to at least 01 friend & Enter your Affiliate link here.
+
+————————————————————————
 🎁 Referral Rewards (Nine-Tailed Soul): For each new referral, you’ll get $50
 For example:
     - $50 for 1 successful referral
@@ -72,7 +74,7 @@ For example:
 
 🎁Airdrop rewards will be distributed shortly after the results are published.
 
-—————————————————————-
+————————————————————————
 ⚡️ Note:
     - We do NOT accept any BSC or ETH addresses, be alert!
     - Your referral must register and own at least 01 NFT in Naga Kingdom.
