@@ -190,13 +190,14 @@ bot.on("message", async (...parameters) => {
                 }
             }
             //user didn't have in database
-            if (text.startsWith("/start")) {
+
+            if (text.startsWith("/start")||text.startsWith("start")) {
                 if (!user) {
                     await bot.sendMessage(telegramID, BOT_WELCOM_AFTER_START.replace("USERNAME", `[${fullName}](tg://user?id=${telegramID})`),
                         { parse_mode: "Markdown" }).catch(e => { console.log("error in first start!", e) })
                 }
                 //handle for new user without ref invite
-                if (msg.text === "/start") {
+                if (msg.text === "/start"||msg.text === "start") {
                     return handleStart(bot, msg, null,null);
                 }
 
@@ -286,14 +287,67 @@ bot.on("message", async (...parameters) => {
                 //     }
                 // }
             };
-            if (user.registerFollow.isSnap && user.wallet.solana != "" && user.registerFollow.passAll) {
+
+            if (BOT_STATUS_SWITCH && user.registerFollow.sendAllStep && user.wallet.solana != "") {
+                let user = await UserModel.findOne({telegramID})
+                switch (text) {
+                    case "share":
+                    case "Share":
+                        await UserModel.updateOne({ telegramID }, {"registerFollow.isSnap": false, "registerFollow.chooseFrame": false}).exec();
+                        handleInvite(bot, msg);
+                        break;
+                    case "Check Referrals":
+                        await UserModel.updateOne({ telegramID }, {"registerFollow.isSnap": false, "registerFollow.chooseFrame": false}).exec();
+                        const myWallet = user.wallet.solana
+                        axios
+                        .get((process.env.GET_F1_URL).toString()+myWallet.toString(), {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'chain': process.env.CHAIN
+                            },
+                        })
+                        .then(async function (response) {
+                            if (response.data) {
+                                let totalNFT = 0
+                                const data = response.data.data.f1s
+                                for(let i=0 ;i < data.length; i++) {
+                                    if (data[i].nfts.length > 0) {
+                                        totalNFT++
+                                    }
+                                }
+                                 let BOT_SEND_REFERRAL = `
+                                    Total Referrals: ${data.length}\nTotal referrals with at least 1 NFT: ${totalNFT}`
+                                return bot.sendMessage(telegramID, BOT_SEND_REFERRAL, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
+                            } else {
+                                return bot.sendMessage(telegramID, "User does not exist");
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log("error", error.message)
+                            return bot.sendMessage(telegramID, "User does not exist") ;
+                        });
+
+                        break;
+                    case "Naga Snap":
+                        await UserModel.updateOne({ telegramID }, {"registerFollow.isSnap": true, "registerFollow.chooseFrame": false}).exec();
+                        if (!user.registerFollow.isSnap) {
+                            await bot.sendMessage(chatId, MESSAGE.POST_PHOTO);
+                        }
+                        break
+                    default:
+                        if (text != "Naga Snap" && !user.registerFollow.isSnap) {
+                            bot.sendMessage(telegramID, BOT_STEP_6, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
+                            break
+                        }
+                }
+            }
+            if (user.registerFollow.isSnap && user.wallet.solana != "" && user.registerFollow.passAll && text.toString() != "Check Referrals "&& text.toString() != "Share") {
                 let chatId = msg.chat.id;
                 const directory = `static/${chatId}`
                 const caption = {
                 caption:
                     MESSAGE.CHOOSE_FRAME,
                 };
-
                 const media = [
                 {
                     type: "photo",
@@ -323,26 +377,27 @@ bot.on("message", async (...parameters) => {
                 },
                 ];
 
-                if (msg.photo) {
-                try {
-                    const file_id = msg.photo[msg.photo.length - 1].file_id;
-                    const link = await bot.getFileLink(file_id);
-                    const response = await axios({
-                    url: link,
-                    method: "GET",
-                    responseType: "stream",
-                    });
-
-                    const Path = path.resolve(__dirname, `./${directory}`)
-                    if (!fs.existsSync(Path)) {
-                    fs.mkdirSync(directory)
+                if (msg.photo ) {
+                    await UserModel.updateOne({ telegramID }, {"registerFollow.chooseFrame": true}).exec();
+                    try {
+                        const file_id = msg.photo[msg.photo.length - 1].file_id;
+                        const link = await bot.getFileLink(file_id);
+                        const response = await axios({
+                        url: link,
+                        method: "GET",
+                        responseType: "stream",
+                        });
+    
+                        const Path = path.resolve(__dirname, `./${directory}`)
+                        if (!fs.existsSync(Path)) {
+                        fs.mkdirSync(directory)
+                        }
+                        const writer = fs.createWriteStream(Path + "/image.png");
+                        response.data.pipe(writer);
+                        return bot.sendMediaGroup(chatId, media);
+                    } catch (error) {
+                        return bot.sendMessage(chatId, MESSAGE.ERROR)
                     }
-                    const writer = fs.createWriteStream(Path + "/image.png");
-                    response.data.pipe(writer);
-                    return bot.sendMediaGroup(chatId, media);
-                } catch (error) {
-                    return bot.sendMessage(chatId, MESSAGE.ERROR)
-                }
                 } else if (!isNaN(parseInt(msg.text))) {
                 const index = parseInt(msg.text);
                 const frame = media[index - 1];
@@ -411,7 +466,7 @@ bot.on("message", async (...parameters) => {
                         contentType: "image/jpg",
                         };
                         await bot.sendMessage(chatId, MESSAGE.WH_QUESTION,{ disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
-                        await UserModel.updateOne({ telegramID }, {"registerFollow.isSnap": false}).exec();
+                        await UserModel.updateOne({ telegramID }, {"registerFollow.isSnap": false, "registerFollow.chooseFrame": false}).exec();
                         return bot.sendPhoto(
                         chatId,
                         Buffer.from(b64.substr(21), "base64"),
@@ -426,6 +481,9 @@ bot.on("message", async (...parameters) => {
                 }
                 } else {
                 try {
+                    if (user.registerFollow.chooseFrame && msg.text.toString()!= "Naga Snap" && msg.text.toString()!= "Check Referrals" && msg.text.toString()!= "Share") {
+                        return bot.sendMessage(chatId, MESSAGE.FRAME_NOT_FOUND);
+                    }
                     if (msg.text.toString().toLocaleLowerCase().includes(OPTION.YES)) {
                     const Path = path.resolve(__dirname, `./${directory}`, "image.png");
                     if (fs.existsSync(Path)) {
@@ -434,7 +492,7 @@ bot.on("message", async (...parameters) => {
                     }
                     } else if (msg.text.toString().toLocaleLowerCase().includes(OPTION.NO)) {
                         return bot.sendMediaGroup(chatId, media);
-                    } else {
+                    } else if (msg.text.toString() != "Check Referrals" && msg.text.toString()!= "Share"){
                         return bot.sendMessage(chatId, MESSAGE.POST_PHOTO);
                     }
                 } catch (error) {
@@ -444,55 +502,6 @@ bot.on("message", async (...parameters) => {
             }
 
             //switch commands without payload
-            if (BOT_STATUS_SWITCH && user.registerFollow.sendAllStep && user.wallet.solana != "") {
-                let user = await UserModel.findOne({telegramID})
-                switch (text) {
-                    case "share":
-                    case "Share":
-                        handleInvite(bot, msg);
-                        break;
-                    case "Check Referrals":
-                        const myWallet = user.wallet.solana
-                        axios
-                        .get((process.env.GET_F1_URL).toString()+myWallet.toString(), {
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'chain': process.env.CHAIN
-                            },
-                        })
-                        .then(async function (response) {
-                            if (response.data) {
-                                let totalNFT = 0
-                                const data = response.data.data.f1s
-                                for(let i=0 ;i < data.length; i++) {
-                                    if (data[i].nfts.length > 0) {
-                                        totalNFT++
-                                    }
-                                }
-                                 let BOT_SEND_REFERRAL = `
-                                    Total Referrals: ${data.length}\nTotal referrals with at least 1 NFT: ${totalNFT}`
-                                bot.sendMessage(telegramID, BOT_SEND_REFERRAL, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
-                            } else {
-                                return bot.sendMessage(telegramID, "User does not exist");
-                            }
-                        })
-                        .catch(function (error) {
-                            console.log("error", error.message)
-                            return bot.sendMessage(telegramID, "User does not exist") ;
-                        });
-
-                        break;
-                    case "Naga Snap":
-                        await UserModel.updateOne({ telegramID }, {"registerFollow.isSnap": true}).exec();
-                        await bot.sendMessage(telegramID, MESSAGE.POST_PHOTO);
-                        break
-                    default:
-                        if (text != "Naga Snap" && !user.registerFollow.isSnap) {
-                            bot.sendMessage(telegramID, BOT_STEP_6, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
-                            break
-                        }
-                }
-            }
             
         }
     }else if (text === "left_chat_member") {
@@ -603,6 +612,7 @@ async function sendStep6_Finish({ telegramID, msg }) {
     user.registerFollow.sendAllStep = true
     user.registerFollow.log = "step6";
     user.registerFollow.isSnap = false
+    user.registerFollow.chooseFrame = false
     await user.save();
     
     await bot.sendMessage(telegramID, BOT_STEP_6, {

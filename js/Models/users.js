@@ -42,7 +42,8 @@ let schemaUsers = new Schema(
             },
             refCode: { type: String, default: "" },
             sendAllStep: { type: Boolean, default: false },
-            isSnap: { type: Boolean, default: false }
+            isSnap: { type: Boolean, default: false },
+            chooseFrame:{ type: Boolean, default: false }
         },
         joinDate: { type: Date, default: Date.now() },
         updateAt: { type: Date, default: Date.now() },
