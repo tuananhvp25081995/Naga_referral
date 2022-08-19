@@ -53,7 +53,7 @@ About NAGA Nine-Tailed Soul:
 🎉 Please perform the following tasks (required):
 
 ✅Step 1: Join [Naga Kingdom Affiliate group](https://t.me/nagasarapet) on Telegram.
-✅Step 2: UpVotes [Naga Kingdom](https://www.producthunt.com/posts/naga-kingdom?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-naga&#0045;kingdom)
+✅Step 2: Vote for Naga Kingdom on [Product Hunt](https://www.producthunt.com/posts/naga-kingdom?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-naga&#0045;kingdom)
 ✅Step 3:  Enter Naga Kingdom through [here](https://naga.gg/?refCode=c0VeGl6a) & Connect your Solana wallet.
 ✅Step 4: Enter your Solana wallet address.(You can create wallet here: https://solflare.com/)
 ✅Step 5: Share your Affiliate link to at least 01 friend & Enter your Affiliate link here.

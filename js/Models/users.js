@@ -40,12 +40,9 @@ let schemaUsers = new Schema(
                 userName: { type: String, default: "" },
                 isWaitingPass: { type: Boolean, default: false },
             },
-            step4: {
-                isShareOK: { type: Boolean, default: false },
-                refCode: { type: String, default: "" },
-                isWaitingPass: { type: Boolean, default: false },
-            },
-            sendAllStep: { type: Boolean, default: false }
+            refCode: { type: String, default: "" },
+            sendAllStep: { type: Boolean, default: false },
+            isSnap: { type: Boolean, default: false }
         },
         joinDate: { type: Date, default: Date.now() },
         updateAt: { type: Date, default: Date.now() },

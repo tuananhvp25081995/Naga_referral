@@ -9,7 +9,6 @@ let LocalStrategy = require("passport-local").Strategy;
 var cookieSession = require("cookie-session");
 var sparkles = require("sparkles")();
 const chalk = require("chalk");
-const TeleBot = require("./src/bot/index");
 
 require("./js/Models/dashboard")
 require("./js/Models/users")
@@ -56,7 +55,6 @@ app.use(cookieParser());
 
 app.use("/", indexRouter);
 app.use("/static", express.static(__dirname + "/static"))
-TeleBot()
 
 sparkles.on("init", async () => {
     try {
