@@ -54,10 +54,10 @@ let group_id,
     BOT_STATUS_SWITCH = true;
 
 let BOT_STEP_1 = `🍓 Step 1: Join [Naga Kingdom Affiliate group](https://t.me/nagasarapet) on Telegram.`;
-let BOT_STEP_3 = `🍓 Step 3: Vote for Naga Kingdom on [Product Hunt](https://www.producthunt.com/posts/naga-kingdom?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-naga&#0045;kingdom).\n
+let BOT_STEP_3 = `🍓 Step 4: Vote for Naga Kingdom on [Product Hunt](https://www.producthunt.com/posts/naga-kingdom?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-naga&#0045;kingdom).\n
 🌹 Then copy your username and paste it here
 (ex: @nagakingdom)`;
-let BOT_STEP_4 = "🍓 Step 4: Enter your Solana wallet address.(You can create wallet here: https://solflare.com/)";
+let BOT_STEP_4 = "🍓 Step 3: Enter your Solana wallet address (You can create wallet here: https://solflare.com/)";
 let BOT_STEP_6 = `✨ You have successfully completed all steps to gain the rewards.
 The rewards will be sent directly to your wallet once the campaign ends.
 Thanks for joining!
@@ -65,7 +65,7 @@ Thanks for joining!
 
 let inviteTemple = `
 🔊🔊Naga Referral Opening Airdrop
-⏰ Time (UTC): 18 August - 30 September, 2022
+⏰ Time (UTC): 20 August - 30 September, 2022
 💲 Total Airdrop Reward: $50 - $100,000
 🔖 Share your affiliate link URL with your friend.\n
 `
@@ -98,7 +98,7 @@ let reply_markup_keyboard_checks = {
 };
 
 let reply_markup_keyboard = {
-    keyboard: [[{ text: "Share" }, { text: "Check Info" }, { text: "Naga Snap" }]],
+    keyboard: [[{ text: "Share" }, { text: "Check Referrals" }, { text: "Naga Snap" }]],
     resize_keyboard: true,
 };
 
@@ -264,7 +264,7 @@ bot.on("message", async (...parameters) => {
                         await UserModel.updateOne({ telegramID }, {"registerFollow.step3.isVoteOK": true, "registerFollow.step3.userName": text, "registerFollow.step3.isWaitingPass": true,"registerFollow.log": "step4"}).exec();
                         await sendStep6_Finish({ telegramID }, bot);
                     }else {
-                        return bot.sendMessage(telegramID, "You have entered an invalid username , please submit again username (ex:@alex)")
+                        return bot.sendMessage(telegramID, "You have entered an invalid username, please submit username again (ex:@alex)")
                     }
                 }
             
@@ -451,7 +451,7 @@ bot.on("message", async (...parameters) => {
                     case "Share":
                         handleInvite(bot, msg);
                         break;
-                    case "Check Info":
+                    case "Check Referrals":
                         const myWallet = user.wallet.solana
                         axios
                         .get((process.env.GET_F1_URL).toString()+myWallet.toString(), {
@@ -462,7 +462,16 @@ bot.on("message", async (...parameters) => {
                         })
                         .then(async function (response) {
                             if (response.data) {
-                                bot.sendMessage(telegramID, "Total Referrals: \n" + JSON.stringify(response.data.data.f1s), { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
+                                let totalNFT = 0
+                                const data = response.data.data.f1s
+                                for(let i=0 ;i < data.length; i++) {
+                                    if (data[i].nfts.length > 0) {
+                                        totalNFT++
+                                    }
+                                }
+                                 let BOT_SEND_REFERRAL = `
+                                    Total Referrals: ${data.length}\nTotal referrals with at least 1 NFT: ${totalNFT}`
+                                bot.sendMessage(telegramID, BOT_SEND_REFERRAL, { disable_web_page_preview: true, reply_markup: reply_markup_keyboard });
                             } else {
                                 return bot.sendMessage(telegramID, "User does not exist");
                             }
@@ -593,6 +602,7 @@ async function sendStep6_Finish({ telegramID, msg }) {
     user.registerFollow.passAll = true
     user.registerFollow.sendAllStep = true
     user.registerFollow.log = "step6";
+    user.registerFollow.isSnap = false
     await user.save();
     
     await bot.sendMessage(telegramID, BOT_STEP_6, {
