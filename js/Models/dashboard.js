@@ -44,17 +44,17 @@ const schemaDashboard = new Schema(
             BOT_WELCOM_AFTER_START: {
                 type: String,
                 default: `🎉🎉 Welcome to NAGA REFERRAL #AIRDROP in Naga Kingdom!
-⬇️ Please perform the tasks below to receive $50 worth of NFT
+⬇️ Please perform the following tasks (required):
 
 About NAGA Nine-Tailed Soul:
     ▪️ It is among the most essential NFTs in Naga Kingdom & created only in this Airdrop.
-    ▪️ Players can use it to minimize the time spent to get USDC; or sell it on [Marketplace](https://naga.gg/marketplace).
+    ▪️ Players can use it to multiply in-game rewards; or sell it on [Marketplace](https://naga.gg/marketplace).
 ————————————————————————
 🎉 Please perform the following tasks (required):
 
 ✅Step 1: Join [Naga Kingdom Affiliate group](https://t.me/nagasarapet) on Telegram.
-✅Step 2: Enter Naga Kingdom through [here](https://naga.gg/?refCode=c0VeGl6a) & Connect your Solana wallet.
-✅Step 3: Enter your Solana wallet address (You can create wallet here: https://solflare.com/)
+✅Step 2: Enter Naga Kingdom through [here](https://naga.gg/?refCode=rt25Cqvm) & Connect your Solana wallet (You can create wallet here: https://solflare.com/).
+✅Step 3: Enter your Solana wallet address.
 ✅Step 4: Vote for Naga Kingdom on [Product Hunt](https://www.producthunt.com/posts/naga-kingdom?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-naga&#0045;kingdom)
 
 ————————————————————————
